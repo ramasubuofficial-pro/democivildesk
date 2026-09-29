@@ -1,0 +1,3 @@
+project_id,site_id,material_id,material_code,material_name,available_qty,minimum_stock_qty,reorder_qty,below_minimum
+"1","1","1","MAT-CEM-001","OPC 53 Grade Cement","150","100.0000","300.0000","0"
+"1","1","3","MAT1785833367","API Test Material 1785833367","8","5.0000","20.0000","0"

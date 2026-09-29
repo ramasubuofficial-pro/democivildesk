@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "work_zone_id": "A site is required when a work zone is selected."
+    }
+}

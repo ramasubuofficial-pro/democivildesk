@@ -1,0 +1,7 @@
+{
+    "success": true,
+    "message": "Client documents retrieved successfully.",
+    "data": {
+        "documents": []
+    }
+}

@@ -1,0 +1,122 @@
+{
+    "success": true,
+    "message": "Users retrieved successfully.",
+    "data": {
+        "users": [
+            {
+                "id": 1,
+                "company_id": "1",
+                "default_branch_id": "1",
+                "employee_code": null,
+                "username": "superadmin",
+                "email": "superadmin@civilpro.com",
+                "phone": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro",
+                "designation": "System Administrator",
+                "user_type_id": "1",
+                "user_type_code": "COMPANY_ADMIN",
+                "user_type_name": "Company Admin",
+                "user_status_id": "2",
+                "user_status_code": "ACTIVE",
+                "user_status_name": "Active",
+                "active": true,
+                "status_message": null,
+                "last_active": null,
+                "must_change_password": "0",
+                "failed_login_attempts": "0",
+                "locked_until": null,
+                "last_login_at": null,
+                "email_verified_at": "2026-07-23 17:15:53",
+                "is_super_admin": "1",
+                "is_active": "1",
+                "created_at": {
+                    "date": "2026-07-23 17:15:53.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                },
+                "updated_at": {
+                    "date": "2026-07-26 16:26:09.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                }
+            },
+            {
+                "id": 3,
+                "company_id": "1",
+                "default_branch_id": "1",
+                "employee_code": "EMP001",
+                "username": "siteengineer1",
+                "email": "siteengineer1@civilpro.com",
+                "phone": "9876543210",
+                "first_name": "Site",
+                "last_name": "Engineer",
+                "designation": "Site Engineer",
+                "user_type_id": "4",
+                "user_type_code": "SITE_ENGINEER",
+                "user_type_name": "Site Engineer",
+                "user_status_id": "2",
+                "user_status_code": "ACTIVE",
+                "user_status_name": "Active",
+                "active": true,
+                "status_message": null,
+                "last_active": null,
+                "must_change_password": "1",
+                "failed_login_attempts": "0",
+                "locked_until": null,
+                "last_login_at": null,
+                "email_verified_at": null,
+                "is_super_admin": "0",
+                "is_active": "1",
+                "created_at": {
+                    "date": "2026-07-26 07:32:30.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                },
+                "updated_at": {
+                    "date": "2026-07-26 16:26:09.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                }
+            },
+            {
+                "id": 4,
+                "company_id": "1",
+                "default_branch_id": "1",
+                "employee_code": "SE002",
+                "username": "siteengineer2",
+                "email": "siteengineer2@civilpro.com",
+                "phone": "9876543210",
+                "first_name": "Site",
+                "last_name": "Engineer 2",
+                "designation": "Site Engineer",
+                "user_type_id": "4",
+                "user_type_code": "SITE_ENGINEER",
+                "user_type_name": "Site Engineer",
+                "user_status_id": "2",
+                "user_status_code": "ACTIVE",
+                "user_status_name": "Active",
+                "active": true,
+                "status_message": null,
+                "last_active": null,
+                "must_change_password": "1",
+                "failed_login_attempts": "0",
+                "locked_until": null,
+                "last_login_at": null,
+                "email_verified_at": null,
+                "is_super_admin": "0",
+                "is_active": "1",
+                "created_at": {
+                    "date": "2026-07-26 09:47:59.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                },
+                "updated_at": {
+                    "date": "2026-07-26 16:26:09.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                }
+            }
+        ]
+    }
+}

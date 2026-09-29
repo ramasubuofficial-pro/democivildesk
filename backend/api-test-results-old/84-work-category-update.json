@@ -1,0 +1,29 @@
+{
+    "success": true,
+    "message": "Work category updated successfully.",
+    "data": {
+        "work_category": {
+            "id": 11,
+            "company_id": 1,
+            "parent_id": 3,
+            "category_code": "WC_API_001",
+            "category_name": "API Test Excavation Works Updated",
+            "work_stage_id": 2,
+            "progress_method_id": 2,
+            "description": "Updated through Work Category API",
+            "display_order": 210,
+            "is_active": true,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-07-26 17:22:09",
+            "updated_at": "2026-07-26 17:22:39",
+            "deleted_at": null,
+            "parent_code": "FOUNDATION",
+            "parent_name": "Foundation Works",
+            "work_stage_code": "SUBSTRUCTURE",
+            "work_stage_name": "Substructure",
+            "progress_method_code": "PERCENTAGE",
+            "progress_method_name": "Percentage"
+        }
+    }
+}

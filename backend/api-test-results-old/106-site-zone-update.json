@@ -1,0 +1,39 @@
+{
+    "success": true,
+    "message": "Site zone updated successfully.",
+    "data": {
+        "zone": {
+            "id": 2,
+            "company_id": 1,
+            "project_id": 1,
+            "site_id": 1,
+            "parent_zone_id": null,
+            "zone_code": "ZONE_API_21662",
+            "zone_name": "API Test Main Zone Updated",
+            "zone_type_id": 4,
+            "description": "Updated through Site Zone API",
+            "planned_start_date": "2026-08-05",
+            "planned_end_date": "2027-04-15",
+            "status_id": 2,
+            "progress_percentage": 10.5,
+            "display_order": 210,
+            "is_active": true,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-07-29 10:27:17",
+            "updated_at": "2026-07-29 10:39:05",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "project_branch_id": "1",
+            "site_code": "SITE-01",
+            "site_name": "Greenfield Residency Main Site",
+            "parent_zone_code": null,
+            "parent_zone_name": null,
+            "zone_type_code": "SECTION",
+            "zone_type_name": "Section",
+            "status_code": "ACTIVE",
+            "status_name": "Active"
+        }
+    }
+}

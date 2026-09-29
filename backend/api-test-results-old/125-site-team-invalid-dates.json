@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "assignment_end": "Assignment end date cannot be before the start date."
+    }
+}

@@ -1,0 +1,17 @@
+Module 5 - Labour and Attendance Subcontractor Link API Test
+Started: 2026-08-04 18:43:00
+
+PASS 01 - Login
+PASS 02 - Authenticated user
+PASS 03 - Labour masters
+PASS 04 - Subcontractors available in Labour masters
+PASS 05 - Labour contractors contain subcontractor link field
+PASS 06 - View labour contractor with subcontractor link field
+PASS 07 - Filter labour contractors by subcontractor
+PASS 08 - Filter labour workers by subcontractor
+PASS 09 - Filter labour assignments by subcontractor
+PASS 10 - Filter labour attendance by subcontractor
+PASS 11 - Logout
+
+ALL 11 MODULE 5 SUBCONTRACTOR LINK API TESTS PASSED
+Completed: 2026-08-04 18:43:05

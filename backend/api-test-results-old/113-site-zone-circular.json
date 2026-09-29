@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "parent_zone_id": "The selected parent would create a circular zone hierarchy."
+    }
+}

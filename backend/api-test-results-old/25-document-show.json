@@ -1,0 +1,36 @@
+{
+    "success": true,
+    "message": "Client document retrieved successfully.",
+    "data": {
+        "document": {
+            "id": 1,
+            "company_id": 1,
+            "client_id": 1,
+            "document_type_id": 1,
+            "document_number": "GST-API-001",
+            "document_title": "API Test GST Certificate",
+            "document_date": "2026-07-26",
+            "valid_from": "2026-07-26",
+            "valid_until": "2027-07-25",
+            "original_file_name": "client-document-test.pdf",
+            "stored_file_name": "1785078640_6803032d3dfe88915cfd.csv",
+            "file_path": "uploads/client_documents/1/1/1785078640_6803032d3dfe88915cfd.csv",
+            "file_extension": "pdf",
+            "mime_type": "text/plain",
+            "file_size_bytes": 26,
+            "file_hash_sha256": "b22aad186e6179a5eb79dc12561e91a848445f49155eb9fa67fe5943d0d2cfb5",
+            "version_number": 1,
+            "client_document_status_id": 2,
+            "is_confidential": true,
+            "remarks": "Client Document API test",
+            "uploaded_by": 1,
+            "created_at": "2026-07-26 15:10:40",
+            "updated_at": "2026-07-26 15:10:40",
+            "deleted_at": null,
+            "document_type_code": "CLIENT-GST",
+            "document_type_name": "GST Registration Certificate",
+            "document_status_code": "VALID",
+            "document_status_name": "Valid"
+        }
+    }
+}

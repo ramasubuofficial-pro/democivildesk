@@ -1,0 +1,44 @@
+{
+    "success": true,
+    "message": "Site status history retrieved successfully.",
+    "data": {
+        "status_history": [
+            {
+                "id": "3",
+                "company_id": "1",
+                "project_id": "1",
+                "site_id": "2",
+                "from_status_id": "2",
+                "from_status_code": "PLANNED",
+                "from_status_name": "Planned",
+                "to_status_id": "3",
+                "to_status_code": "ACTIVE",
+                "to_status_name": "Active",
+                "change_reason": "Site activated through API test",
+                "changed_by": "1",
+                "changed_by_employee_code": null,
+                "changed_by_first_name": "Admin",
+                "changed_by_last_name": "Civilpro",
+                "changed_at": "2026-07-27 20:06:43"
+            },
+            {
+                "id": "2",
+                "company_id": "1",
+                "project_id": "1",
+                "site_id": "2",
+                "from_status_id": null,
+                "from_status_code": null,
+                "from_status_name": null,
+                "to_status_id": "2",
+                "to_status_code": "PLANNED",
+                "to_status_name": "Planned",
+                "change_reason": "Site created.",
+                "changed_by": "1",
+                "changed_by_employee_code": null,
+                "changed_by_first_name": "Admin",
+                "changed_by_last_name": "Civilpro",
+                "changed_at": "2026-07-27 19:58:29"
+            }
+        ]
+    }
+}

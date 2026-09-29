@@ -1,0 +1,36 @@
+{
+    "success": true,
+    "message": "Record retrieved successfully.",
+    "data": {
+        "labour_contractor": {
+            "id": "4",
+            "company_id": "1",
+            "contractor_code": "LCTR_1775528188",
+            "contractor_name": "API Contractor 1775528188",
+            "contact_person": "Test Manager",
+            "phone": "9876543210",
+            "alternate_phone": null,
+            "email": "labour1775528188@test.com",
+            "gstin": null,
+            "pan": null,
+            "address_line1": null,
+            "address_line2": null,
+            "city": null,
+            "district": null,
+            "state_name": null,
+            "postal_code": null,
+            "bank_name": null,
+            "bank_account_name": null,
+            "bank_account_no": null,
+            "bank_ifsc": null,
+            "payment_terms_days": "7",
+            "status_id": "1",
+            "notes": null,
+            "created_by": "1",
+            "updated_by": "1",
+            "created_at": "2026-08-04 08:04:24",
+            "updated_at": "2026-08-04 08:04:24",
+            "deleted_at": null
+        }
+    }
+}

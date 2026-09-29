@@ -1,0 +1,1448 @@
+143 CREATE REVISION: HTTP 201
+REVISION_ID=
+144 LIST REVISIONS: HTTP 200
+145 VIEW REVISION: HTTP 200
+146 UPDATE REVISION: HTTP 200
+147 SECOND OPEN REVISION BLOCK: HTTP 409
+148 CREATE MODIFY LINE: HTTP 201
+MODIFY_REVISION_LINE_ID=
+149 UPDATE MODIFY LINE: HTTP 200
+150 CREATE REMOVE LINE: HTTP 201
+151 DUPLICATE SOURCE LINE: HTTP 422
+152 NEGATIVE VALUE: HTTP 422
+153 REVISION CALCULATION VIEW: HTTP 200
+154 SUBMIT REVISION: HTTP 200
+155 SUBMITTED HEADER LOCK: HTTP 409
+156 SUBMITTED LINE LOCK: HTTP 409
+157 SUBMITTED LINE DELETE LOCK: HTTP 409
+158 SUBMITTED REVISION DELETE LOCK: HTTP 409
+159 REPEAT SUBMIT BLOCK: HTTP 409
+160 APPROVE REVISION: HTTP 200
+161 REPEAT APPROVE BLOCK: HTTP 409
+162 REJECT APPROVED BLOCK: HTTP 409
+163 APPROVED REVISION HISTORY: HTTP 200
+164 BUDGET AFTER APPROVAL: HTTP 200
+165 CREATE REJECTION REVISION: HTTP 201
+166 CREATE REJECTION LINE: HTTP 201
+167 SUBMIT REJECTION REVISION: HTTP 200
+168 REJECT REVISION: HTTP 200
+169 APPROVE REJECTED BLOCK: HTTP 409
+170 REJECTED REVISION HISTORY: HTTP 200
+171 CREATE EMPTY REVISION: HTTP 201
+172 EMPTY REVISION SUBMIT BLOCK: HTTP 409
+173 DELETE DRAFT REVISION: HTTP 200
+174 VIEW DELETED REVISION: HTTP 404
+175 FINAL REVISIONS LIST: HTTP 200
+176 NOTIFICATIONS LIST: HTTP 200
+ 
+==================== 142-budget-revision-precheck.txt ==================== 
+id	budget_code	direct_cost	overhead_cost	contingency_amount	total_budget	status_code
+2	BUD-API-20376	13200.00	1000.00	500.00	14700.00	APPROVED
+id	line_code	planned_quantity	planned_rate	planned_amount	deleted_at
+4	MAT-13117	12.0000	1100.0000	13200.00	NULL
+5	OVH-7424	2.0000	500.0000	1000.00	NULL
+ 
+==================== 143-revision-create.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision created successfully.",
+    "data": {
+        "budget_revision": {
+            "id": "1",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "1",
+            "revision_date": "2026-08-03",
+            "reason": "Approved budget quantity, rate and scope revision test",
+            "previous_total": "14700.00",
+            "revised_total": "14700.00",
+            "variance_amount": "0.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:46:46",
+            "updated_at": "2026-08-03 11:46:46",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        }
+    }
+} 
+==================== 144-revisions-list.json ==================== 
+{
+    "success": true,
+    "message": "Budget revisions retrieved successfully.",
+    "data": {
+        "budget_revisions": [
+            {
+                "id": "1",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_no": "1",
+                "revision_date": "2026-08-03",
+                "reason": "Approved budget quantity, rate and scope revision test",
+                "previous_total": "14700.00",
+                "revised_total": "14700.00",
+                "variance_amount": "0.00",
+                "status_id": "1",
+                "requested_by": "1",
+                "submitted_at": null,
+                "decided_by": null,
+                "decided_at": null,
+                "decision_note": null,
+                "created_at": "2026-08-03 11:46:46",
+                "updated_at": "2026-08-03 11:46:46",
+                "status_code": "DRAFT",
+                "status_name": "Draft",
+                "requested_by_code": null,
+                "requested_by_first_name": "Admin",
+                "requested_by_last_name": "Civilpro",
+                "decided_by_code": null,
+                "decided_by_first_name": null,
+                "decided_by_last_name": null
+            }
+        ]
+    }
+} 
+==================== 145-revision-view.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision retrieved successfully.",
+    "data": {
+        "budget_revision": {
+            "id": "1",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "1",
+            "revision_date": "2026-08-03",
+            "reason": "Approved budget quantity, rate and scope revision test",
+            "previous_total": "14700.00",
+            "revised_total": "14700.00",
+            "variance_amount": "0.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:46:46",
+            "updated_at": "2026-08-03 11:46:46",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        },
+        "revision_lines": []
+    }
+} 
+==================== 146-revision-update.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision updated successfully.",
+    "data": {
+        "budget_revision": {
+            "id": "1",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "1",
+            "revision_date": "2026-08-03",
+            "reason": "Updated approved budget revision reason",
+            "previous_total": "14700.00",
+            "revised_total": "14700.00",
+            "variance_amount": "0.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:46:46",
+            "updated_at": "2026-08-03 11:46:47",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        }
+    }
+} 
+==================== 147-open-revision-block.json ==================== 
+{
+    "success": false,
+    "message": "Complete or delete the existing open revision before creating another revision."
+} 
+==================== 148-modify-line-create.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision line created successfully.",
+    "data": {
+        "revision_line": {
+            "id": "1",
+            "revision_id": "1",
+            "budget_line_id": "4",
+            "change_type_id": "2",
+            "previous_quantity": "12.0000",
+            "revised_quantity": "15.0000",
+            "previous_rate": "1100.0000",
+            "revised_rate": "1200.0000",
+            "previous_amount": "13200.00",
+            "revised_amount": "18000.00",
+            "variance_amount": "4800.00",
+            "reason": "Increase approved quantity and rate",
+            "created_at": "2026-08-03 11:46:48"
+        },
+        "budget_revision": {
+            "id": "1",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "1",
+            "revision_date": "2026-08-03",
+            "reason": "Updated approved budget revision reason",
+            "previous_total": "14700.00",
+            "revised_total": "19500.00",
+            "variance_amount": "4800.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:46:46",
+            "updated_at": "2026-08-03 11:46:48",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        }
+    }
+} 
+==================== 149-modify-line-update.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision line updated successfully.",
+    "data": {
+        "revision_line": {
+            "id": "1",
+            "revision_id": "1",
+            "budget_line_id": "4",
+            "change_type_id": "2",
+            "previous_quantity": "12.0000",
+            "revised_quantity": "16.0000",
+            "previous_rate": "1100.0000",
+            "revised_rate": "1250.0000",
+            "previous_amount": "13200.00",
+            "revised_amount": "20000.00",
+            "variance_amount": "6800.00",
+            "reason": "Final revised quantity and rate",
+            "created_at": "2026-08-03 11:46:48"
+        },
+        "budget_revision": {
+            "id": "1",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "1",
+            "revision_date": "2026-08-03",
+            "reason": "Updated approved budget revision reason",
+            "previous_total": "14700.00",
+            "revised_total": "21500.00",
+            "variance_amount": "6800.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:46:46",
+            "updated_at": "2026-08-03 11:46:48",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        }
+    }
+} 
+==================== 150-remove-line-create.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision line created successfully.",
+    "data": {
+        "revision_line": {
+            "id": "2",
+            "revision_id": "1",
+            "budget_line_id": "5",
+            "change_type_id": "3",
+            "previous_quantity": "2.0000",
+            "revised_quantity": "0.0000",
+            "previous_rate": "500.0000",
+            "revised_rate": "0.0000",
+            "previous_amount": "1000.00",
+            "revised_amount": "0.00",
+            "variance_amount": "-1000.00",
+            "reason": "Remove this budget scope line",
+            "created_at": "2026-08-03 11:46:48"
+        },
+        "budget_revision": {
+            "id": "1",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "1",
+            "revision_date": "2026-08-03",
+            "reason": "Updated approved budget revision reason",
+            "previous_total": "14700.00",
+            "revised_total": "20500.00",
+            "variance_amount": "5800.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:46:46",
+            "updated_at": "2026-08-03 11:46:48",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        }
+    }
+} 
+==================== 151-duplicate-source-line.json ==================== 
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "budget_line_id": "This budget line is already included in the revision."
+    }
+} 
+==================== 152-negative-value.json ==================== 
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "budget_line_id": "This budget line is already included in the revision."
+    }
+} 
+==================== 153-revision-calculation-view.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision retrieved successfully.",
+    "data": {
+        "budget_revision": {
+            "id": "1",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "1",
+            "revision_date": "2026-08-03",
+            "reason": "Updated approved budget revision reason",
+            "previous_total": "14700.00",
+            "revised_total": "20500.00",
+            "variance_amount": "5800.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:46:46",
+            "updated_at": "2026-08-03 11:46:48",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        },
+        "revision_lines": [
+            {
+                "id": "1",
+                "revision_id": "1",
+                "budget_line_id": "4",
+                "change_type_id": "2",
+                "previous_quantity": "12.0000",
+                "revised_quantity": "16.0000",
+                "previous_rate": "1100.0000",
+                "revised_rate": "1250.0000",
+                "previous_amount": "13200.00",
+                "revised_amount": "20000.00",
+                "variance_amount": "6800.00",
+                "reason": "Final revised quantity and rate",
+                "created_at": "2026-08-03 11:46:48",
+                "change_type_code": "MODIFY",
+                "change_type_name": "Modify",
+                "line_code": "MAT-13117",
+                "line_description": "Updated foundation excavation material budget"
+            },
+            {
+                "id": "2",
+                "revision_id": "1",
+                "budget_line_id": "5",
+                "change_type_id": "3",
+                "previous_quantity": "2.0000",
+                "revised_quantity": "0.0000",
+                "previous_rate": "500.0000",
+                "revised_rate": "0.0000",
+                "previous_amount": "1000.00",
+                "revised_amount": "0.00",
+                "variance_amount": "-1000.00",
+                "reason": "Remove this budget scope line",
+                "created_at": "2026-08-03 11:46:48",
+                "change_type_code": "REMOVE",
+                "change_type_name": "Remove",
+                "line_code": "OVH-7424",
+                "line_description": "Project supervision overhead"
+            }
+        ]
+    }
+} 
+==================== 154-revision-submit.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision submitted successfully.",
+    "data": {
+        "budget_revision": {
+            "id": "1",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "1",
+            "revision_date": "2026-08-03",
+            "reason": "Updated approved budget revision reason",
+            "previous_total": "14700.00",
+            "revised_total": "20500.00",
+            "variance_amount": "5800.00",
+            "status_id": "2",
+            "requested_by": "1",
+            "submitted_at": "2026-08-03 11:46:50",
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:46:46",
+            "updated_at": "2026-08-03 11:46:50",
+            "status_code": "SUBMITTED",
+            "status_name": "Submitted",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        },
+        "project_budget": {
+            "id": 2,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-API-20376",
+            "budget_name": "Updated Project Budget Core API Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 13200,
+            "overhead_cost": 1000,
+            "contingency_amount": 500,
+            "total_budget": 14700,
+            "status_id": 3,
+            "notes": "Header update verified",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:22",
+            "approved_by": 1,
+            "approved_at": "2026-08-03 11:19:25",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:06:13",
+            "updated_at": "2026-08-03 16:49:25",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "APPROVED",
+            "status_name": "Approved"
+        },
+        "summary": {
+            "direct_cost": "13200.00",
+            "overhead_cost": "1000.00",
+            "contingency_amount": "500.00",
+            "total_budget": "14700.00",
+            "line_count": 3,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "13200.00"
+                },
+                {
+                    "cost_type_id": "5",
+                    "cost_type_code": "OVERHEAD",
+                    "cost_type_name": "Overhead",
+                    "line_count": "1",
+                    "planned_amount": "1000.00"
+                },
+                {
+                    "cost_type_id": "6",
+                    "cost_type_code": "CONTINGENCY",
+                    "cost_type_name": "Contingency",
+                    "line_count": "1",
+                    "planned_amount": "500.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 155-submitted-header-lock.json ==================== 
+{
+    "success": false,
+    "message": "Only a draft budget revision can be updated."
+} 
+==================== 156-submitted-line-lock.json ==================== 
+{
+    "success": false,
+    "message": "Revision lines can be changed only in a draft revision."
+} 
+==================== 157-submitted-line-delete-lock.json ==================== 
+{
+    "success": false,
+    "message": "Revision lines can be deleted only from a draft revision."
+} 
+==================== 158-submitted-revision-delete-lock.json ==================== 
+{
+    "success": false,
+    "message": "Only a draft budget revision can be deleted."
+} 
+==================== 159-repeat-submit-block.json ==================== 
+{
+    "success": false,
+    "message": "Only a draft budget revision can be submitted."
+} 
+==================== 160-revision-approve.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision approved successfully.",
+    "data": {
+        "budget_revision": {
+            "id": "1",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "1",
+            "revision_date": "2026-08-03",
+            "reason": "Updated approved budget revision reason",
+            "previous_total": "14700.00",
+            "revised_total": "20500.00",
+            "variance_amount": "5800.00",
+            "status_id": "3",
+            "requested_by": "1",
+            "submitted_at": "2026-08-03 11:46:50",
+            "decided_by": "1",
+            "decided_at": "2026-08-03 11:46:52",
+            "decision_note": "Approved and applied through complete revision test",
+            "created_at": "2026-08-03 11:46:46",
+            "updated_at": "2026-08-03 11:46:52",
+            "status_code": "APPROVED",
+            "status_name": "Approved",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": "Admin",
+            "decided_by_last_name": "Civilpro"
+        },
+        "project_budget": {
+            "id": 2,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-API-20376",
+            "budget_name": "Updated Project Budget Core API Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 20000,
+            "overhead_cost": 0,
+            "contingency_amount": 500,
+            "total_budget": 20500,
+            "status_id": 3,
+            "notes": "Header update verified",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:22",
+            "approved_by": 1,
+            "approved_at": "2026-08-03 11:19:25",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:06:13",
+            "updated_at": "2026-08-03 17:16:52",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "APPROVED",
+            "status_name": "Approved"
+        },
+        "summary": {
+            "direct_cost": "20000.00",
+            "overhead_cost": "0.00",
+            "contingency_amount": "500.00",
+            "total_budget": "20500.00",
+            "line_count": 2,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "20000.00"
+                },
+                {
+                    "cost_type_id": "6",
+                    "cost_type_code": "CONTINGENCY",
+                    "cost_type_name": "Contingency",
+                    "line_count": "1",
+                    "planned_amount": "500.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 161-repeat-approve-block.json ==================== 
+{
+    "success": false,
+    "message": "Only a submitted budget revision can be approved."
+} 
+==================== 162-reject-approved-block.json ==================== 
+{
+    "success": false,
+    "message": "Only a submitted budget revision can be rejected."
+} 
+==================== 163-approved-revision-history.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision history retrieved successfully.",
+    "data": {
+        "approvals": [
+            {
+                "id": "5",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_id": "1",
+                "approval_level": "1",
+                "action_id": "1",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:46:50",
+                "comments": "Submitted through complete revision workflow test",
+                "action_code": "SUBMITTED",
+                "action_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "6",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_id": "1",
+                "approval_level": "1",
+                "action_id": "2",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:46:52",
+                "comments": "Approved and applied through complete revision test",
+                "action_code": "APPROVED",
+                "action_name": "Approved",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ]
+    }
+} 
+==================== 164-budget-after-approval.json ==================== 
+{
+    "success": true,
+    "message": "Project budget retrieved successfully.",
+    "data": {
+        "project_budget": {
+            "id": 2,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-API-20376",
+            "budget_name": "Updated Project Budget Core API Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 20000,
+            "overhead_cost": 0,
+            "contingency_amount": 500,
+            "total_budget": 20500,
+            "status_id": 3,
+            "notes": "Header update verified",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:22",
+            "approved_by": 1,
+            "approved_at": "2026-08-03 11:19:25",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:06:13",
+            "updated_at": "2026-08-03 17:16:52",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "APPROVED",
+            "status_name": "Approved"
+        },
+        "summary": {
+            "direct_cost": "20000.00",
+            "overhead_cost": "0.00",
+            "contingency_amount": "500.00",
+            "total_budget": "20500.00",
+            "line_count": 2,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "20000.00"
+                },
+                {
+                    "cost_type_id": "6",
+                    "cost_type_code": "CONTINGENCY",
+                    "cost_type_name": "Contingency",
+                    "line_count": "1",
+                    "planned_amount": "500.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 165-rejection-revision-create.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision created successfully.",
+    "data": {
+        "budget_revision": {
+            "id": "2",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "2",
+            "revision_date": "2026-08-03",
+            "reason": "Budget revision rejection workflow test",
+            "previous_total": "20500.00",
+            "revised_total": "20500.00",
+            "variance_amount": "0.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:47:02",
+            "updated_at": "2026-08-03 11:47:02",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        }
+    }
+} 
+==================== 166-rejection-line-create.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision line created successfully.",
+    "data": {
+        "revision_line": {
+            "id": "3",
+            "revision_id": "2",
+            "budget_line_id": "4",
+            "change_type_id": "2",
+            "previous_quantity": "16.0000",
+            "revised_quantity": "25.0000",
+            "previous_rate": "1250.0000",
+            "revised_rate": "1300.0000",
+            "previous_amount": "20000.00",
+            "revised_amount": "32500.00",
+            "variance_amount": "12500.00",
+            "reason": "Rejected test adjustment",
+            "created_at": "2026-08-03 11:47:02"
+        },
+        "budget_revision": {
+            "id": "2",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "2",
+            "revision_date": "2026-08-03",
+            "reason": "Budget revision rejection workflow test",
+            "previous_total": "20500.00",
+            "revised_total": "33000.00",
+            "variance_amount": "12500.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:47:02",
+            "updated_at": "2026-08-03 11:47:02",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        }
+    }
+} 
+==================== 167-rejection-revision-submit.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision submitted successfully.",
+    "data": {
+        "budget_revision": {
+            "id": "2",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "2",
+            "revision_date": "2026-08-03",
+            "reason": "Budget revision rejection workflow test",
+            "previous_total": "20500.00",
+            "revised_total": "33000.00",
+            "variance_amount": "12500.00",
+            "status_id": "2",
+            "requested_by": "1",
+            "submitted_at": "2026-08-03 11:47:03",
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:47:02",
+            "updated_at": "2026-08-03 11:47:03",
+            "status_code": "SUBMITTED",
+            "status_name": "Submitted",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        },
+        "project_budget": {
+            "id": 2,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-API-20376",
+            "budget_name": "Updated Project Budget Core API Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 20000,
+            "overhead_cost": 0,
+            "contingency_amount": 500,
+            "total_budget": 20500,
+            "status_id": 3,
+            "notes": "Header update verified",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:22",
+            "approved_by": 1,
+            "approved_at": "2026-08-03 11:19:25",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:06:13",
+            "updated_at": "2026-08-03 17:16:52",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "APPROVED",
+            "status_name": "Approved"
+        },
+        "summary": {
+            "direct_cost": "20000.00",
+            "overhead_cost": "0.00",
+            "contingency_amount": "500.00",
+            "total_budget": "20500.00",
+            "line_count": 2,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "20000.00"
+                },
+                {
+                    "cost_type_id": "6",
+                    "cost_type_code": "CONTINGENCY",
+                    "cost_type_name": "Contingency",
+                    "line_count": "1",
+                    "planned_amount": "500.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 168-revision-reject.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision rejected successfully.",
+    "data": {
+        "budget_revision": {
+            "id": "2",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "2",
+            "revision_date": "2026-08-03",
+            "reason": "Budget revision rejection workflow test",
+            "previous_total": "20500.00",
+            "revised_total": "33000.00",
+            "variance_amount": "12500.00",
+            "status_id": "4",
+            "requested_by": "1",
+            "submitted_at": "2026-08-03 11:47:03",
+            "decided_by": "1",
+            "decided_at": "2026-08-03 11:47:03",
+            "decision_note": "Rejected because revised values need correction",
+            "created_at": "2026-08-03 11:47:02",
+            "updated_at": "2026-08-03 11:47:03",
+            "status_code": "REJECTED",
+            "status_name": "Rejected",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": "Admin",
+            "decided_by_last_name": "Civilpro"
+        },
+        "project_budget": {
+            "id": 2,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-API-20376",
+            "budget_name": "Updated Project Budget Core API Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 20000,
+            "overhead_cost": 0,
+            "contingency_amount": 500,
+            "total_budget": 20500,
+            "status_id": 3,
+            "notes": "Header update verified",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:22",
+            "approved_by": 1,
+            "approved_at": "2026-08-03 11:19:25",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:06:13",
+            "updated_at": "2026-08-03 17:16:52",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "APPROVED",
+            "status_name": "Approved"
+        },
+        "summary": {
+            "direct_cost": "20000.00",
+            "overhead_cost": "0.00",
+            "contingency_amount": "500.00",
+            "total_budget": "20500.00",
+            "line_count": 2,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "20000.00"
+                },
+                {
+                    "cost_type_id": "6",
+                    "cost_type_code": "CONTINGENCY",
+                    "cost_type_name": "Contingency",
+                    "line_count": "1",
+                    "planned_amount": "500.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 169-approve-rejected-block.json ==================== 
+{
+    "success": false,
+    "message": "Only a submitted budget revision can be approved."
+} 
+==================== 170-rejected-revision-history.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision history retrieved successfully.",
+    "data": {
+        "approvals": [
+            {
+                "id": "7",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_id": "2",
+                "approval_level": "1",
+                "action_id": "1",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:47:03",
+                "comments": "Submitted for rejection testing",
+                "action_code": "SUBMITTED",
+                "action_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "8",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_id": "2",
+                "approval_level": "1",
+                "action_id": "3",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:47:03",
+                "comments": "Rejected because revised values need correction",
+                "action_code": "REJECTED",
+                "action_name": "Rejected",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ]
+    }
+} 
+==================== 171-empty-revision-create.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision created successfully.",
+    "data": {
+        "budget_revision": {
+            "id": "3",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "3",
+            "revision_date": "2026-08-03",
+            "reason": "Empty revision submission validation test",
+            "previous_total": "20500.00",
+            "revised_total": "20500.00",
+            "variance_amount": "0.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:47:11",
+            "updated_at": "2026-08-03 11:47:11",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        }
+    }
+} 
+==================== 172-empty-revision-submit-block.json ==================== 
+{
+    "success": false,
+    "message": "Add at least one revision line before submission."
+} 
+==================== 173-empty-revision-delete.json ==================== 
+{
+    "success": true,
+    "message": "Budget revision deleted successfully."
+} 
+==================== 174-deleted-revision-view.json ==================== 
+{
+    "success": false,
+    "message": "Budget revision not found."
+} 
+==================== 175-final-revisions-list.json ==================== 
+{
+    "success": true,
+    "message": "Budget revisions retrieved successfully.",
+    "data": {
+        "budget_revisions": [
+            {
+                "id": "2",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_no": "2",
+                "revision_date": "2026-08-03",
+                "reason": "Budget revision rejection workflow test",
+                "previous_total": "20500.00",
+                "revised_total": "33000.00",
+                "variance_amount": "12500.00",
+                "status_id": "4",
+                "requested_by": "1",
+                "submitted_at": "2026-08-03 11:47:03",
+                "decided_by": "1",
+                "decided_at": "2026-08-03 11:47:03",
+                "decision_note": "Rejected because revised values need correction",
+                "created_at": "2026-08-03 11:47:02",
+                "updated_at": "2026-08-03 11:47:03",
+                "status_code": "REJECTED",
+                "status_name": "Rejected",
+                "requested_by_code": null,
+                "requested_by_first_name": "Admin",
+                "requested_by_last_name": "Civilpro",
+                "decided_by_code": null,
+                "decided_by_first_name": "Admin",
+                "decided_by_last_name": "Civilpro"
+            },
+            {
+                "id": "1",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_no": "1",
+                "revision_date": "2026-08-03",
+                "reason": "Updated approved budget revision reason",
+                "previous_total": "14700.00",
+                "revised_total": "20500.00",
+                "variance_amount": "5800.00",
+                "status_id": "3",
+                "requested_by": "1",
+                "submitted_at": "2026-08-03 11:46:50",
+                "decided_by": "1",
+                "decided_at": "2026-08-03 11:46:52",
+                "decision_note": "Approved and applied through complete revision test",
+                "created_at": "2026-08-03 11:46:46",
+                "updated_at": "2026-08-03 11:46:52",
+                "status_code": "APPROVED",
+                "status_name": "Approved",
+                "requested_by_code": null,
+                "requested_by_first_name": "Admin",
+                "requested_by_last_name": "Civilpro",
+                "decided_by_code": null,
+                "decided_by_first_name": "Admin",
+                "decided_by_last_name": "Civilpro"
+            }
+        ]
+    }
+} 
+==================== 176-notifications-list.json ==================== 
+{
+    "success": true,
+    "message": "Notifications retrieved successfully.",
+    "data": {
+        "notifications": [
+            {
+                "id": 16,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 9,
+                "project_id": 1,
+                "source_module": "BUDGET_REVISION",
+                "source_table": "budget_revisions",
+                "source_record_id": 2,
+                "title": "Budget revision rejected",
+                "message": "BUD-API-20376 revision 2 has been rejected.",
+                "action_url": "/project-budgets/2/revisions/2",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 11:47:10",
+                "email_error": null,
+                "created_by": 1,
+                "created_at": "2026-08-03 11:47:03",
+                "updated_at": "2026-08-03 11:47:10",
+                "event_code": "BUDGET_REVISION_REJECTED",
+                "event_name": "Budget Revision Rejected"
+            },
+            {
+                "id": 15,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 8,
+                "project_id": 1,
+                "source_module": "BUDGET_REVISION",
+                "source_table": "budget_revisions",
+                "source_record_id": 1,
+                "title": "Budget revision approved",
+                "message": "BUD-API-20376 revision 1 has been approved.",
+                "action_url": "/project-budgets/2/revisions/1",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 11:46:59",
+                "email_error": null,
+                "created_by": 1,
+                "created_at": "2026-08-03 11:46:52",
+                "updated_at": "2026-08-03 11:46:59",
+                "event_code": "BUDGET_REVISION_APPROVED",
+                "event_name": "Budget Revision Approved"
+            },
+            {
+                "id": 14,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 6,
+                "project_id": 1,
+                "source_module": "BUDGET",
+                "source_table": "project_budgets",
+                "source_record_id": 4,
+                "title": "Project budget rejected",
+                "message": "BUD-REJECT-7540 - Budget Rejection Workflow Test has been rejected.",
+                "action_url": "/project-budgets/4",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 11:20:23",
+                "email_error": null,
+                "created_by": 1,
+                "created_at": "2026-08-03 11:19:55",
+                "updated_at": "2026-08-03 11:20:23",
+                "event_code": "BUDGET_REJECTED",
+                "event_name": "Budget Rejected"
+            },
+            {
+                "id": 13,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 5,
+                "project_id": 1,
+                "source_module": "BUDGET",
+                "source_table": "project_budgets",
+                "source_record_id": 2,
+                "title": "Project budget approved",
+                "message": "BUD-API-20376 - Updated Project Budget Core API Test has been approved.",
+                "action_url": "/project-budgets/2",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 11:19:53",
+                "email_error": null,
+                "created_by": 1,
+                "created_at": "2026-08-03 11:19:25",
+                "updated_at": "2026-08-03 11:19:53",
+                "event_code": "BUDGET_APPROVED",
+                "event_name": "Budget Approved"
+            },
+            {
+                "id": 12,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 3,
+                "project_id": 1,
+                "source_module": "BOQ",
+                "source_table": "project_boqs",
+                "source_record_id": 9,
+                "title": "Project BOQ rejected",
+                "message": "BOQ-REJECT-10173 - BOQ Rejection Workflow Test has been rejected.",
+                "action_url": "/project-boqs/9",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 10:44:16",
+                "email_error": null,
+                "created_by": 1,
+                "created_at": "2026-08-03 10:44:10",
+                "updated_at": "2026-08-03 10:44:16",
+                "event_code": "BOQ_REJECTED",
+                "event_name": "BOQ Rejected"
+            },
+            {
+                "id": 10,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 2,
+                "project_id": 1,
+                "source_module": "BOQ",
+                "source_table": "project_boqs",
+                "source_record_id": 8,
+                "title": "Project BOQ approved",
+                "message": "BOQ-SEC-5951 - Complete BOQ Sections API Test has been approved.",
+                "action_url": "/project-boqs/8",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 10:44:03",
+                "email_error": null,
+                "created_by": 1,
+                "created_at": "2026-08-03 10:43:57",
+                "updated_at": "2026-08-03 10:44:03",
+                "event_code": "BOQ_APPROVED",
+                "event_name": "BOQ Approved"
+            },
+            {
+                "id": 8,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 2,
+                "project_id": 1,
+                "source_module": "BOQ",
+                "source_table": "project_boqs",
+                "source_record_id": 7,
+                "title": "Project BOQ approved",
+                "message": "BOQ-EMAIL-004 - Final SMTP Retest has been approved.",
+                "action_url": "/project-boqs/7",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 06:36:22",
+                "email_error": null,
+                "created_by": 6,
+                "created_at": "2026-08-03 06:36:16",
+                "updated_at": "2026-08-03 06:36:22",
+                "event_code": "BOQ_APPROVED",
+                "event_name": "BOQ Approved"
+            },
+            {
+                "id": 6,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 2,
+                "project_id": 1,
+                "source_module": "BOQ",
+                "source_table": "project_boqs",
+                "source_record_id": 6,
+                "title": "Project BOQ approved",
+                "message": "BOQ-EMAIL-003 - Final BOQ Two-Way Email Test has been approved.",
+                "action_url": "/project-boqs/6",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": false,
+                "email_sent_at": null,
+                "email_error": "Unable to send email using SMTP. Your server might not be configured to send mail using this method.Date: Mon, 3 Aug 2026 06:20:51 +0000\r\nTo: erp.dvn@gmail.com\r\nSubject: =?UTF-8?Q?Project=20BOQ=20approved?=\r\nFrom: &quot;Civil Site Management&quot; &lt;erp.dvn@gmail.com&gt;\r\nReturn-Path: &lt;erp.dvn@gmail.com&gt;\r\nReply-To: &lt;erp.dvn@gmail.com&gt;\r\nUser-Agent: CodeIgniter\r\nX-Sender: erp.dvn@gmail.com\r\nX-Mailer: CodeIgniter\r\nX-Priority: 3 (Normal)\r\nMessage-ID: &lt;6a703343699752.79246953@gmail.com&gt;\r\nMime-Version: 1.0\r\n\n",
+                "created_by": 6,
+                "created_at": "2026-08-03 06:20:51",
+                "updated_at": "2026-08-03 06:20:56",
+                "event_code": "BOQ_APPROVED",
+                "event_name": "BOQ Approved"
+            },
+            {
+                "id": 4,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 2,
+                "project_id": 1,
+                "source_module": "BOQ",
+                "source_table": "project_boqs",
+                "source_record_id": 5,
+                "title": "Project BOQ approved",
+                "message": "BOQ-EMAIL-002 - BOQ Email Delivery Retest has been approved.",
+                "action_url": "/project-boqs/5",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": false,
+                "email_sent_at": null,
+                "email_error": "Unable to send email using SMTP. Your server might not be configured to send mail using this method.Date: Mon, 3 Aug 2026 06:02:58 +0000\r\nTo: superadmin@civilpro.com\r\nSubject: =?UTF-8?Q?Project=20BOQ=20approved?=\r\nFrom: &quot;Civil Site Management&quot; &lt;erp.dvn@gmail.com&gt;\r\nReturn-Path: &lt;erp.dvn@gmail.com&gt;\r\nReply-To: &lt;erp.dvn@gmail.com&gt;\r\nUser-Agent: CodeIgniter\r\nX-Sender: erp.dvn@gmail.com\r\nX-Mailer: CodeIgniter\r\nX-Priority: 3 (Normal)\r\nMessage-ID: &lt;6a702f1220f903.18726731@gmail.com&gt;\r\nMime-Version: 1.0\r\n\n",
+                "created_by": 6,
+                "created_at": "2026-08-03 06:02:58",
+                "updated_at": "2026-08-03 06:03:03",
+                "event_code": "BOQ_APPROVED",
+                "event_name": "BOQ Approved"
+            }
+        ]
+    }
+}
+==================== FINAL REVISION DATABASE STATE ====================
+id	budget_id	revision_no	revision_date	previous_total	revised_total	variance_amount	status_code	requested_by	submitted_at	decided_by	decided_at	decision_note
+1	2	1	2026-08-03	14700.00	20500.00	5800.00	APPROVED	1	2026-08-03 11:46:50	1	2026-08-03 11:46:52	Approved and applied through complete revision test
+2	2	2	2026-08-03	20500.00	33000.00	12500.00	REJECTED	1	2026-08-03 11:47:03	1	2026-08-03 11:47:03	Rejected because revised values need correction
+
+==================== REVISION LINES ====================
+id	revision_id	budget_line_id	change_type_code	previous_quantity	revised_quantity	previous_rate	revised_rate	previous_amount	revised_amount	variance_amount	reason
+1	1	4	MODIFY	12.0000	16.0000	1100.0000	1250.0000	13200.00	20000.00	6800.00	Final revised quantity and rate
+2	1	5	REMOVE	2.0000	0.0000	500.0000	0.0000	1000.00	0.00	-1000.00	Remove this budget scope line
+3	2	4	MODIFY	16.0000	25.0000	1250.0000	1300.0000	20000.00	32500.00	12500.00	Rejected test adjustment
+
+==================== APPROVAL HISTORY ====================
+id	budget_id	revision_id	action_code	action_by	action_at	comments
+5	2	1	SUBMITTED	1	2026-08-03 11:46:50	Submitted through complete revision workflow test
+6	2	1	APPROVED	1	2026-08-03 11:46:52	Approved and applied through complete revision test
+7	2	2	SUBMITTED	1	2026-08-03 11:47:03	Submitted for rejection testing
+8	2	2	REJECTED	1	2026-08-03 11:47:03	Rejected because revised values need correction
+
+==================== APPLIED PROJECT BUDGET ====================
+id	budget_code	direct_cost	overhead_cost	contingency_amount	total_budget	status_code
+2	BUD-API-20376	20000.00	0.00	500.00	20500.00	APPROVED
+id	budget_id	line_code	planned_quantity	planned_rate	planned_amount	deleted_at
+4	2	MAT-13117	16.0000	1250.0000	20000.00	NULL
+5	2	OVH-7424	2.0000	500.0000	1000.00	2026-08-03 11:46:52
+
+==================== REVISION NOTIFICATIONS AND EMAIL ====================
+id	source_record_id	recipient_user_id	event_code	title	email_sent	email_sent_at	email_error	created_at
+15	1	1	BUDGET_REVISION_APPROVED	Budget revision approved	1	2026-08-03 11:46:59	NULL	2026-08-03 11:46:52
+16	2	1	BUDGET_REVISION_REJECTED	Budget revision rejected	1	2026-08-03 11:47:10	NULL	2026-08-03 11:47:03

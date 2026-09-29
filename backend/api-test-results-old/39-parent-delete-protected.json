@@ -1,0 +1,4 @@
+{
+    "success": false,
+    "message": "This BOQ section cannot be deleted while it has child sections."
+}

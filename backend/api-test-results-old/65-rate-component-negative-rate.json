@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "component_rate": "The component rate cannot be negative."
+    }
+}

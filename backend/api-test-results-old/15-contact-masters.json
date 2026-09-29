@@ -1,0 +1,374 @@
+{
+    "success": true,
+    "message": "Masters retrieved successfully.",
+    "data": {
+        "company_types": [
+            {
+                "id": "1",
+                "code": "PROPRIETORSHIP",
+                "name": "Proprietorship"
+            },
+            {
+                "id": "9",
+                "code": "INDIVIDUAL",
+                "name": "Individual"
+            },
+            {
+                "id": "2",
+                "code": "PARTNERSHIP",
+                "name": "Partnership"
+            },
+            {
+                "id": "3",
+                "code": "LLP",
+                "name": "Limited Liability Partnership"
+            },
+            {
+                "id": "4",
+                "code": "PRIVATE_LIMITED",
+                "name": "Private Limited"
+            },
+            {
+                "id": "5",
+                "code": "PUBLIC_LIMITED",
+                "name": "Public Limited"
+            },
+            {
+                "id": "6",
+                "code": "TRUST",
+                "name": "Trust"
+            },
+            {
+                "id": "7",
+                "code": "SOCIETY",
+                "name": "Society"
+            },
+            {
+                "id": "10",
+                "code": "GOVERNMENT",
+                "name": "Government"
+            },
+            {
+                "id": "8",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ],
+        "subscription_statuses": [
+            {
+                "id": "1",
+                "code": "TRIAL",
+                "name": "Trial"
+            },
+            {
+                "id": "2",
+                "code": "ACTIVE",
+                "name": "Active"
+            },
+            {
+                "id": "3",
+                "code": "SUSPENDED",
+                "name": "Suspended"
+            },
+            {
+                "id": "4",
+                "code": "EXPIRED",
+                "name": "Expired"
+            },
+            {
+                "id": "5",
+                "code": "CANCELLED",
+                "name": "Cancelled"
+            }
+        ],
+        "branch_types": [
+            {
+                "id": "1",
+                "code": "HEAD_OFFICE",
+                "name": "Head Office"
+            },
+            {
+                "id": "2",
+                "code": "REGIONAL_OFFICE",
+                "name": "Regional Office"
+            },
+            {
+                "id": "3",
+                "code": "SITE_OFFICE",
+                "name": "Site Office"
+            },
+            {
+                "id": "4",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ],
+        "user_types": [
+            {
+                "id": "1",
+                "code": "COMPANY_ADMIN",
+                "name": "Company Admin"
+            },
+            {
+                "id": "2",
+                "code": "OFFICE_USER",
+                "name": "Office User"
+            },
+            {
+                "id": "3",
+                "code": "PROJECT_MANAGER",
+                "name": "Project Manager"
+            },
+            {
+                "id": "4",
+                "code": "SITE_ENGINEER",
+                "name": "Site Engineer"
+            },
+            {
+                "id": "5",
+                "code": "SUPERVISOR",
+                "name": "Supervisor"
+            },
+            {
+                "id": "6",
+                "code": "ACCOUNTS",
+                "name": "Accounts"
+            },
+            {
+                "id": "7",
+                "code": "VIEWER",
+                "name": "Viewer"
+            }
+        ],
+        "user_statuses": [
+            {
+                "id": "1",
+                "code": "INVITED",
+                "name": "Invited",
+                "is_login_allowed": "0"
+            },
+            {
+                "id": "2",
+                "code": "ACTIVE",
+                "name": "Active",
+                "is_login_allowed": "1"
+            },
+            {
+                "id": "3",
+                "code": "INACTIVE",
+                "name": "Inactive",
+                "is_login_allowed": "0"
+            },
+            {
+                "id": "4",
+                "code": "LOCKED",
+                "name": "Locked",
+                "is_login_allowed": "0"
+            }
+        ],
+        "access_levels": [
+            {
+                "id": "1",
+                "code": "VIEW",
+                "name": "View"
+            },
+            {
+                "id": "2",
+                "code": "OPERATE",
+                "name": "Operate"
+            },
+            {
+                "id": "3",
+                "code": "MANAGE",
+                "name": "Manage"
+            }
+        ],
+        "role_scopes": [
+            {
+                "id": "1",
+                "code": "COMPANY",
+                "name": "Company"
+            },
+            {
+                "id": "2",
+                "code": "BRANCH",
+                "name": "Branch"
+            },
+            {
+                "id": "3",
+                "code": "PROJECT",
+                "name": "Project"
+            },
+            {
+                "id": "4",
+                "code": "SITE",
+                "name": "Site"
+            }
+        ],
+        "permission_action_types": [
+            {
+                "id": "1",
+                "code": "VIEW",
+                "name": "View"
+            },
+            {
+                "id": "2",
+                "code": "CREATE",
+                "name": "Create"
+            },
+            {
+                "id": "3",
+                "code": "UPDATE",
+                "name": "Update"
+            },
+            {
+                "id": "4",
+                "code": "DELETE",
+                "name": "Delete"
+            },
+            {
+                "id": "5",
+                "code": "SUBMIT",
+                "name": "Submit"
+            },
+            {
+                "id": "6",
+                "code": "APPROVE",
+                "name": "Approve"
+            },
+            {
+                "id": "7",
+                "code": "REJECT",
+                "name": "Reject"
+            },
+            {
+                "id": "8",
+                "code": "EXPORT",
+                "name": "Export"
+            },
+            {
+                "id": "9",
+                "code": "MANAGE",
+                "name": "Manage"
+            }
+        ],
+        "gst_registration_types": [
+            {
+                "id": "1",
+                "code": "REGULAR",
+                "name": "Regular"
+            },
+            {
+                "id": "2",
+                "code": "COMPOSITION",
+                "name": "Composition"
+            },
+            {
+                "id": "3",
+                "code": "UNREGISTERED",
+                "name": "Unregistered"
+            },
+            {
+                "id": "4",
+                "code": "CONSUMER",
+                "name": "Consumer"
+            },
+            {
+                "id": "5",
+                "code": "SEZ",
+                "name": "Special Economic Zone"
+            },
+            {
+                "id": "6",
+                "code": "OVERSEAS",
+                "name": "Overseas"
+            }
+        ],
+        "client_sources": [
+            {
+                "id": "1",
+                "code": "DIRECT",
+                "name": "Direct"
+            },
+            {
+                "id": "2",
+                "code": "REFERRAL",
+                "name": "Referral"
+            },
+            {
+                "id": "3",
+                "code": "TENDER",
+                "name": "Tender"
+            },
+            {
+                "id": "4",
+                "code": "WEBSITE",
+                "name": "Website"
+            },
+            {
+                "id": "5",
+                "code": "EXISTING_CLIENT",
+                "name": "Existing Client"
+            },
+            {
+                "id": "6",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ],
+        "client_statuses": [
+            {
+                "id": "1",
+                "code": "PROSPECT",
+                "name": "Prospect"
+            },
+            {
+                "id": "2",
+                "code": "ACTIVE",
+                "name": "Active"
+            },
+            {
+                "id": "3",
+                "code": "ON_HOLD",
+                "name": "On Hold"
+            },
+            {
+                "id": "4",
+                "code": "INACTIVE",
+                "name": "Inactive"
+            },
+            {
+                "id": "5",
+                "code": "BLACKLISTED",
+                "name": "Blacklisted"
+            }
+        ],
+        "communication_modes": [
+            {
+                "id": "1",
+                "code": "EMAIL",
+                "name": "Email"
+            },
+            {
+                "id": "2",
+                "code": "PHONE",
+                "name": "Phone"
+            },
+            {
+                "id": "3",
+                "code": "WHATSAPP",
+                "name": "WhatsApp"
+            },
+            {
+                "id": "4",
+                "code": "SMS",
+                "name": "SMS"
+            },
+            {
+                "id": "5",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ]
+    }
+}

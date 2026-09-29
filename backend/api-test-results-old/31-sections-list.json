@@ -1,0 +1,65 @@
+{
+    "success": true,
+    "message": "BOQ sections retrieved successfully.",
+    "data": {
+        "boq_sections": [
+            {
+                "id": 2,
+                "company_id": 1,
+                "project_id": 1,
+                "boq_id": 8,
+                "parent_section_id": null,
+                "section_code": "SEC-CIVIL",
+                "section_name": "Civil Works",
+                "description": "Main civil works section",
+                "display_order": 10,
+                "section_amount": 0,
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-08-03 06:53:01",
+                "updated_at": "2026-08-03 06:53:01",
+                "deleted_at": null,
+                "parent_section_code": null,
+                "parent_section_name": null
+            },
+            {
+                "id": 3,
+                "company_id": 1,
+                "project_id": 1,
+                "boq_id": 8,
+                "parent_section_id": 2,
+                "section_code": "SEC-EXC",
+                "section_name": "Excavation Works",
+                "description": "Excavation child section",
+                "display_order": 20,
+                "section_amount": 0,
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-08-03 06:53:12",
+                "updated_at": "2026-08-03 06:53:12",
+                "deleted_at": null,
+                "parent_section_code": "SEC-CIVIL",
+                "parent_section_name": "Civil Works"
+            },
+            {
+                "id": 4,
+                "company_id": 1,
+                "project_id": 1,
+                "boq_id": 8,
+                "parent_section_id": null,
+                "section_code": "SEC-TEMP",
+                "section_name": "Temporary Section",
+                "description": "Section created for delete testing",
+                "display_order": 99,
+                "section_amount": 0,
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-08-03 06:53:24",
+                "updated_at": "2026-08-03 06:53:24",
+                "deleted_at": null,
+                "parent_section_code": null,
+                "parent_section_name": null
+            }
+        ]
+    }
+}

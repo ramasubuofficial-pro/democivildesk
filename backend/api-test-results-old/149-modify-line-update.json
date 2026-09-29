@@ -1,0 +1,49 @@
+{
+    "success": true,
+    "message": "Budget revision line updated successfully.",
+    "data": {
+        "revision_line": {
+            "id": "1",
+            "revision_id": "1",
+            "budget_line_id": "4",
+            "change_type_id": "2",
+            "previous_quantity": "12.0000",
+            "revised_quantity": "16.0000",
+            "previous_rate": "1100.0000",
+            "revised_rate": "1250.0000",
+            "previous_amount": "13200.00",
+            "revised_amount": "20000.00",
+            "variance_amount": "6800.00",
+            "reason": "Final revised quantity and rate",
+            "created_at": "2026-08-03 11:46:48"
+        },
+        "budget_revision": {
+            "id": "1",
+            "company_id": "1",
+            "project_id": "1",
+            "budget_id": "2",
+            "revision_no": "1",
+            "revision_date": "2026-08-03",
+            "reason": "Updated approved budget revision reason",
+            "previous_total": "14700.00",
+            "revised_total": "21500.00",
+            "variance_amount": "6800.00",
+            "status_id": "1",
+            "requested_by": "1",
+            "submitted_at": null,
+            "decided_by": null,
+            "decided_at": null,
+            "decision_note": null,
+            "created_at": "2026-08-03 11:46:46",
+            "updated_at": "2026-08-03 11:46:48",
+            "status_code": "DRAFT",
+            "status_name": "Draft",
+            "requested_by_code": null,
+            "requested_by_first_name": "Admin",
+            "requested_by_last_name": "Civilpro",
+            "decided_by_code": null,
+            "decided_by_first_name": null,
+            "decided_by_last_name": null
+        }
+    }
+}

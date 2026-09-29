@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "component_name": "This component name already exists for the selected type and BOQ item."
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "success": true,
+    "message": "Work locations retrieved successfully.",
+    "data": {
+        "work_locations": []
+    }
+}

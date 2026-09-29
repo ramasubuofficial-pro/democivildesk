@@ -1,0 +1,4 @@
+{
+    "success": false,
+    "message": "Delete all active budget lines before deleting this budget."
+}

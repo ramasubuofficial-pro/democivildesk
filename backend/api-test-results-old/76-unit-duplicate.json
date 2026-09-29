@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "unit_code": "Unit code already exists for this company."
+    }
+}

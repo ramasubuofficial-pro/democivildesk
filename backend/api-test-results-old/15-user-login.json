@@ -1,0 +1,31 @@
+{
+    "success": true,
+    "message": "Login successful.",
+    "data": {
+        "user": {
+            "id": 6,
+            "company_id": 1,
+            "default_branch_id": 1,
+            "username": "siteengineer6930",
+            "email": "siteengineer6930@test.com",
+            "first_name": "API Test Updated",
+            "last_name": "User",
+            "designation": "Senior Site Engineer",
+            "user_type_id": 4,
+            "user_type_code": "SITE_ENGINEER",
+            "user_status_id": 2,
+            "user_status_code": "ACTIVE",
+            "is_super_admin": false,
+            "must_change_password": false
+        },
+        "authorization": {
+            "roles": [
+                "SITE_ENGINEER"
+            ],
+            "permissions": [],
+            "accessible_branch_ids": [
+                1
+            ]
+        }
+    }
+}

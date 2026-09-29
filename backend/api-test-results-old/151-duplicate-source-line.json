@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "budget_line_id": "This budget line is already included in the revision."
+    }
+}

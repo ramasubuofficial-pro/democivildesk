@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "component_type_id": "Select an active rate component type."
+    }
+}

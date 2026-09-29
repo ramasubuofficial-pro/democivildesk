@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "quantity_factor": "The quantity factor cannot be negative."
+    }
+}

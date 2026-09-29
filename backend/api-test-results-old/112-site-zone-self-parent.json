@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "parent_zone_id": "A zone cannot be its own parent."
+    }
+}

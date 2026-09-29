@@ -1,0 +1,365 @@
+================================================================================
+                      CIVILDESK ERP - PRESENTATION DECK
+             Next-Generation Construction & Civil Project ERP Suite
+================================================================================
+Format: PowerPoint (PPT) Slide Content Specification
+Target Audience: Management, Project Directors, Engineers, Clients, Stakeholders
+================================================================================
+
+
+--------------------------------------------------------------------------------
+SLIDE 1: TITLE SLIDE
+--------------------------------------------------------------------------------
+[Slide Title]: CivilDesk ERP
+[Subtitle]: Comprehensive Enterprise Resource Planning & Field Management Suite for Civil Construction
+[Presenter Info]: Project Engineering & Tech Team
+[Key Tagline]: "Bridging Site Operations, Cost Engineering, and Corporate Governance in One Unified Platform"
+[Bullet Points / Visual Notes]:
+• Modern, high-performance Construction ERP system
+• Real-time synchronization between Job Sites and Head Office
+• Built with modern React 19 Frontend, High-Speed Vite, and Scalable RESTful Backend Architecture
+
+
+--------------------------------------------------------------------------------
+SLIDE 2: EXECUTIVE SUMMARY & INDUSTRY CHALLENGES
+--------------------------------------------------------------------------------
+[Slide Title]: Construction Industry Challenges & Solution
+[Subtitle]: Overcoming Fragmentation in Civil Project Delivery
+
+[The Problem in Traditional Construction]:
+• Disconnected job sites and delayed communication between site engineers and management.
+• Material theft, wastage, and unaccounted inventory on remote construction locations.
+• Subcontractor overbilling, delayed measurement book entries, and cash-flow mismatches.
+• Fragmented tracking of BOQ, budget variations, and labour attendance.
+
+[The CivilDesk ERP Solution]:
+• Single Source of Truth: Unified database connecting BOQ, Budgets, Procurement, Inventory, Subcontracts, and Finance.
+• Instant Field Visibility: Real-time DPRs, Geo-tagged site coordinates, and automated workflow approvals.
+• Strict Cost Control: Milestone-based budget variances, automated 3-way matching for POs, and RA Bill certification locks.
+
+
+--------------------------------------------------------------------------------
+SLIDE 3: SYSTEM ARCHITECTURE & TECHNOLOGY STACK
+--------------------------------------------------------------------------------
+[Slide Title]: Technology Stack & Architectural Resilience
+[Subtitle]: Enterprise-Grade Scalability, Speed & Security
+
+[Key Highlights]:
+• Frontend Layer:
+  - React 19 + High-Speed Vite Engine
+  - Modern, responsive UI with TailwindCSS & custom tokens
+  - Offline-resilient caching and fast client-side routing
+• Backend & API Layer:
+  - High-throughput REST API with CodeIgniter 4 framework
+  - Fine-grained Role-Based Access Control (RBAC) and JWT authentication
+  - Automated auditing and transactional database integrity
+• Field & Location Services:
+  - HTML5 Geolocation API with high-accuracy GPS coordinates (±0.1m precision)
+  - Configurable Geofencing radius (m) per site and work zone
+• Cloud & Document Engine:
+  - Multi-tenant cloud document archival with instant in-browser previews
+  - PDF export generation for BOQs, POs, Invoices, and RA Bills
+
+
+--------------------------------------------------------------------------------
+SLIDE 4: MODULE 1 — EXECUTIVE DASHBOARD & REAL-TIME ANALYTICS
+--------------------------------------------------------------------------------
+[Slide Title]: Executive Dashboard & Analytics
+[Subtitle]: 360° Real-Time Health Monitoring for Active Projects
+
+[Key Capabilities]:
+• Live KPI Cards:
+  - Active Projects, Total Sites, Ongoing Work Packages, and Daily Field Manpower.
+  - Financial Health: Total Budget Allocated, Certified Work, Outstanding Receivables, and Cash Flow.
+• Interactive Charts & Visualizations:
+  - Project S-Curve: Planned vs. Actual Progress Tracking.
+  - Expense & Cost Distribution by Cost Head (Material, Labour, Subcontract, Equipment).
+  - Material Consumption Trend vs. Project Progress.
+• Quick Action Center:
+  - Pending approval alerts (Material Requests, POs, RA Bills, Site Instructions).
+  - Risk indicators: Over-budget items, overdue milestones, and critical stock shortages.
+
+
+--------------------------------------------------------------------------------
+SLIDE 5: MODULE 2 — PROJECT PORTFOLIO & SITE GOVERNANCE
+--------------------------------------------------------------------------------
+[Slide Title]: Project Portfolio & Governance
+[Subtitle]: End-to-End Lifecycle Tracking from Initiation to Handover
+
+[Key Capabilities]:
+• Project Master Registry:
+  - Auto-generated project codes, classification by project type (Residential, Highway, Commercial, Industrial).
+  - Client contract mapping, total sanctioned budget, and planned delivery timeline.
+• Milestone & WBS Tracking:
+  - Structured Work Breakdown Structure (WBS) with progress percentage milestones.
+  - Target vs. Actual completion dates with delay warnings.
+• Project Team Allocation:
+  - Multi-tiered role assignment: Project Director, Project Manager, Planning Engineer, Billing Specialist.
+  - Granular operational and approval permission inheritance.
+
+
+--------------------------------------------------------------------------------
+SLIDE 6: MODULE 3 — SITES REGISTER & GEO-LOCATION MANAGEMENT
+--------------------------------------------------------------------------------
+[Slide Title]: Site Register, Zones & Geo-Fencing
+[Subtitle]: Precise Geographical & Hierarchy Structuring of Construction Sites
+
+[Key Capabilities]:
+• Multi-Site Breakdown per Project:
+  - Divide large projects into distinct physical sites (e.g. Main Plot, Tower A, Casting Yard).
+  - Mark Primary Project Sites and Hubs.
+• Automatic GPS Location Fetching:
+  - One-click high-precision GPS detection (Latitude, Longitude) with accuracy meter.
+  - Configurable Geofence Radius (m) for site-level attendance and material delivery gating.
+• Hierarchical Work Zones & Locations:
+  - Project -> Site -> Zone (e.g. Basement 1) -> Specific Work Location (e.g. Column Grid C4-C8).
+  - Enables hyper-local issue tracking, material delivery, and work measurement logging.
+
+
+--------------------------------------------------------------------------------
+SLIDE 7: MODULE 4 — BILL OF QUANTITIES (BOQ) & RATE ANALYSIS
+--------------------------------------------------------------------------------
+[Slide Title]: Bill of Quantities (BOQ) & Cost Estimation
+[Subtitle]: Accurate Quantity Surveying, Drawing Takeoffs & Rate Breakdowns
+
+[Key Capabilities]:
+• Hierarchical BOQ Structure:
+  - Multi-level grouping by Sections, Sub-sections, and Line Items.
+  - Standard Item Codes, Description, Specification Clauses, and Units of Measurement (UOM).
+• Comprehensive Rate Analysis:
+  - Break down unit rates into Material, Labour, Machinery, Overhead, and Contractor Margin.
+  - Dynamic rate revision and version history.
+• Drawing Takeoff & Planned Quantities:
+  - Digital takeoff records directly linked to architectural and structural drawings.
+  - Prevents site execution beyond approved BOQ quantities.
+
+
+--------------------------------------------------------------------------------
+SLIDE 8: MODULE 5 — PROJECT BUDGETS & COST CONTROL
+--------------------------------------------------------------------------------
+[Slide Title]: Project Budgeting & Variation Management
+[Subtitle]: Proactive Cost Control to Prevent Project Overruns
+
+[Key Capabilities]:
+• Baseline Budget Lock:
+  - Freeze original approved baseline budgets across cost categories (Civil, MEP, Finishes).
+  - Real-time committed vs. spent cost tracking.
+• Budget Revisions & Variations:
+  - Formal workflow for extra items (Non-BOQ) and quantity variations.
+  - Multi-level approval matrix (Engineer -> Project Manager -> Commercial Director).
+• Budget Variance & Early Warning:
+  - Automatic alerts when procurement or subcontract costs exceed allocated budget thresholds.
+  - Cost-to-complete (CTC) and Cost Variance (CV) calculations.
+
+
+--------------------------------------------------------------------------------
+SLIDE 9: MODULE 6 — MATERIALS MANAGEMENT & WAREHOUSING
+--------------------------------------------------------------------------------
+[Slide Title]: Materials Management & Stock Control
+[Subtitle]: Zero-Loss Inventory Tracking from Central Warehouse to Point of Use
+
+[Key Capabilities]:
+• Material Master & Catalogue:
+  - Categorized materials (Cement, Steel, Aggregates, Bricks, Chemicals, Safety Equipment).
+  - Brand preferences, standard unit conversions, and reorder levels.
+• Multi-Warehouse & Site Yard Stock:
+  - Live stock ledger by warehouse, site store, and contractor custody.
+  - FIFO / Weighted Average inventory valuation.
+• Site Material Requests & Indents:
+  - Site Engineers raise Material Requisitions linked to approved BOQ / Work Stages.
+  - Automatic validation against project schedule and quantity ceilings.
+• Stock Transfers & Issue Slips:
+  - Track inter-site transfers, material delivery challans (DC), and daily consumption logs.
+
+
+--------------------------------------------------------------------------------
+SLIDE 10: MODULE 7 — PROCUREMENT & VENDOR MANAGEMENT
+--------------------------------------------------------------------------------
+[Slide Title]: Procurement & Vendor Lifecycle
+[Subtitle]: Transparent, Competitive Sourcing & Timely Material Supply
+
+[Key Capabilities]:
+• Purchase Requisitions & RFQs:
+  - Convert approved site material requests into Requests for Quotation (RFQ).
+  - Automated quotation comparison matrix across multiple vendors (Price, Lead Time, Terms).
+• Purchase Order (PO) Management:
+  - Generate digitally approved Purchase Orders with GST, freight, and payment milestone terms.
+  - Email / WhatsApp PO dispatch to vendors.
+• Goods Receipt Note (GRN) & Quality Check:
+  - Site gatekeeper logs physical deliveries against PO.
+  - Quality inspection approval (Passed, Rejected, Damaged) before stock acceptance.
+• 3-Way Matching:
+  - Automated matching of Purchase Order -> GRN Challan -> Vendor Tax Invoice for error-free accounts payable.
+
+
+--------------------------------------------------------------------------------
+SLIDE 11: MODULE 8 — SUBCONTRACTOR MANAGEMENT & RA BILLING
+--------------------------------------------------------------------------------
+[Slide Title]: Subcontractor Management & RA Billing
+[Subtitle]: Transparent Subcontract Work Orders, Joint Measurements & Certifications
+
+[Key Capabilities]:
+• Work Order (WO) Issuance:
+  - Define work package scope (e.g. Shuttering, Rebar Bending, Masonry, Painting).
+  - Link WO line items directly to BOQ rates, retainage terms, and performance guarantees.
+• Joint Measurement Sheet (JMS / MB):
+  - Record daily/weekly site measurements with site engineer and contractor signatures.
+  - Auto-computes certified quantities against work order limits.
+• Running Account (RA) Bill Engine:
+  - Automated generation of RA Bills from approved measurements.
+  - Automatic deductions for Retention Money (5%), Advance Recovery, TDS, and Material Cost Recovery.
+• Payment Certificates & Weekly Payments:
+  - Issue verified Payment Certificates for finance release.
+  - Weekly subcontract labour payments and retention ledger tracking.
+
+
+--------------------------------------------------------------------------------
+SLIDE 12: MODULE 9 — LABOUR MANAGEMENT & ATTENDANCE CONTROL
+--------------------------------------------------------------------------------
+[Slide Title]: Labour, Attendance & Wage Management
+[Subtitle]: Optimized Field Manpower Deployment and Accurate Daily Wage Accounting
+
+[Key Capabilities]:
+• Labour Master & Gang / Crew Allocation:
+  - Classification by Skill (Mason, Carpenter, Fitter, Helper, Electrician) and Contractor/Direct.
+  - Crew/Gang grouping for specialized task deployments.
+• Daily Attendance & Geo-Verification:
+  - Shift-based morning and evening muster roll marking.
+  - Overtime (OT) hours tracking and automated exception approvals.
+• Daily Wage Slips (Maistry Slips):
+  - Daily wage calculation based on standardized wage rate cards.
+  - Weekly wage sheet generation with biometric/signature sign-offs.
+• Labour Productivity Metrics:
+  - Manpower deployed vs. work completed analytics to monitor daily productivity.
+
+
+--------------------------------------------------------------------------------
+SLIDE 13: MODULE 10 — DAILY SITE OPERATIONS & DPR
+--------------------------------------------------------------------------------
+[Slide Title]: Daily Site Operations & Progress Reports (DPR)
+[Subtitle]: Real-Time Field Diary Connecting Site Activity to Management
+
+[Key Capabilities]:
+• Daily Progress Report (DPR):
+  - Comprehensive daily site log capturing weather conditions, work completed, machinery deployed, and manpower on site.
+  - One-click PDF generation of formatted executive DPRs.
+• Site Instructions & Quality Snagging:
+  - Issue formal digital Site Instructions (SI) to contractors with target resolution dates.
+  - Snag list and punch point tracking with photo evidence.
+• Machinery & Equipment Log:
+  - Daily machinery running hours (JCB, Cranes, Concrete Mixers, Generators).
+  - Diesel/fuel consumption logs and maintenance alerts.
+• Field Photos & Incident Logs:
+  - High-resolution geo-tagged photo uploads documenting daily construction milestones and safety incidents.
+
+
+--------------------------------------------------------------------------------
+SLIDE 14: MODULE 11 — CLIENT BILLING & RECEIVABLES
+--------------------------------------------------------------------------------
+[Slide Title]: Client Billing & Receivables Management
+[Subtitle]: Accelerated Cash Inflow through Timely, Accurate Client RA Bills
+
+[Key Capabilities]:
+• Client RA Invoices & Progress Billing:
+  - Generate compliant GST Client Invoices directly from verified site progress percentages.
+  - Breakdown by BOQ items, milestone completion, and escalation clauses.
+• Mobilization & Secured Advances:
+  - Track mobilization advance receipts, interest, and stage-wise recovery schedule.
+• Client Retention & Bank Guarantee (BG) Tracker:
+  - Retention money ledger with expected release milestones upon Defect Liability Period (DLP) completion.
+• Aging Analysis & Receivables Follow-Up:
+  - Real-time aging bucket reports (0-30, 31-60, 61-90, 90+ days) to accelerate payment collections.
+
+
+--------------------------------------------------------------------------------
+SLIDE 15: MODULE 12 — PROJECT FINANCE & PROFITABILITY
+--------------------------------------------------------------------------------
+[Slide Title]: Project Financials & Cost Control
+[Subtitle]: Real-Time Profitability and Cash Flow Tracking per Project
+
+[Key Capabilities]:
+• Project Profit & Loss (P&L):
+  - Live revenue recognized vs. total project cost incurred (Direct Material + Labour + Subcontracts + Equipment + Overheads).
+  - Gross Margin and Net Profitability dashboard per project and per site.
+• Cash Flow Management:
+  - Weekly/Monthly Cash Inflow (Client Collections) vs. Cash Outflow (Vendors, Labour, Overheads).
+  - Future cash flow forecasting based on planned procurement and milestones.
+• Multi-Cost Head Accounting:
+  - Granular cost coding mapped to financial accounts and ERP ledgers.
+
+
+--------------------------------------------------------------------------------
+SLIDE 16: MODULE 13 — DOCUMENT MANAGEMENT & CLOUD ARCHIVE
+--------------------------------------------------------------------------------
+[Slide Title]: Document Management & Compliance
+[Subtitle]: Centralized, Version-Controlled Repository for Construction Records
+
+[Key Capabilities]:
+• Organized Document Hierarchy:
+  - Structured folders: Drawings (Architectural, Structural, MEP), Permits & Licenses, Test Certificates (Cube Tests, Steel Mill Sheets), Safety Reports, Contracts.
+• Instant In-Browser Previews:
+  - Preview PDFs, high-res blueprints, site inspection images, and scan copies directly in the browser without downloading.
+• Revision Control & Access Security:
+  - Maintain historical revisions (Rev 0, Rev 1, As-Built) to ensure engineers on site always work from the latest approved drawings.
+
+
+--------------------------------------------------------------------------------
+SLIDE 17: MODULE 14 — ENTERPRISE MASTERS & NUMBERING ENGINE
+--------------------------------------------------------------------------------
+[Slide Title]: Master Configuration & Numbering Engine
+[Subtitle]: Highly Configurable Foundation Tailored to Enterprise Workflows
+
+[Key Capabilities]:
+• Comprehensive Master Registries:
+  - Project Types, Project Statuses, Financial Years, Units of Measure (UOM), Work Categories, and Stages.
+  - Subcontractor Types, Equipment Masters, Tax Rates, and Expense Categories.
+• Auto-Numbering Engine:
+  - Intelligent, sequence-safe code generation for Projects, Sites, POs, WOs, GRNs, and Invoices.
+  - Fully customizable prefixes and auto-increment padding.
+
+
+--------------------------------------------------------------------------------
+SLIDE 18: MODULE 15 — SECURITY, RBAC & AUDIT TRAILS
+--------------------------------------------------------------------------------
+[Slide Title]: Enterprise Security & Audit Compliance
+[Subtitle]: Robust Data Governance and Traceability
+
+[Key Capabilities]:
+• Role-Based Access Control (RBAC):
+  - Strict separation of duties: Site Engineer, Storekeeper, Quantity Surveyor, Project Manager, Accountant, Admin.
+  - Fine-grained View, Create, Edit, Approve, and Delete permission matrix.
+• Immutable Audit Trail:
+  - Complete chronological audit log of all system transactions, status changes, and user activities.
+  - IP logging, timestamps, and before/after change snapshots.
+• Session Security & Data Encryption:
+  - Secure session management, CORS configuration, and SQL injection prevention.
+
+
+--------------------------------------------------------------------------------
+SLIDE 19: BUSINESS IMPACT & ROI
+--------------------------------------------------------------------------------
+[Slide Title]: Business Impact & Return on Investment (ROI)
+[Subtitle]: Quantifiable Gains Achieved with CivilDesk ERP
+
+[Key Value Deliverables]:
+• 15% - 25% Reduction in Material Wastage & Pilferage via strict requisition limits and GRN 3-way matching.
+• 40% Faster Billing & Certification Cycles through automated RA Bill and measurement calculations.
+• 100% Real-Time Project Visibility enabling immediate intervention on delayed milestones.
+• Elimination of Duplicate Work Orders & Subcontractor Overbilling.
+• Accurate, Predictable Project Cash Flows and High-Margin Delivery.
+
+
+--------------------------------------------------------------------------------
+SLIDE 20: SUMMARY & CONCLUSION
+--------------------------------------------------------------------------------
+[Slide Title]: Conclusion & Next Steps
+[Subtitle]: Empowering Modern Civil Engineering with CivilDesk ERP
+
+[Summary Highlights]:
+• Unified platform connecting Field Operations, Commercial Billing, Procurement, and Corporate Accounts.
+• Scalable, fast, and engineered specifically for civil construction workflows.
+• Ready for deployment across multi-site residential, commercial, and infrastructure projects.
+
+[Open for Q&A / Demo Session]
+• Thank You!
+================================================================================

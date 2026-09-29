@@ -1,0 +1,80 @@
+{
+    "success": true,
+    "message": "Budget approval history retrieved successfully.",
+    "data": {
+        "approvals": [
+            {
+                "id": "1",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_id": null,
+                "approval_level": "1",
+                "action_id": "1",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:19:22",
+                "comments": "Submitted through complete Budget workflow API test",
+                "action_code": "SUBMITTED",
+                "action_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "2",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_id": null,
+                "approval_level": "1",
+                "action_id": "2",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:19:25",
+                "comments": "Approved through complete Budget workflow API test",
+                "action_code": "APPROVED",
+                "action_name": "Approved",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ],
+        "status_logs": [
+            {
+                "id": "2",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "from_status_id": "1",
+                "to_status_id": "2",
+                "change_reason": "Submitted through complete Budget workflow API test",
+                "changed_by": "1",
+                "changed_at": "2026-08-03 11:19:22",
+                "from_status_code": "DRAFT",
+                "from_status_name": "Draft",
+                "to_status_code": "SUBMITTED",
+                "to_status_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "3",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "from_status_id": "2",
+                "to_status_id": "3",
+                "change_reason": "Approved through complete Budget workflow API test",
+                "changed_by": "1",
+                "changed_at": "2026-08-03 11:19:25",
+                "from_status_code": "SUBMITTED",
+                "from_status_name": "Submitted",
+                "to_status_code": "APPROVED",
+                "to_status_name": "Approved",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ]
+    }
+}

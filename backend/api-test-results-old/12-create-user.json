@@ -1,0 +1,54 @@
+{
+    "status": "success",
+    "message": "User created successfully.",
+    "data": {
+        "user": {
+            "id": 6,
+            "company_id": 1,
+            "default_branch_id": 1,
+            "employee_code": "TEST6930",
+            "username": "siteengineer6930",
+            "email": "siteengineer6930@test.com",
+            "phone": "9000000000",
+            "first_name": "API Test",
+            "last_name": "User",
+            "designation": "Site Engineer",
+            "user_type_id": "4",
+            "user_type_code": "SITE_ENGINEER",
+            "user_type_name": "Site Engineer",
+            "user_status_id": "2",
+            "user_status_code": "ACTIVE",
+            "user_status_name": "Active",
+            "active": true,
+            "must_change_password": false,
+            "is_super_admin": false,
+            "is_active": true,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-07-26 13:43:21",
+            "updated_at": "2026-07-26 13:43:21",
+            "role": {
+                "id": 3,
+                "role_code": "SITE_ENGINEER",
+                "role_name": "Site Engineer",
+                "role_scope_id": "4",
+                "role_scope_code": "SITE",
+                "role_scope_name": "Site",
+                "is_primary": true,
+                "assigned_at": "2026-07-26 13:43:21"
+            },
+            "branches": [
+                {
+                    "id": 1,
+                    "branch_code": "HO",
+                    "branch_name": "Head Office",
+                    "access_level_id": "2",
+                    "access_level_code": "OPERATE",
+                    "access_level_name": "Operate",
+                    "is_default": true,
+                    "granted_at": "2026-07-26 13:43:21"
+                }
+            ]
+        }
+    }
+}

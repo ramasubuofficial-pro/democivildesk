@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "parent_id": "A category cannot use itself or one of its descendants as parent."
+    }
+}

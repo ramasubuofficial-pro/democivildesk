@@ -1,0 +1,25 @@
+{
+    "success": true,
+    "message": "Project status history retrieved successfully.",
+    "data": {
+        "status_history": [
+            {
+                "id": "1",
+                "company_id": "1",
+                "project_id": "1",
+                "from_status_id": null,
+                "from_status_code": null,
+                "from_status_name": null,
+                "to_status_id": "2",
+                "to_status_code": "PLANNED",
+                "to_status_name": "Planned",
+                "change_reason": "Project created using Phase 3 demonstration data.",
+                "changed_by": null,
+                "changed_by_employee_code": null,
+                "changed_by_first_name": null,
+                "changed_by_last_name": null,
+                "changed_at": "2026-07-23 20:21:04"
+            }
+        ]
+    }
+}

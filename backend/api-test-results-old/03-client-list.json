@@ -1,0 +1,47 @@
+{
+    "success": true,
+    "message": "Clients retrieved successfully.",
+    "data": {
+        "clients": [
+            {
+                "id": 1,
+                "company_id": 1,
+                "branch_id": 1,
+                "client_code": "CLI-0001",
+                "client_name": "Greenfield Properties",
+                "legal_name": "Greenfield Properties Private Limited",
+                "client_type_id": 4,
+                "industry_type": "Real Estate Development",
+                "gst_registration_type_id": 1,
+                "gstin": "33AABCG1234F1Z5",
+                "pan": "AABCG1234F",
+                "tan": null,
+                "email": "projects@greenfield.example",
+                "phone": "+91-9876500001",
+                "website": null,
+                "billing_currency": "INR",
+                "payment_terms_days": 30,
+                "credit_limit": 2500000,
+                "tax_deduction_applicable": false,
+                "client_source_id": 2,
+                "client_status_id": 2,
+                "notes": "Demonstration client for expo project flow.",
+                "created_by": null,
+                "updated_by": null,
+                "created_at": "2026-07-23 14:41:53",
+                "updated_at": "2026-07-26 16:53:10",
+                "deleted_at": null,
+                "branch_code": "HO",
+                "branch_name": "Head Office",
+                "client_type_code": "PRIVATE_LIMITED",
+                "client_type_name": "Private Limited",
+                "gst_registration_type_code": "REGULAR",
+                "gst_registration_type_name": "Regular",
+                "client_source_code": "REFERRAL",
+                "client_source_name": "Referral",
+                "client_status_code": "ACTIVE",
+                "client_status_name": "Active"
+            }
+        ]
+    }
+}

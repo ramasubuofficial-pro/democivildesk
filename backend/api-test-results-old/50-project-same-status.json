@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "project_status_id": "The project is already in the selected status."
+    }
+}

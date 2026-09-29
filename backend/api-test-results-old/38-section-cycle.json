@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "parent_section_id": "A child section cannot be selected as its parent."
+    }
+}

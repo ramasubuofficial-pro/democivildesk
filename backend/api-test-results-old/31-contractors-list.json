@@ -1,0 +1,7 @@
+{
+    "success": true,
+    "message": "Labour Contractors retrieved successfully.",
+    "data": {
+        "labour_contractors": []
+    }
+}

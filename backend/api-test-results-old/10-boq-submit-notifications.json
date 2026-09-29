@@ -1,0 +1,7 @@
+{
+    "success": true,
+    "message": "Notifications retrieved successfully.",
+    "data": {
+        "notifications": []
+    }
+}

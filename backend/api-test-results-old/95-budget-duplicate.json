@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "budget_code": "This budget code and version already exist for the project."
+    }
+}

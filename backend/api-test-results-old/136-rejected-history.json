@@ -1,0 +1,80 @@
+{
+    "success": true,
+    "message": "Budget approval history retrieved successfully.",
+    "data": {
+        "approvals": [
+            {
+                "id": "3",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "4",
+                "revision_id": null,
+                "approval_level": "1",
+                "action_id": "1",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:19:55",
+                "comments": "Submitted for rejection workflow test",
+                "action_code": "SUBMITTED",
+                "action_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "4",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "4",
+                "revision_id": null,
+                "approval_level": "1",
+                "action_id": "3",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:19:55",
+                "comments": "Rejected because the test budget requires correction",
+                "action_code": "REJECTED",
+                "action_name": "Rejected",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ],
+        "status_logs": [
+            {
+                "id": "4",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "4",
+                "from_status_id": "1",
+                "to_status_id": "2",
+                "change_reason": "Submitted for rejection workflow test",
+                "changed_by": "1",
+                "changed_at": "2026-08-03 11:19:55",
+                "from_status_code": "DRAFT",
+                "from_status_name": "Draft",
+                "to_status_code": "SUBMITTED",
+                "to_status_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "5",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "4",
+                "from_status_id": "2",
+                "to_status_id": "4",
+                "change_reason": "Rejected because the test budget requires correction",
+                "changed_by": "1",
+                "changed_at": "2026-08-03 11:19:55",
+                "from_status_code": "SUBMITTED",
+                "from_status_name": "Submitted",
+                "to_status_code": "REJECTED",
+                "to_status_name": "Rejected",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ]
+    }
+}

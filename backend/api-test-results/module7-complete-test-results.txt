@@ -1,0 +1,60 @@
+Module 7 - Daily Site Operations Complete API Test
+Started: 2026-08-04 15:09:40
+
+PASS 01 - Login
+PASS 02 - Authenticated user
+PASS 03 - Daily operations masters
+PASS 04 - Report shift and status masters
+PASS 05 - Work progress masters
+PASS 06 - Manpower and equipment masters
+PASS 07 - Weather masters
+PASS 08 - Issue masters
+PASS 09 - Visitor, photo and material source masters
+PASS 10 - Accessible projects
+PASS 11 - Dynamic project, site and BOQ item selection
+PASS 12 - Dynamic site zone selection
+PASS 13 - Dynamic labour category and material selection
+PASS 14 - Dynamic unused report date and report number
+PASS 15 - Create daily site report
+PASS 16 - List daily site reports
+PASS 17 - View daily site report with child collections
+PASS 18 - Update daily site report
+PASS 19 - Create daily work progress
+PASS 20 - Update daily work progress
+PASS 21 - Inspect daily work progress
+PASS 22 - Create daily manpower
+PASS 23 - Update daily manpower and report total
+PASS 24 - Create daily equipment
+PASS 25 - Update daily equipment and report total
+PASS 26 - Create daily weather observation
+PASS 27 - Update daily weather observation
+PASS 28 - Create daily site issue
+PASS 29 - Update daily site issue
+PASS 30 - Create daily site visitor
+PASS 31 - Update daily site visitor
+PASS 32 - Create material consumption with calculated value
+PASS 33 - Update daily material consumption
+PASS 34 - Upload daily site photo
+PASS 35 - Update daily site photo metadata
+PASS 36 - Verify complete report child data and totals
+PASS 37 - Submit daily site report
+PASS 38 - Submitted in-app notification created
+PASS 39 - Submitted email delivery or attempt recorded
+PASS 40 - Review daily site report
+PASS 41 - Approve daily site report
+PASS 42 - Approved in-app notification created
+PASS 43 - Approved email delivery or attempt recorded
+PASS 44 - Verify approved report and workflow history
+PASS 45 - Reopen approved daily site report
+PASS 46 - Resubmit reopened daily site report
+PASS 47 - Review resubmitted daily site report
+PASS 48 - Reject reviewed daily site report
+PASS 49 - Rejected notification and email attempt recorded
+PASS 50 - Reopen rejected daily site report
+PASS 51 - Cancel reopened daily site report
+PASS 52 - Cancelled notification and email attempt recorded
+PASS 53 - All six workflow notification and email attempt results verified
+PASS 54 - Logout
+
+ALL 54 MODULE 7 API TESTS PASSED
+Completed: 2026-08-04 15:11:00

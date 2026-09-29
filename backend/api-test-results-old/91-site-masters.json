@@ -1,0 +1,1072 @@
+{
+    "success": true,
+    "message": "Masters retrieved successfully.",
+    "data": {
+        "company_types": [
+            {
+                "id": "1",
+                "code": "PROPRIETORSHIP",
+                "name": "Proprietorship"
+            },
+            {
+                "id": "9",
+                "code": "INDIVIDUAL",
+                "name": "Individual"
+            },
+            {
+                "id": "2",
+                "code": "PARTNERSHIP",
+                "name": "Partnership"
+            },
+            {
+                "id": "3",
+                "code": "LLP",
+                "name": "Limited Liability Partnership"
+            },
+            {
+                "id": "4",
+                "code": "PRIVATE_LIMITED",
+                "name": "Private Limited"
+            },
+            {
+                "id": "5",
+                "code": "PUBLIC_LIMITED",
+                "name": "Public Limited"
+            },
+            {
+                "id": "6",
+                "code": "TRUST",
+                "name": "Trust"
+            },
+            {
+                "id": "7",
+                "code": "SOCIETY",
+                "name": "Society"
+            },
+            {
+                "id": "10",
+                "code": "GOVERNMENT",
+                "name": "Government"
+            },
+            {
+                "id": "8",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ],
+        "subscription_statuses": [
+            {
+                "id": "1",
+                "code": "TRIAL",
+                "name": "Trial"
+            },
+            {
+                "id": "2",
+                "code": "ACTIVE",
+                "name": "Active"
+            },
+            {
+                "id": "3",
+                "code": "SUSPENDED",
+                "name": "Suspended"
+            },
+            {
+                "id": "4",
+                "code": "EXPIRED",
+                "name": "Expired"
+            },
+            {
+                "id": "5",
+                "code": "CANCELLED",
+                "name": "Cancelled"
+            }
+        ],
+        "branch_types": [
+            {
+                "id": "1",
+                "code": "HEAD_OFFICE",
+                "name": "Head Office"
+            },
+            {
+                "id": "2",
+                "code": "REGIONAL_OFFICE",
+                "name": "Regional Office"
+            },
+            {
+                "id": "3",
+                "code": "SITE_OFFICE",
+                "name": "Site Office"
+            },
+            {
+                "id": "4",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ],
+        "user_types": [
+            {
+                "id": "1",
+                "code": "COMPANY_ADMIN",
+                "name": "Company Admin"
+            },
+            {
+                "id": "2",
+                "code": "OFFICE_USER",
+                "name": "Office User"
+            },
+            {
+                "id": "3",
+                "code": "PROJECT_MANAGER",
+                "name": "Project Manager"
+            },
+            {
+                "id": "4",
+                "code": "SITE_ENGINEER",
+                "name": "Site Engineer"
+            },
+            {
+                "id": "5",
+                "code": "SUPERVISOR",
+                "name": "Supervisor"
+            },
+            {
+                "id": "6",
+                "code": "ACCOUNTS",
+                "name": "Accounts"
+            },
+            {
+                "id": "7",
+                "code": "VIEWER",
+                "name": "Viewer"
+            }
+        ],
+        "user_statuses": [
+            {
+                "id": "1",
+                "code": "INVITED",
+                "name": "Invited",
+                "is_login_allowed": "0"
+            },
+            {
+                "id": "2",
+                "code": "ACTIVE",
+                "name": "Active",
+                "is_login_allowed": "1"
+            },
+            {
+                "id": "3",
+                "code": "INACTIVE",
+                "name": "Inactive",
+                "is_login_allowed": "0"
+            },
+            {
+                "id": "4",
+                "code": "LOCKED",
+                "name": "Locked",
+                "is_login_allowed": "0"
+            }
+        ],
+        "access_levels": [
+            {
+                "id": "1",
+                "code": "VIEW",
+                "name": "View"
+            },
+            {
+                "id": "2",
+                "code": "OPERATE",
+                "name": "Operate"
+            },
+            {
+                "id": "3",
+                "code": "MANAGE",
+                "name": "Manage"
+            }
+        ],
+        "role_scopes": [
+            {
+                "id": "1",
+                "code": "COMPANY",
+                "name": "Company"
+            },
+            {
+                "id": "2",
+                "code": "BRANCH",
+                "name": "Branch"
+            },
+            {
+                "id": "3",
+                "code": "PROJECT",
+                "name": "Project"
+            },
+            {
+                "id": "4",
+                "code": "SITE",
+                "name": "Site"
+            }
+        ],
+        "permission_action_types": [
+            {
+                "id": "1",
+                "code": "VIEW",
+                "name": "View"
+            },
+            {
+                "id": "2",
+                "code": "CREATE",
+                "name": "Create"
+            },
+            {
+                "id": "3",
+                "code": "UPDATE",
+                "name": "Update"
+            },
+            {
+                "id": "4",
+                "code": "DELETE",
+                "name": "Delete"
+            },
+            {
+                "id": "5",
+                "code": "SUBMIT",
+                "name": "Submit"
+            },
+            {
+                "id": "6",
+                "code": "APPROVE",
+                "name": "Approve"
+            },
+            {
+                "id": "7",
+                "code": "REJECT",
+                "name": "Reject"
+            },
+            {
+                "id": "8",
+                "code": "EXPORT",
+                "name": "Export"
+            },
+            {
+                "id": "9",
+                "code": "MANAGE",
+                "name": "Manage"
+            }
+        ],
+        "gst_registration_types": [
+            {
+                "id": "1",
+                "code": "REGULAR",
+                "name": "Regular"
+            },
+            {
+                "id": "2",
+                "code": "COMPOSITION",
+                "name": "Composition"
+            },
+            {
+                "id": "3",
+                "code": "UNREGISTERED",
+                "name": "Unregistered"
+            },
+            {
+                "id": "4",
+                "code": "CONSUMER",
+                "name": "Consumer"
+            },
+            {
+                "id": "5",
+                "code": "SEZ",
+                "name": "Special Economic Zone"
+            },
+            {
+                "id": "6",
+                "code": "OVERSEAS",
+                "name": "Overseas"
+            }
+        ],
+        "client_sources": [
+            {
+                "id": "1",
+                "code": "DIRECT",
+                "name": "Direct"
+            },
+            {
+                "id": "2",
+                "code": "REFERRAL",
+                "name": "Referral"
+            },
+            {
+                "id": "3",
+                "code": "TENDER",
+                "name": "Tender"
+            },
+            {
+                "id": "4",
+                "code": "WEBSITE",
+                "name": "Website"
+            },
+            {
+                "id": "5",
+                "code": "EXISTING_CLIENT",
+                "name": "Existing Client"
+            },
+            {
+                "id": "6",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ],
+        "client_statuses": [
+            {
+                "id": "1",
+                "code": "PROSPECT",
+                "name": "Prospect"
+            },
+            {
+                "id": "2",
+                "code": "ACTIVE",
+                "name": "Active"
+            },
+            {
+                "id": "3",
+                "code": "ON_HOLD",
+                "name": "On Hold"
+            },
+            {
+                "id": "4",
+                "code": "INACTIVE",
+                "name": "Inactive"
+            },
+            {
+                "id": "5",
+                "code": "BLACKLISTED",
+                "name": "Blacklisted"
+            }
+        ],
+        "communication_modes": [
+            {
+                "id": "1",
+                "code": "EMAIL",
+                "name": "Email"
+            },
+            {
+                "id": "2",
+                "code": "PHONE",
+                "name": "Phone"
+            },
+            {
+                "id": "3",
+                "code": "WHATSAPP",
+                "name": "WhatsApp"
+            },
+            {
+                "id": "4",
+                "code": "SMS",
+                "name": "SMS"
+            },
+            {
+                "id": "5",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ],
+        "client_document_types": [
+            {
+                "id": "1",
+                "code": "CLIENT-GST",
+                "name": "GST Registration Certificate",
+                "allowed_extensions": "pdf,jpg,jpeg,png",
+                "maximum_file_size_mb": "10.00",
+                "expiry_tracking": "0",
+                "is_mandatory": "0"
+            },
+            {
+                "id": "2",
+                "code": "CLIENT-PAN",
+                "name": "PAN Card",
+                "allowed_extensions": "pdf,jpg,jpeg,png",
+                "maximum_file_size_mb": "10.00",
+                "expiry_tracking": "0",
+                "is_mandatory": "0"
+            },
+            {
+                "id": "3",
+                "code": "CLIENT-AGREEMENT",
+                "name": "Client Agreement",
+                "allowed_extensions": "pdf,doc,docx",
+                "maximum_file_size_mb": "25.00",
+                "expiry_tracking": "1",
+                "is_mandatory": "0"
+            }
+        ],
+        "client_document_statuses": [
+            {
+                "id": "1",
+                "code": "DRAFT",
+                "name": "Draft"
+            },
+            {
+                "id": "2",
+                "code": "VALID",
+                "name": "Valid"
+            },
+            {
+                "id": "3",
+                "code": "EXPIRED",
+                "name": "Expired"
+            },
+            {
+                "id": "4",
+                "code": "REPLACED",
+                "name": "Replaced"
+            },
+            {
+                "id": "5",
+                "code": "ARCHIVED",
+                "name": "Archived"
+            }
+        ],
+        "billing_methods": [
+            {
+                "id": "1",
+                "code": "FIXED_PRICE",
+                "name": "Fixed Price"
+            },
+            {
+                "id": "2",
+                "code": "ITEM_RATE",
+                "name": "Item Rate"
+            },
+            {
+                "id": "3",
+                "code": "COST_PLUS",
+                "name": "Cost Plus"
+            },
+            {
+                "id": "4",
+                "code": "TIME_AND_MATERIAL",
+                "name": "Time and Material"
+            },
+            {
+                "id": "5",
+                "code": "MILESTONE",
+                "name": "Milestone"
+            },
+            {
+                "id": "6",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ],
+        "project_types": [
+            {
+                "id": "1",
+                "code": "RESIDENTIAL",
+                "name": "Residential Building",
+                "billing_method_id": "2",
+                "billing_method_code": "ITEM_RATE",
+                "billing_method_name": "Item Rate",
+                "default_duration_days": "365"
+            },
+            {
+                "id": "2",
+                "code": "COMMERCIAL",
+                "name": "Commercial Building",
+                "billing_method_id": "2",
+                "billing_method_code": "ITEM_RATE",
+                "billing_method_name": "Item Rate",
+                "default_duration_days": "540"
+            },
+            {
+                "id": "3",
+                "code": "INDUSTRIAL",
+                "name": "Industrial Building",
+                "billing_method_id": "5",
+                "billing_method_code": "MILESTONE",
+                "billing_method_name": "Milestone",
+                "default_duration_days": "365"
+            },
+            {
+                "id": "4",
+                "code": "RENOVATION",
+                "name": "Renovation and Interior",
+                "billing_method_id": "1",
+                "billing_method_code": "FIXED_PRICE",
+                "billing_method_name": "Fixed Price",
+                "default_duration_days": "120"
+            },
+            {
+                "id": "5",
+                "code": "INFRASTRUCTURE",
+                "name": "Infrastructure Works",
+                "billing_method_id": "2",
+                "billing_method_code": "ITEM_RATE",
+                "billing_method_name": "Item Rate",
+                "default_duration_days": "730"
+            }
+        ],
+        "project_statuses": [
+            {
+                "id": "1",
+                "code": "DRAFT",
+                "name": "Draft",
+                "description": null,
+                "is_final": "0"
+            },
+            {
+                "id": "2",
+                "code": "PLANNED",
+                "name": "Planned",
+                "description": null,
+                "is_final": "0"
+            },
+            {
+                "id": "3",
+                "code": "ACTIVE",
+                "name": "Active",
+                "description": null,
+                "is_final": "0"
+            },
+            {
+                "id": "4",
+                "code": "ON_HOLD",
+                "name": "On Hold",
+                "description": null,
+                "is_final": "0"
+            },
+            {
+                "id": "5",
+                "code": "COMPLETED",
+                "name": "Completed",
+                "description": null,
+                "is_final": "1"
+            },
+            {
+                "id": "6",
+                "code": "CANCELLED",
+                "name": "Cancelled",
+                "description": null,
+                "is_final": "1"
+            }
+        ],
+        "site_types": [
+            {
+                "id": "1",
+                "code": "MAIN_SITE",
+                "name": "Main Site",
+                "description": null
+            },
+            {
+                "id": "2",
+                "code": "PHASE_SITE",
+                "name": "Phase Site",
+                "description": null
+            },
+            {
+                "id": "3",
+                "code": "REMOTE_SITE",
+                "name": "Remote Site",
+                "description": null
+            },
+            {
+                "id": "4",
+                "code": "STORAGE_YARD",
+                "name": "Storage Yard",
+                "description": null
+            },
+            {
+                "id": "5",
+                "code": "SITE_OFFICE",
+                "name": "Site Office",
+                "description": null
+            },
+            {
+                "id": "6",
+                "code": "OTHER",
+                "name": "Other",
+                "description": null
+            }
+        ],
+        "site_statuses": [
+            {
+                "id": "1",
+                "code": "DRAFT",
+                "name": "Draft",
+                "description": null,
+                "is_final": "0"
+            },
+            {
+                "id": "2",
+                "code": "PLANNED",
+                "name": "Planned",
+                "description": null,
+                "is_final": "0"
+            },
+            {
+                "id": "3",
+                "code": "ACTIVE",
+                "name": "Active",
+                "description": null,
+                "is_final": "0"
+            },
+            {
+                "id": "4",
+                "code": "ON_HOLD",
+                "name": "On Hold",
+                "description": null,
+                "is_final": "0"
+            },
+            {
+                "id": "5",
+                "code": "COMPLETED",
+                "name": "Completed",
+                "description": null,
+                "is_final": "0"
+            },
+            {
+                "id": "6",
+                "code": "CLOSED",
+                "name": "Closed",
+                "description": null,
+                "is_final": "1"
+            },
+            {
+                "id": "7",
+                "code": "CANCELLED",
+                "name": "Cancelled",
+                "description": null,
+                "is_final": "1"
+            }
+        ],
+        "project_team_roles": [
+            {
+                "id": "1",
+                "code": "PROJECT_MANAGER",
+                "name": "Project Manager",
+                "description": null
+            },
+            {
+                "id": "2",
+                "code": "SITE_ENGINEER",
+                "name": "Site Engineer",
+                "description": null
+            },
+            {
+                "id": "3",
+                "code": "SUPERVISOR",
+                "name": "Supervisor",
+                "description": null
+            },
+            {
+                "id": "4",
+                "code": "PLANNING_ENGINEER",
+                "name": "Planning Engineer",
+                "description": null
+            },
+            {
+                "id": "5",
+                "code": "QUANTITY_SURVEYOR",
+                "name": "Quantity Surveyor",
+                "description": null
+            },
+            {
+                "id": "6",
+                "code": "SAFETY_OFFICER",
+                "name": "Safety Officer",
+                "description": null
+            },
+            {
+                "id": "7",
+                "code": "STORE_KEEPER",
+                "name": "Store Keeper",
+                "description": null
+            },
+            {
+                "id": "8",
+                "code": "ACCOUNTS",
+                "name": "Accounts",
+                "description": null
+            },
+            {
+                "id": "9",
+                "code": "VIEWER",
+                "name": "Viewer",
+                "description": null
+            },
+            {
+                "id": "10",
+                "code": "OTHER",
+                "name": "Other",
+                "description": null
+            }
+        ],
+        "priorities": [
+            {
+                "id": "1",
+                "code": "LOW",
+                "name": "Low"
+            },
+            {
+                "id": "2",
+                "code": "NORMAL",
+                "name": "Normal"
+            },
+            {
+                "id": "3",
+                "code": "HIGH",
+                "name": "High"
+            },
+            {
+                "id": "4",
+                "code": "CRITICAL",
+                "name": "Critical"
+            }
+        ],
+        "financial_years": [
+            {
+                "id": "1",
+                "code": "2026-27",
+                "name": "Financial Year 2026-27",
+                "start_date": "2026-04-01",
+                "end_date": "2027-03-31",
+                "status_id": "2",
+                "is_current": "1"
+            }
+        ],
+        "financial_year_statuses": [
+            {
+                "id": "1",
+                "code": "PLANNED",
+                "name": "Planned"
+            },
+            {
+                "id": "2",
+                "code": "OPEN",
+                "name": "Open"
+            },
+            {
+                "id": "3",
+                "code": "CLOSED",
+                "name": "Closed"
+            },
+            {
+                "id": "4",
+                "code": "LOCKED",
+                "name": "Locked"
+            }
+        ],
+        "unit_types": [
+            {
+                "id": "1",
+                "code": "COUNT",
+                "name": "Count"
+            },
+            {
+                "id": "2",
+                "code": "LENGTH",
+                "name": "Length"
+            },
+            {
+                "id": "3",
+                "code": "AREA",
+                "name": "Area"
+            },
+            {
+                "id": "4",
+                "code": "VOLUME",
+                "name": "Volume"
+            },
+            {
+                "id": "5",
+                "code": "WEIGHT",
+                "name": "Weight"
+            },
+            {
+                "id": "6",
+                "code": "TIME",
+                "name": "Time"
+            },
+            {
+                "id": "7",
+                "code": "PACKAGE",
+                "name": "Package"
+            },
+            {
+                "id": "8",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ],
+        "units_of_measurement": [
+            {
+                "id": "1",
+                "code": "NOS",
+                "name": "Numbers",
+                "unit_symbol": "Nos",
+                "unit_type_id": "1",
+                "decimal_places": "0"
+            },
+            {
+                "id": "2",
+                "code": "M",
+                "name": "Metre",
+                "unit_symbol": "m",
+                "unit_type_id": "2",
+                "decimal_places": "3"
+            },
+            {
+                "id": "3",
+                "code": "SQM",
+                "name": "Square Metre",
+                "unit_symbol": "m2",
+                "unit_type_id": "3",
+                "decimal_places": "3"
+            },
+            {
+                "id": "4",
+                "code": "CUM",
+                "name": "Cubic Metre",
+                "unit_symbol": "m3",
+                "unit_type_id": "4",
+                "decimal_places": "3"
+            },
+            {
+                "id": "5",
+                "code": "KG",
+                "name": "Kilogram",
+                "unit_symbol": "kg",
+                "unit_type_id": "5",
+                "decimal_places": "3"
+            },
+            {
+                "id": "6",
+                "code": "MT",
+                "name": "Metric Tonne",
+                "unit_symbol": "MT",
+                "unit_type_id": "5",
+                "decimal_places": "3"
+            },
+            {
+                "id": "7",
+                "code": "LTR",
+                "name": "Litre",
+                "unit_symbol": "L",
+                "unit_type_id": "4",
+                "decimal_places": "3"
+            },
+            {
+                "id": "8",
+                "code": "BAG",
+                "name": "Bag",
+                "unit_symbol": "Bag",
+                "unit_type_id": "7",
+                "decimal_places": "0"
+            },
+            {
+                "id": "9",
+                "code": "DAY",
+                "name": "Day",
+                "unit_symbol": "Day",
+                "unit_type_id": "6",
+                "decimal_places": "2"
+            },
+            {
+                "id": "10",
+                "code": "HR",
+                "name": "Hour",
+                "unit_symbol": "Hr",
+                "unit_type_id": "6",
+                "decimal_places": "2"
+            },
+            {
+                "id": "11",
+                "code": "LS",
+                "name": "Lump Sum",
+                "unit_symbol": "LS",
+                "unit_type_id": "8",
+                "decimal_places": "2"
+            }
+        ],
+        "work_category_stages": [
+            {
+                "id": "1",
+                "code": "PRE_CONSTRUCTION",
+                "name": "Pre Construction"
+            },
+            {
+                "id": "2",
+                "code": "SUBSTRUCTURE",
+                "name": "Substructure"
+            },
+            {
+                "id": "3",
+                "code": "SUPERSTRUCTURE",
+                "name": "Superstructure"
+            },
+            {
+                "id": "4",
+                "code": "FINISHING",
+                "name": "Finishing"
+            },
+            {
+                "id": "5",
+                "code": "MEP",
+                "name": "Mep"
+            },
+            {
+                "id": "6",
+                "code": "EXTERNAL",
+                "name": "External"
+            },
+            {
+                "id": "7",
+                "code": "HANDOVER",
+                "name": "Handover"
+            },
+            {
+                "id": "8",
+                "code": "OTHER",
+                "name": "Other"
+            }
+        ],
+        "work_category_progress_methods": [
+            {
+                "id": "1",
+                "code": "QUANTITY",
+                "name": "Quantity"
+            },
+            {
+                "id": "2",
+                "code": "PERCENTAGE",
+                "name": "Percentage"
+            },
+            {
+                "id": "3",
+                "code": "MILESTONE",
+                "name": "Milestone"
+            }
+        ],
+        "work_categories": [
+            {
+                "id": "1",
+                "code": "PRELIMINARY",
+                "name": "Preliminary Works",
+                "parent_id": null,
+                "work_stage_id": "1",
+                "progress_method_id": "3"
+            },
+            {
+                "id": "2",
+                "code": "EARTHWORK",
+                "name": "Earthwork and Excavation",
+                "parent_id": null,
+                "work_stage_id": "2",
+                "progress_method_id": "1"
+            },
+            {
+                "id": "3",
+                "code": "FOUNDATION",
+                "name": "Foundation Works",
+                "parent_id": null,
+                "work_stage_id": "2",
+                "progress_method_id": "1"
+            },
+            {
+                "id": "4",
+                "code": "RCC",
+                "name": "Reinforced Cement Concrete",
+                "parent_id": null,
+                "work_stage_id": "3",
+                "progress_method_id": "1"
+            },
+            {
+                "id": "5",
+                "code": "MASONRY",
+                "name": "Masonry Works",
+                "parent_id": null,
+                "work_stage_id": "3",
+                "progress_method_id": "1"
+            },
+            {
+                "id": "6",
+                "code": "PLASTERING",
+                "name": "Plastering Works",
+                "parent_id": null,
+                "work_stage_id": "4",
+                "progress_method_id": "1"
+            },
+            {
+                "id": "7",
+                "code": "FLOORING",
+                "name": "Flooring and Tiling",
+                "parent_id": null,
+                "work_stage_id": "4",
+                "progress_method_id": "1"
+            },
+            {
+                "id": "8",
+                "code": "PAINTING",
+                "name": "Painting Works",
+                "parent_id": null,
+                "work_stage_id": "4",
+                "progress_method_id": "1"
+            },
+            {
+                "id": "9",
+                "code": "MEP",
+                "name": "MEP Works",
+                "parent_id": null,
+                "work_stage_id": "5",
+                "progress_method_id": "2"
+            },
+            {
+                "id": "10",
+                "code": "EXTERNAL",
+                "name": "External Development",
+                "parent_id": null,
+                "work_stage_id": "6",
+                "progress_method_id": "1"
+            }
+        ],
+        "project_clients": [
+            {
+                "id": "1",
+                "code": "CLI-0001",
+                "name": "Greenfield Properties",
+                "branch_id": "1"
+            }
+        ],
+        "project_users": [
+            {
+                "id": "1",
+                "code": null,
+                "name": "Admin Civilpro",
+                "default_branch_id": "1"
+            },
+            {
+                "id": "5",
+                "code": "TEST12825",
+                "name": "API Test User",
+                "default_branch_id": "1"
+            },
+            {
+                "id": "6",
+                "code": "TEST6930",
+                "name": "API Test Updated User",
+                "default_branch_id": "1"
+            },
+            {
+                "id": "3",
+                "code": "EMP001",
+                "name": "Site Engineer",
+                "default_branch_id": "1"
+            },
+            {
+                "id": "4",
+                "code": "SE002",
+                "name": "Site Engineer 2",
+                "default_branch_id": "1"
+            }
+        ]
+    }
+}

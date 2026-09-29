@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "item_code": "The item code already exists in this BOQ."
+    }
+}

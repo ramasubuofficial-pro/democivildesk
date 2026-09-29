@@ -1,0 +1,36 @@
+{
+    "success": true,
+    "message": "Wage periods retrieved successfully.",
+    "data": {
+        "wage_periods": [
+            {
+                "id": "1",
+                "company_id": "1",
+                "project_id": "1",
+                "site_id": "1",
+                "period_code": "WP_1613023321",
+                "period_start": "2026-08-02",
+                "period_end": "2026-08-02",
+                "contractor_id": "2",
+                "status_id": "1",
+                "gross_wages": "0.00",
+                "total_additions": "0.00",
+                "total_deductions": "0.00",
+                "net_payable": "0.00",
+                "approved_by": null,
+                "approved_at": null,
+                "remarks": null,
+                "created_by": "1",
+                "updated_by": "1",
+                "created_at": "2026-08-03 12:25:15",
+                "updated_at": "2026-08-03 12:25:15",
+                "project_code": "PRJ-2026-001",
+                "project_name": "Greenfield Residency - Phase 1",
+                "site_name": "Greenfield Residency Main Site",
+                "contractor_name": "API Test Labour Contractor",
+                "status_code": "DRAFT",
+                "status_name": "Draft"
+            }
+        ]
+    }
+}

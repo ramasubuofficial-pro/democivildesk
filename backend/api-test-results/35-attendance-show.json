@@ -1,0 +1,58 @@
+{
+    "success": true,
+    "message": "Attendance batch retrieved successfully.",
+    "data": {
+        "attendance_batch": {
+            "id": "4",
+            "company_id": "1",
+            "project_id": "1",
+            "site_id": "1",
+            "attendance_date": "2026-08-04",
+            "shift_code": "T1775528188",
+            "prepared_by": "1",
+            "prepared_at": "2026-08-04 08:04:40",
+            "approved_by": "1",
+            "approved_at": "2026-08-04 08:04:40",
+            "status_id": "5",
+            "total_workers": "1",
+            "present_workers": "1",
+            "absent_workers": "0",
+            "total_regular_hours": "8.00",
+            "total_overtime_hours": "2.00",
+            "remarks": "Corrected and resubmitted",
+            "created_by": "1",
+            "updated_by": "1",
+            "created_at": "2026-08-04 08:04:34",
+            "updated_at": "2026-08-04 08:04:41",
+            "entries": [
+                {
+                    "id": "4",
+                    "company_id": "1",
+                    "batch_id": "4",
+                    "assignment_id": "6",
+                    "worker_id": "6",
+                    "zone_id": null,
+                    "attendance_status_id": "1",
+                    "check_in_time": "08:00:00",
+                    "check_out_time": "18:00:00",
+                    "regular_hours": "8.00",
+                    "overtime_hours": "2.00",
+                    "work_description": "Module 5 API test work",
+                    "attendance_source_id": "1",
+                    "latitude": null,
+                    "longitude": null,
+                    "selfie_path": null,
+                    "remarks": "Attendance entry updated",
+                    "created_by": "1",
+                    "updated_by": "1",
+                    "created_at": "2026-08-04 08:04:36",
+                    "updated_at": "2026-08-04 08:04:37",
+                    "worker_code": "LWRK_1775528188",
+                    "worker_name": "API Worker 1775528188",
+                    "attendance_status_code": "PRESENT",
+                    "attendance_status_name": "Present"
+                }
+            ]
+        }
+    }
+}

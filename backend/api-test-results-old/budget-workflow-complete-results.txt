@@ -1,0 +1,1016 @@
+PROJECT_ID=
+WORK_CATEGORY_ID=
+UOM_ID=
+MATERIAL_TYPE_ID=
+REJECT_CODE=BUD-REJECT-7540
+EMPTY_CODE=BUD-EMPTY-26698
+117 SUBMIT BUDGET: HTTP 200
+118 HEADER UPDATE LOCK: HTTP 409
+119 LINE UPDATE LOCK: HTTP 409
+120 LINE CREATE LOCK: HTTP 409
+121 LINE DELETE LOCK: HTTP 409
+122 BUDGET DELETE LOCK: HTTP 409
+123 REPEAT SUBMIT BLOCKED: HTTP 409
+124 APPROVE BUDGET: HTTP 200
+125 REPEAT APPROVE BLOCKED: HTTP 409
+126 REJECT APPROVED BLOCKED: HTTP 409
+127 APPROVED HISTORY: HTTP 200
+128 CREATE REJECTION BUDGET: HTTP 201
+129 CREATE REJECTION LINE: HTTP 201
+130 SUBMIT REJECTION BUDGET: HTTP 200
+131 REVIEW LINE UPDATE LOCK: HTTP 409
+132 REJECT BUDGET: HTTP 200
+133 REPEAT REJECT BLOCKED: HTTP 409
+134 APPROVE REJECTED BLOCKED: HTTP 409
+135 REJECTED HEADER LOCK: HTTP 409
+136 REJECTED HISTORY: HTTP 200
+137 CREATE EMPTY BUDGET: HTTP 201
+138 EMPTY BUDGET SUBMIT BLOCKED: HTTP 409
+139 VIEW APPROVED BUDGET: HTTP 200
+140 VIEW REJECTED BUDGET: HTTP 200
+141 NOTIFICATIONS LIST: HTTP 200
+ 
+==================== 116-budget-workflow-precheck.txt ==================== 
+id	budget_code	total_budget	status_code
+2	BUD-API-20376	14700.00	DRAFT
+id	line_code	planned_quantity	planned_rate	planned_amount
+4	MAT-13117	12.0000	1100.0000	13200.00
+ 
+==================== 117-budget-submit.json ==================== 
+{
+    "success": true,
+    "message": "Project budget submitted successfully.",
+    "data": {
+        "project_budget": {
+            "id": 2,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-API-20376",
+            "budget_name": "Updated Project Budget Core API Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 13200,
+            "overhead_cost": 1000,
+            "contingency_amount": 500,
+            "total_budget": 14700,
+            "status_id": 2,
+            "notes": "Header update verified",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:22",
+            "approved_by": null,
+            "approved_at": null,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:06:13",
+            "updated_at": "2026-08-03 16:49:22",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "SUBMITTED",
+            "status_name": "Submitted"
+        },
+        "summary": {
+            "direct_cost": "13200.00",
+            "overhead_cost": "1000.00",
+            "contingency_amount": "500.00",
+            "total_budget": "14700.00",
+            "line_count": 3,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "13200.00"
+                },
+                {
+                    "cost_type_id": "5",
+                    "cost_type_code": "OVERHEAD",
+                    "cost_type_name": "Overhead",
+                    "line_count": "1",
+                    "planned_amount": "1000.00"
+                },
+                {
+                    "cost_type_id": "6",
+                    "cost_type_code": "CONTINGENCY",
+                    "cost_type_name": "Contingency",
+                    "line_count": "1",
+                    "planned_amount": "500.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 118-budget-header-lock.json ==================== 
+{
+    "success": false,
+    "message": "Only a draft project budget can be updated."
+} 
+==================== 119-budget-line-lock.json ==================== 
+{
+    "success": false,
+    "message": "Lines can be updated only in a draft project budget."
+} 
+==================== 120-budget-line-create-lock.json ==================== 
+{
+    "success": false,
+    "message": "Lines can be added only to a draft project budget."
+} 
+==================== 121-budget-line-delete-lock.json ==================== 
+{
+    "success": false,
+    "message": "Lines can be deleted only from a draft project budget."
+} 
+==================== 122-budget-delete-lock.json ==================== 
+{
+    "success": false,
+    "message": "Only a draft project budget can be deleted."
+} 
+==================== 123-repeat-submit-blocked.json ==================== 
+{
+    "success": false,
+    "message": "Only a draft project budget can be submitted."
+} 
+==================== 124-budget-approve.json ==================== 
+{
+    "success": true,
+    "message": "Project budget approved successfully.",
+    "data": {
+        "project_budget": {
+            "id": 2,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-API-20376",
+            "budget_name": "Updated Project Budget Core API Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 13200,
+            "overhead_cost": 1000,
+            "contingency_amount": 500,
+            "total_budget": 14700,
+            "status_id": 3,
+            "notes": "Header update verified",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:22",
+            "approved_by": 1,
+            "approved_at": "2026-08-03 11:19:25",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:06:13",
+            "updated_at": "2026-08-03 16:49:25",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "APPROVED",
+            "status_name": "Approved"
+        },
+        "summary": {
+            "direct_cost": "13200.00",
+            "overhead_cost": "1000.00",
+            "contingency_amount": "500.00",
+            "total_budget": "14700.00",
+            "line_count": 3,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "13200.00"
+                },
+                {
+                    "cost_type_id": "5",
+                    "cost_type_code": "OVERHEAD",
+                    "cost_type_name": "Overhead",
+                    "line_count": "1",
+                    "planned_amount": "1000.00"
+                },
+                {
+                    "cost_type_id": "6",
+                    "cost_type_code": "CONTINGENCY",
+                    "cost_type_name": "Contingency",
+                    "line_count": "1",
+                    "planned_amount": "500.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 125-repeat-approve-blocked.json ==================== 
+{
+    "success": false,
+    "message": "Only a submitted project budget can be approved."
+} 
+==================== 126-reject-approved-blocked.json ==================== 
+{
+    "success": false,
+    "message": "Only a submitted project budget can be rejected."
+} 
+==================== 127-approved-history.json ==================== 
+{
+    "success": true,
+    "message": "Budget approval history retrieved successfully.",
+    "data": {
+        "approvals": [
+            {
+                "id": "1",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_id": null,
+                "approval_level": "1",
+                "action_id": "1",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:19:22",
+                "comments": "Submitted through complete Budget workflow API test",
+                "action_code": "SUBMITTED",
+                "action_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "2",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_id": null,
+                "approval_level": "1",
+                "action_id": "2",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:19:25",
+                "comments": "Approved through complete Budget workflow API test",
+                "action_code": "APPROVED",
+                "action_name": "Approved",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ],
+        "status_logs": [
+            {
+                "id": "2",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "from_status_id": "1",
+                "to_status_id": "2",
+                "change_reason": "Submitted through complete Budget workflow API test",
+                "changed_by": "1",
+                "changed_at": "2026-08-03 11:19:22",
+                "from_status_code": "DRAFT",
+                "from_status_name": "Draft",
+                "to_status_code": "SUBMITTED",
+                "to_status_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "3",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "from_status_id": "2",
+                "to_status_id": "3",
+                "change_reason": "Approved through complete Budget workflow API test",
+                "changed_by": "1",
+                "changed_at": "2026-08-03 11:19:25",
+                "from_status_code": "SUBMITTED",
+                "from_status_name": "Submitted",
+                "to_status_code": "APPROVED",
+                "to_status_name": "Approved",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ]
+    }
+} 
+==================== 128-rejection-budget-create.json ==================== 
+{
+    "success": true,
+    "message": "Project budget created successfully.",
+    "data": {
+        "project_budget": {
+            "id": 4,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-REJECT-7540",
+            "budget_name": "Budget Rejection Workflow Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 0,
+            "overhead_cost": 0,
+            "contingency_amount": 0,
+            "total_budget": 0,
+            "status_id": 1,
+            "notes": "Created for rejection workflow testing",
+            "submitted_by": null,
+            "submitted_at": null,
+            "approved_by": null,
+            "approved_at": null,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:19:54",
+            "updated_at": "2026-08-03 11:19:54",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "DRAFT",
+            "status_name": "Draft"
+        },
+        "summary": {
+            "direct_cost": "0.00",
+            "overhead_cost": "0.00",
+            "contingency_amount": "0.00",
+            "total_budget": "0.00",
+            "line_count": 0,
+            "by_cost_type": []
+        }
+    }
+} 
+==================== 129-rejection-line-create.json ==================== 
+{
+    "success": true,
+    "message": "Project budget line created successfully.",
+    "data": {
+        "budget_line": {
+            "id": 8,
+            "company_id": 1,
+            "project_id": 1,
+            "budget_id": 4,
+            "boq_item_id": null,
+            "site_id": null,
+            "work_zone_id": null,
+            "work_category_id": 1,
+            "cost_type_id": 1,
+            "line_code": "REJ-LINE-26564",
+            "line_description": "Rejection workflow material line",
+            "planned_quantity": 5,
+            "uom_id": 1,
+            "planned_rate": 1000,
+            "planned_amount": 5000,
+            "committed_amount": 0,
+            "actual_amount": 0,
+            "display_order": 10,
+            "notes": null,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:19:54",
+            "updated_at": "2026-08-03 11:19:54",
+            "deleted_at": null,
+            "cost_type_code": "MATERIAL",
+            "cost_type_name": "Material",
+            "category_code": "PRELIMINARY",
+            "category_name": "Preliminary Works",
+            "unit_code": "NOS",
+            "unit_name": "Numbers",
+            "unit_symbol": "Nos",
+            "site_code": null,
+            "site_name": null,
+            "zone_code": null,
+            "zone_name": null,
+            "boq_item_code": null,
+            "boq_item_name": null
+        },
+        "summary": {
+            "direct_cost": "5000.00",
+            "overhead_cost": "0.00",
+            "contingency_amount": "0.00",
+            "total_budget": "5000.00",
+            "line_count": 1,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "5000.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 130-rejection-budget-submit.json ==================== 
+{
+    "success": true,
+    "message": "Project budget submitted successfully.",
+    "data": {
+        "project_budget": {
+            "id": 4,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-REJECT-7540",
+            "budget_name": "Budget Rejection Workflow Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 5000,
+            "overhead_cost": 0,
+            "contingency_amount": 0,
+            "total_budget": 5000,
+            "status_id": 2,
+            "notes": "Created for rejection workflow testing",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:55",
+            "approved_by": null,
+            "approved_at": null,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:19:54",
+            "updated_at": "2026-08-03 16:49:55",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "SUBMITTED",
+            "status_name": "Submitted"
+        },
+        "summary": {
+            "direct_cost": "5000.00",
+            "overhead_cost": "0.00",
+            "contingency_amount": "0.00",
+            "total_budget": "5000.00",
+            "line_count": 1,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "5000.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 131-review-line-lock.json ==================== 
+{
+    "success": false,
+    "message": "Lines can be updated only in a draft project budget."
+} 
+==================== 132-budget-reject.json ==================== 
+{
+    "success": true,
+    "message": "Project budget rejected successfully.",
+    "data": {
+        "project_budget": {
+            "id": 4,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-REJECT-7540",
+            "budget_name": "Budget Rejection Workflow Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 5000,
+            "overhead_cost": 0,
+            "contingency_amount": 0,
+            "total_budget": 5000,
+            "status_id": 4,
+            "notes": "Created for rejection workflow testing",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:55",
+            "approved_by": null,
+            "approved_at": null,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:19:54",
+            "updated_at": "2026-08-03 16:49:55",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "REJECTED",
+            "status_name": "Rejected"
+        },
+        "summary": {
+            "direct_cost": "5000.00",
+            "overhead_cost": "0.00",
+            "contingency_amount": "0.00",
+            "total_budget": "5000.00",
+            "line_count": 1,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "5000.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 133-repeat-reject-blocked.json ==================== 
+{
+    "success": false,
+    "message": "Only a submitted project budget can be rejected."
+} 
+==================== 134-approve-rejected-blocked.json ==================== 
+{
+    "success": false,
+    "message": "Only a submitted project budget can be approved."
+} 
+==================== 135-rejected-header-lock.json ==================== 
+{
+    "success": false,
+    "message": "Only a draft project budget can be updated."
+} 
+==================== 136-rejected-history.json ==================== 
+{
+    "success": true,
+    "message": "Budget approval history retrieved successfully.",
+    "data": {
+        "approvals": [
+            {
+                "id": "3",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "4",
+                "revision_id": null,
+                "approval_level": "1",
+                "action_id": "1",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:19:55",
+                "comments": "Submitted for rejection workflow test",
+                "action_code": "SUBMITTED",
+                "action_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "4",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "4",
+                "revision_id": null,
+                "approval_level": "1",
+                "action_id": "3",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:19:55",
+                "comments": "Rejected because the test budget requires correction",
+                "action_code": "REJECTED",
+                "action_name": "Rejected",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ],
+        "status_logs": [
+            {
+                "id": "4",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "4",
+                "from_status_id": "1",
+                "to_status_id": "2",
+                "change_reason": "Submitted for rejection workflow test",
+                "changed_by": "1",
+                "changed_at": "2026-08-03 11:19:55",
+                "from_status_code": "DRAFT",
+                "from_status_name": "Draft",
+                "to_status_code": "SUBMITTED",
+                "to_status_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "5",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "4",
+                "from_status_id": "2",
+                "to_status_id": "4",
+                "change_reason": "Rejected because the test budget requires correction",
+                "changed_by": "1",
+                "changed_at": "2026-08-03 11:19:55",
+                "from_status_code": "SUBMITTED",
+                "from_status_name": "Submitted",
+                "to_status_code": "REJECTED",
+                "to_status_name": "Rejected",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ]
+    }
+} 
+==================== 137-empty-budget-create.json ==================== 
+{
+    "success": true,
+    "message": "Project budget created successfully.",
+    "data": {
+        "project_budget": {
+            "id": 5,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-EMPTY-26698",
+            "budget_name": "Empty Budget Submission Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 0,
+            "overhead_cost": 0,
+            "contingency_amount": 0,
+            "total_budget": 0,
+            "status_id": 1,
+            "notes": null,
+            "submitted_by": null,
+            "submitted_at": null,
+            "approved_by": null,
+            "approved_at": null,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:20:24",
+            "updated_at": "2026-08-03 11:20:24",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "DRAFT",
+            "status_name": "Draft"
+        },
+        "summary": {
+            "direct_cost": "0.00",
+            "overhead_cost": "0.00",
+            "contingency_amount": "0.00",
+            "total_budget": "0.00",
+            "line_count": 0,
+            "by_cost_type": []
+        }
+    }
+} 
+==================== 138-empty-budget-submit-blocked.json ==================== 
+{
+    "success": false,
+    "message": "Add at least one active budget line before submission."
+} 
+==================== 139-approved-budget-view.json ==================== 
+{
+    "success": true,
+    "message": "Project budget retrieved successfully.",
+    "data": {
+        "project_budget": {
+            "id": 2,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-API-20376",
+            "budget_name": "Updated Project Budget Core API Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 13200,
+            "overhead_cost": 1000,
+            "contingency_amount": 500,
+            "total_budget": 14700,
+            "status_id": 3,
+            "notes": "Header update verified",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:22",
+            "approved_by": 1,
+            "approved_at": "2026-08-03 11:19:25",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:06:13",
+            "updated_at": "2026-08-03 16:49:25",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "APPROVED",
+            "status_name": "Approved"
+        },
+        "summary": {
+            "direct_cost": "13200.00",
+            "overhead_cost": "1000.00",
+            "contingency_amount": "500.00",
+            "total_budget": "14700.00",
+            "line_count": 3,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "13200.00"
+                },
+                {
+                    "cost_type_id": "5",
+                    "cost_type_code": "OVERHEAD",
+                    "cost_type_name": "Overhead",
+                    "line_count": "1",
+                    "planned_amount": "1000.00"
+                },
+                {
+                    "cost_type_id": "6",
+                    "cost_type_code": "CONTINGENCY",
+                    "cost_type_name": "Contingency",
+                    "line_count": "1",
+                    "planned_amount": "500.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 140-rejected-budget-view.json ==================== 
+{
+    "success": true,
+    "message": "Project budget retrieved successfully.",
+    "data": {
+        "project_budget": {
+            "id": 4,
+            "company_id": 1,
+            "project_id": 1,
+            "financial_year_id": null,
+            "source_boq_id": 8,
+            "budget_code": "BUD-REJECT-7540",
+            "budget_name": "Budget Rejection Workflow Test",
+            "version_no": 1,
+            "budget_date": "2026-08-03",
+            "currency_code": "INR",
+            "direct_cost": 5000,
+            "overhead_cost": 0,
+            "contingency_amount": 0,
+            "total_budget": 5000,
+            "status_id": 4,
+            "notes": "Created for rejection workflow testing",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 11:19:55",
+            "approved_by": null,
+            "approved_at": null,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:19:54",
+            "updated_at": "2026-08-03 16:49:55",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "branch_id": "1",
+            "financial_year_code": null,
+            "source_boq_code": "BOQ-SEC-5951",
+            "source_boq_name": "Complete BOQ Sections API Test",
+            "status_code": "REJECTED",
+            "status_name": "Rejected"
+        },
+        "summary": {
+            "direct_cost": "5000.00",
+            "overhead_cost": "0.00",
+            "contingency_amount": "0.00",
+            "total_budget": "5000.00",
+            "line_count": 1,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "5000.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 141-notifications-list.json ==================== 
+{
+    "success": true,
+    "message": "Notifications retrieved successfully.",
+    "data": {
+        "notifications": [
+            {
+                "id": 14,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 6,
+                "project_id": 1,
+                "source_module": "BUDGET",
+                "source_table": "project_budgets",
+                "source_record_id": 4,
+                "title": "Project budget rejected",
+                "message": "BUD-REJECT-7540 - Budget Rejection Workflow Test has been rejected.",
+                "action_url": "/project-budgets/4",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 11:20:23",
+                "email_error": null,
+                "created_by": 1,
+                "created_at": "2026-08-03 11:19:55",
+                "updated_at": "2026-08-03 11:20:23",
+                "event_code": "BUDGET_REJECTED",
+                "event_name": "Budget Rejected"
+            },
+            {
+                "id": 13,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 5,
+                "project_id": 1,
+                "source_module": "BUDGET",
+                "source_table": "project_budgets",
+                "source_record_id": 2,
+                "title": "Project budget approved",
+                "message": "BUD-API-20376 - Updated Project Budget Core API Test has been approved.",
+                "action_url": "/project-budgets/2",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 11:19:53",
+                "email_error": null,
+                "created_by": 1,
+                "created_at": "2026-08-03 11:19:25",
+                "updated_at": "2026-08-03 11:19:53",
+                "event_code": "BUDGET_APPROVED",
+                "event_name": "Budget Approved"
+            },
+            {
+                "id": 12,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 3,
+                "project_id": 1,
+                "source_module": "BOQ",
+                "source_table": "project_boqs",
+                "source_record_id": 9,
+                "title": "Project BOQ rejected",
+                "message": "BOQ-REJECT-10173 - BOQ Rejection Workflow Test has been rejected.",
+                "action_url": "/project-boqs/9",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 10:44:16",
+                "email_error": null,
+                "created_by": 1,
+                "created_at": "2026-08-03 10:44:10",
+                "updated_at": "2026-08-03 10:44:16",
+                "event_code": "BOQ_REJECTED",
+                "event_name": "BOQ Rejected"
+            },
+            {
+                "id": 10,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 2,
+                "project_id": 1,
+                "source_module": "BOQ",
+                "source_table": "project_boqs",
+                "source_record_id": 8,
+                "title": "Project BOQ approved",
+                "message": "BOQ-SEC-5951 - Complete BOQ Sections API Test has been approved.",
+                "action_url": "/project-boqs/8",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 10:44:03",
+                "email_error": null,
+                "created_by": 1,
+                "created_at": "2026-08-03 10:43:57",
+                "updated_at": "2026-08-03 10:44:03",
+                "event_code": "BOQ_APPROVED",
+                "event_name": "BOQ Approved"
+            },
+            {
+                "id": 8,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 2,
+                "project_id": 1,
+                "source_module": "BOQ",
+                "source_table": "project_boqs",
+                "source_record_id": 7,
+                "title": "Project BOQ approved",
+                "message": "BOQ-EMAIL-004 - Final SMTP Retest has been approved.",
+                "action_url": "/project-boqs/7",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": true,
+                "email_sent_at": "2026-08-03 06:36:22",
+                "email_error": null,
+                "created_by": 6,
+                "created_at": "2026-08-03 06:36:16",
+                "updated_at": "2026-08-03 06:36:22",
+                "event_code": "BOQ_APPROVED",
+                "event_name": "BOQ Approved"
+            },
+            {
+                "id": 6,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 2,
+                "project_id": 1,
+                "source_module": "BOQ",
+                "source_table": "project_boqs",
+                "source_record_id": 6,
+                "title": "Project BOQ approved",
+                "message": "BOQ-EMAIL-003 - Final BOQ Two-Way Email Test has been approved.",
+                "action_url": "/project-boqs/6",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": false,
+                "email_sent_at": null,
+                "email_error": "Unable to send email using SMTP. Your server might not be configured to send mail using this method.Date: Mon, 3 Aug 2026 06:20:51 +0000\r\nTo: erp.dvn@gmail.com\r\nSubject: =?UTF-8?Q?Project=20BOQ=20approved?=\r\nFrom: &quot;Civil Site Management&quot; &lt;erp.dvn@gmail.com&gt;\r\nReturn-Path: &lt;erp.dvn@gmail.com&gt;\r\nReply-To: &lt;erp.dvn@gmail.com&gt;\r\nUser-Agent: CodeIgniter\r\nX-Sender: erp.dvn@gmail.com\r\nX-Mailer: CodeIgniter\r\nX-Priority: 3 (Normal)\r\nMessage-ID: &lt;6a703343699752.79246953@gmail.com&gt;\r\nMime-Version: 1.0\r\n\n",
+                "created_by": 6,
+                "created_at": "2026-08-03 06:20:51",
+                "updated_at": "2026-08-03 06:20:56",
+                "event_code": "BOQ_APPROVED",
+                "event_name": "BOQ Approved"
+            },
+            {
+                "id": 4,
+                "company_id": 1,
+                "recipient_user_id": 1,
+                "event_id": 2,
+                "project_id": 1,
+                "source_module": "BOQ",
+                "source_table": "project_boqs",
+                "source_record_id": 5,
+                "title": "Project BOQ approved",
+                "message": "BOQ-EMAIL-002 - BOQ Email Delivery Retest has been approved.",
+                "action_url": "/project-boqs/5",
+                "is_read": false,
+                "read_at": null,
+                "email_sent": false,
+                "email_sent_at": null,
+                "email_error": "Unable to send email using SMTP. Your server might not be configured to send mail using this method.Date: Mon, 3 Aug 2026 06:02:58 +0000\r\nTo: superadmin@civilpro.com\r\nSubject: =?UTF-8?Q?Project=20BOQ=20approved?=\r\nFrom: &quot;Civil Site Management&quot; &lt;erp.dvn@gmail.com&gt;\r\nReturn-Path: &lt;erp.dvn@gmail.com&gt;\r\nReply-To: &lt;erp.dvn@gmail.com&gt;\r\nUser-Agent: CodeIgniter\r\nX-Sender: erp.dvn@gmail.com\r\nX-Mailer: CodeIgniter\r\nX-Priority: 3 (Normal)\r\nMessage-ID: &lt;6a702f1220f903.18726731@gmail.com&gt;\r\nMime-Version: 1.0\r\n\n",
+                "created_by": 6,
+                "created_at": "2026-08-03 06:02:58",
+                "updated_at": "2026-08-03 06:03:03",
+                "event_code": "BOQ_APPROVED",
+                "event_name": "BOQ Approved"
+            }
+        ]
+    }
+}
+==================== FINAL BUDGET WORKFLOW STATE ====================
+id	budget_code	total_budget	status_code	submitted_by	submitted_at	approved_by	approved_at	notes
+2	BUD-API-20376	14700.00	APPROVED	1	2026-08-03 11:19:22	1	2026-08-03 11:19:25	Header update verified
+4	BUD-REJECT-7540	5000.00	REJECTED	1	2026-08-03 11:19:55	NULL	NULL	Created for rejection workflow testing
+5	BUD-EMPTY-26698	0.00	DRAFT	NULL	NULL	NULL	NULL	NULL
+
+==================== APPROVAL HISTORY ====================
+id	budget_id	action_code	action_by	action_at	comments
+1	2	SUBMITTED	1	2026-08-03 11:19:22	Submitted through complete Budget workflow API test
+2	2	APPROVED	1	2026-08-03 11:19:25	Approved through complete Budget workflow API test
+3	4	SUBMITTED	1	2026-08-03 11:19:55	Submitted for rejection workflow test
+4	4	REJECTED	1	2026-08-03 11:19:55	Rejected because the test budget requires correction
+
+==================== STATUS HISTORY ====================
+id	budget_id	from_status_code	to_status_code	change_reason	changed_by	changed_at
+2	2	DRAFT	SUBMITTED	Submitted through complete Budget workflow API test	1	2026-08-03 11:19:22
+3	2	SUBMITTED	APPROVED	Approved through complete Budget workflow API test	1	2026-08-03 11:19:25
+4	4	DRAFT	SUBMITTED	Submitted for rejection workflow test	1	2026-08-03 11:19:55
+5	4	SUBMITTED	REJECTED	Rejected because the test budget requires correction	1	2026-08-03 11:19:55
+
+==================== CONTENT LOCK VERIFICATION ====================
+id	budget_id	line_code	planned_quantity	planned_rate	planned_amount	deleted_at
+4	2	MAT-13117	12.0000	1100.0000	13200.00	NULL
+8	4	REJ-LINE-26564	5.0000	1000.0000	5000.00	NULL
+
+==================== NOTIFICATIONS AND EMAIL ====================
+id	source_record_id	recipient_user_id	event_code	title	email_sent	email_sent_at	email_error	created_at
+13	2	1	BUDGET_APPROVED	Project budget approved	1	2026-08-03 11:19:53	NULL	2026-08-03 11:19:25
+14	4	1	BUDGET_REJECTED	Project budget rejected	1	2026-08-03 11:20:23	NULL	2026-08-03 11:19:55

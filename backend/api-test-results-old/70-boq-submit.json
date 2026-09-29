@@ -1,0 +1,41 @@
+{
+    "success": true,
+    "message": "Project BOQ submitted successfully.",
+    "data": {
+        "project_boq": {
+            "id": 8,
+            "company_id": 1,
+            "project_id": 1,
+            "boq_code": "BOQ-SEC-5951",
+            "boq_name": "Complete BOQ Sections API Test",
+            "version_no": 1,
+            "revision_no": 0,
+            "boq_date": "2026-08-03",
+            "valid_from": "2026-08-03",
+            "currency_code": "INR",
+            "status_id": 2,
+            "total_amount": 135000,
+            "notes": "Complete BOQ Sections testing",
+            "submitted_by": 1,
+            "submitted_at": "2026-08-03 10:43:49",
+            "approved_by": null,
+            "approved_at": null,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 06:52:46",
+            "updated_at": "2026-08-03 16:13:49",
+            "deleted_at": null,
+            "branch_id": "1",
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "status_code": "UNDER_REVIEW",
+            "status_name": "Under Review",
+            "submitted_by_employee_code": null,
+            "submitted_by_first_name": "Admin",
+            "submitted_by_last_name": "Civilpro",
+            "approved_by_employee_code": null,
+            "approved_by_first_name": null,
+            "approved_by_last_name": null
+        }
+    }
+}

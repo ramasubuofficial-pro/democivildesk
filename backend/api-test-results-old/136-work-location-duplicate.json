@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "location_code": "The location code already exists for the selected site."
+    }
+}

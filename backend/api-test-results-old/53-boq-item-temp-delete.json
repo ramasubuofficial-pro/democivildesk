@@ -1,0 +1,21 @@
+{
+    "success": true,
+    "message": "BOQ item deleted successfully.",
+    "data": {
+        "totals": {
+            "boq_total": 135000,
+            "sections": [
+                {
+                    "id": "2",
+                    "section_code": "SEC-CIVIL",
+                    "section_amount": "135000.00"
+                },
+                {
+                    "id": "3",
+                    "section_code": "SEC-EXC",
+                    "section_amount": "135000.00"
+                }
+            ]
+        }
+    }
+}

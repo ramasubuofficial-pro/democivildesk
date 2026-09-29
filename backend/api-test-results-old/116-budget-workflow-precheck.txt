@@ -1,0 +1,4 @@
+id	budget_code	total_budget	status_code
+2	BUD-API-20376	14700.00	DRAFT
+id	line_code	planned_quantity	planned_rate	planned_amount
+4	MAT-13117	12.0000	1100.0000	13200.00

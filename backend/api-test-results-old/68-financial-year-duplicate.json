@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "date_range": "Financial-year dates overlap an existing active record."
+    }
+}

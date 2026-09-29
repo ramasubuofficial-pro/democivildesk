@@ -1,0 +1,28 @@
+{
+    "success": true,
+    "message": "Wage period created successfully.",
+    "data": {
+        "wage_period": {
+            "id": "3",
+            "company_id": "1",
+            "project_id": "1",
+            "site_id": "1",
+            "period_code": "WP_1775528188",
+            "period_start": "2026-08-04",
+            "period_end": "2026-08-04",
+            "contractor_id": "4",
+            "status_id": "1",
+            "gross_wages": "0.00",
+            "total_additions": "0.00",
+            "total_deductions": "0.00",
+            "net_payable": "0.00",
+            "approved_by": null,
+            "approved_at": null,
+            "remarks": "Module 5 wage test",
+            "created_by": "1",
+            "updated_by": "1",
+            "created_at": "2026-08-04 08:04:42",
+            "updated_at": "2026-08-04 08:04:42"
+        }
+    }
+}

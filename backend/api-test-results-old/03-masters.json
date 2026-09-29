@@ -1,0 +1,773 @@
+{
+    "success": true,
+    "message": "Labour masters retrieved successfully.",
+    "data": {
+        "masters": {
+            "category-skill-levels": [
+                {
+                    "id": "1",
+                    "skill_level_code": "UNSKILLED",
+                    "skill_level_name": "Unskilled",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "2",
+                    "skill_level_code": "SEMI_SKILLED",
+                    "skill_level_name": "Semi Skilled",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "3",
+                    "skill_level_code": "SKILLED",
+                    "skill_level_name": "Skilled",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "4",
+                    "skill_level_code": "HIGHLY_SKILLED",
+                    "skill_level_name": "Highly Skilled",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "5",
+                    "skill_level_code": "SUPERVISORY",
+                    "skill_level_name": "Supervisory",
+                    "sort_order": "5",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                }
+            ],
+            "category-wage-bases": [
+                {
+                    "id": "1",
+                    "wage_basis_code": "DAILY",
+                    "wage_basis_name": "Daily",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "2",
+                    "wage_basis_code": "HOURLY",
+                    "wage_basis_name": "Hourly",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "3",
+                    "wage_basis_code": "MONTHLY",
+                    "wage_basis_name": "Monthly",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "4",
+                    "wage_basis_code": "PIECE_RATE",
+                    "wage_basis_name": "Piece Rate",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                }
+            ],
+            "contractor-statuses": [
+                {
+                    "id": "1",
+                    "status_code": "ACTIVE",
+                    "status_name": "Active",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "2",
+                    "status_code": "INACTIVE",
+                    "status_name": "Inactive",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "3",
+                    "status_code": "BLACKLISTED",
+                    "status_name": "Blacklisted",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                }
+            ],
+            "employment-sources": [
+                {
+                    "id": "1",
+                    "employment_source_code": "DIRECT",
+                    "employment_source_name": "Direct",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "employment_source_code": "CONTRACTOR",
+                    "employment_source_name": "Contractor",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "genders": [
+                {
+                    "id": "1",
+                    "gender_code": "MALE",
+                    "gender_name": "Male",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "gender_code": "FEMALE",
+                    "gender_name": "Female",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "gender_code": "OTHER",
+                    "gender_name": "Other",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "gender_code": "NOT_SPECIFIED",
+                    "gender_name": "Not Specified",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "worker-id-types": [
+                {
+                    "id": "1",
+                    "id_type_code": "AADHAAR",
+                    "id_type_name": "Aadhaar",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "id_type_code": "VOTER_ID",
+                    "id_type_name": "Voter Id",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "id_type_code": "DRIVING_LICENCE",
+                    "id_type_name": "Driving Licence",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "id_type_code": "PASSPORT",
+                    "id_type_name": "Passport",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "5",
+                    "id_type_code": "OTHER",
+                    "id_type_name": "Other",
+                    "sort_order": "5",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "6",
+                    "id_type_code": "NOT_PROVIDED",
+                    "id_type_name": "Not Provided",
+                    "sort_order": "6",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "worker-statuses": [
+                {
+                    "id": "1",
+                    "status_code": "ACTIVE",
+                    "status_name": "Active",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "status_code": "INACTIVE",
+                    "status_name": "Inactive",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "status_code": "LEFT",
+                    "status_name": "Left",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "status_code": "SUSPENDED",
+                    "status_name": "Suspended",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "worker-wage-bases": [
+                {
+                    "id": "1",
+                    "wage_basis_code": "DAILY",
+                    "wage_basis_name": "Daily",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "wage_basis_code": "HOURLY",
+                    "wage_basis_name": "Hourly",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "wage_basis_code": "MONTHLY",
+                    "wage_basis_name": "Monthly",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "wage_basis_code": "PIECE_RATE",
+                    "wage_basis_name": "Piece Rate",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "document-statuses": [
+                {
+                    "id": "1",
+                    "verification_status_code": "PENDING",
+                    "verification_status_name": "Pending",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "verification_status_code": "VERIFIED",
+                    "verification_status_name": "Verified",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "verification_status_code": "REJECTED",
+                    "verification_status_name": "Rejected",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "verification_status_code": "EXPIRED",
+                    "verification_status_name": "Expired",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "assignment-statuses": [
+                {
+                    "id": "1",
+                    "status_code": "PLANNED",
+                    "status_name": "Planned",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "status_code": "ACTIVE",
+                    "status_name": "Active",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "status_code": "COMPLETED",
+                    "status_name": "Completed",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "status_code": "CANCELLED",
+                    "status_name": "Cancelled",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "assignment-wage-bases": [
+                {
+                    "id": "1",
+                    "wage_basis_code": "DAILY",
+                    "wage_basis_name": "Daily",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "wage_basis_code": "HOURLY",
+                    "wage_basis_name": "Hourly",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "wage_basis_code": "MONTHLY",
+                    "wage_basis_name": "Monthly",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "wage_basis_code": "PIECE_RATE",
+                    "wage_basis_name": "Piece Rate",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "attendance-statuses": [
+                {
+                    "id": "1",
+                    "attendance_status_code": "PRESENT",
+                    "attendance_status_name": "Present",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "2",
+                    "attendance_status_code": "ABSENT",
+                    "attendance_status_name": "Absent",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "3",
+                    "attendance_status_code": "HALF_DAY",
+                    "attendance_status_name": "Half Day",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "4",
+                    "attendance_status_code": "PAID_LEAVE",
+                    "attendance_status_name": "Paid Leave",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "5",
+                    "attendance_status_code": "UNPAID_LEAVE",
+                    "attendance_status_name": "Unpaid Leave",
+                    "sort_order": "5",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "6",
+                    "attendance_status_code": "WEEKLY_OFF",
+                    "attendance_status_name": "Weekly Off",
+                    "sort_order": "6",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "7",
+                    "attendance_status_code": "HOLIDAY",
+                    "attendance_status_name": "Holiday",
+                    "sort_order": "7",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                }
+            ],
+            "attendance-sources": [
+                {
+                    "id": "1",
+                    "attendance_source_code": "MANUAL",
+                    "attendance_source_name": "Manual",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "2",
+                    "attendance_source_code": "BIOMETRIC",
+                    "attendance_source_name": "Biometric",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "3",
+                    "attendance_source_code": "MOBILE",
+                    "attendance_source_name": "Mobile",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "4",
+                    "attendance_source_code": "IMPORT",
+                    "attendance_source_name": "Import",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                }
+            ],
+            "attendance-batch-statuses": [
+                {
+                    "id": "1",
+                    "status_code": "DRAFT",
+                    "status_name": "Draft",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "2",
+                    "status_code": "SUBMITTED",
+                    "status_name": "Submitted",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "3",
+                    "status_code": "APPROVED",
+                    "status_name": "Approved",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "4",
+                    "status_code": "REJECTED",
+                    "status_name": "Rejected",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                },
+                {
+                    "id": "5",
+                    "status_code": "LOCKED",
+                    "status_name": "Locked",
+                    "sort_order": "5",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:44",
+                    "updated_at": "2026-07-26 12:38:44"
+                }
+            ],
+            "wage-period-statuses": [
+                {
+                    "id": "1",
+                    "status_code": "DRAFT",
+                    "status_name": "Draft",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "status_code": "CALCULATED",
+                    "status_name": "Calculated",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "status_code": "SUBMITTED",
+                    "status_name": "Submitted",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "status_code": "APPROVED",
+                    "status_name": "Approved",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "5",
+                    "status_code": "PARTIALLY_PAID",
+                    "status_name": "Partially Paid",
+                    "sort_order": "5",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "6",
+                    "status_code": "PAID",
+                    "status_name": "Paid",
+                    "sort_order": "6",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "7",
+                    "status_code": "CANCELLED",
+                    "status_name": "Cancelled",
+                    "sort_order": "7",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "wage-payment-statuses": [
+                {
+                    "id": "1",
+                    "payment_status_code": "UNPAID",
+                    "payment_status_name": "Unpaid",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "payment_status_code": "PARTIALLY_PAID",
+                    "payment_status_name": "Partially Paid",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "payment_status_code": "PAID",
+                    "payment_status_name": "Paid",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "payment_status_code": "ON_HOLD",
+                    "payment_status_name": "On Hold",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "payment-modes": [
+                {
+                    "id": "1",
+                    "payment_mode_code": "CASH",
+                    "payment_mode_name": "Cash",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "payment_mode_code": "BANK_TRANSFER",
+                    "payment_mode_name": "Bank Transfer",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "payment_mode_code": "UPI",
+                    "payment_mode_name": "Upi",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "payment_mode_code": "CHEQUE",
+                    "payment_mode_name": "Cheque",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "5",
+                    "payment_mode_code": "OTHER",
+                    "payment_mode_name": "Other",
+                    "sort_order": "5",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ],
+            "payment-statuses": [
+                {
+                    "id": "1",
+                    "status_code": "DRAFT",
+                    "status_name": "Draft",
+                    "sort_order": "1",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "2",
+                    "status_code": "SUBMITTED",
+                    "status_name": "Submitted",
+                    "sort_order": "2",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "3",
+                    "status_code": "APPROVED",
+                    "status_name": "Approved",
+                    "sort_order": "3",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "4",
+                    "status_code": "PAID",
+                    "status_name": "Paid",
+                    "sort_order": "4",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                },
+                {
+                    "id": "5",
+                    "status_code": "CANCELLED",
+                    "status_name": "Cancelled",
+                    "sort_order": "5",
+                    "is_active": "1",
+                    "created_at": "2026-07-26 12:38:45",
+                    "updated_at": "2026-07-26 12:38:45"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "success": true,
+    "message": "Units of measurement retrieved successfully.",
+    "data": {
+        "units_of_measurement": [
+            {
+                "id": 12,
+                "company_id": 1,
+                "unit_code": "FT_API",
+                "unit_name": "API Test Foot",
+                "unit_symbol": "ft",
+                "unit_type_id": 2,
+                "decimal_places": 2,
+                "description": "Updated through Unit Master API",
+                "display_order": 210,
+                "is_system_defined": false,
+                "is_active": true,
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-07-26 17:04:45",
+                "updated_at": "2026-07-26 17:05:21",
+                "deleted_at": null,
+                "unit_type_code": "LENGTH",
+                "unit_type_name": "Length"
+            }
+        ]
+    }
+}

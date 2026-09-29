@@ -1,0 +1,572 @@
+WORK_CATEGORY_ID=
+UOM_ID=
+ITEM_CODE=ITEM-EXC-24046
+TEMP_CODE=ITEM-TEMP-24482
+42 CREATE MAIN ITEM: HTTP 201
+43 CREATE TEMP ITEM: HTTP 201
+44 LIST ITEMS: HTTP 200
+45 VIEW ITEM: HTTP 200
+46 SEARCH ITEMS: HTTP 200
+47 SECTION FILTER: HTTP 200
+48 UPDATE ITEM: HTTP 200
+49 DUPLICATE CODE: HTTP 422
+50 INVALID SECTION: HTTP 422
+51 ZONE WITHOUT SITE: HTTP 422
+52 INVALID PERCENTAGE: HTTP 422
+53 DELETE TEMP ITEM: HTTP 200
+54 FINAL LIST: HTTP 200
+ 
+==================== 42-boq-item-create.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item created successfully.",
+    "data": {
+        "boq_item": {
+            "id": 4,
+            "company_id": 1,
+            "project_id": 1,
+            "boq_id": 8,
+            "section_id": 3,
+            "site_id": null,
+            "work_zone_id": null,
+            "work_category_id": 1,
+            "uom_id": 1,
+            "item_code": "ITEM-EXC-24046",
+            "item_name": "Foundation Excavation",
+            "specification": "Excavation for foundation in ordinary soil",
+            "quantity": 125,
+            "rate": 850,
+            "amount": 106250,
+            "wastage_percentage": 2,
+            "progress_weightage": 15,
+            "is_provisional": false,
+            "display_order": 10,
+            "notes": "Main BOQ item API test",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 09:36:53",
+            "updated_at": "2026-08-03 09:36:53",
+            "deleted_at": null,
+            "section_code": "SEC-EXC",
+            "section_name": "Excavation and Earthworks",
+            "site_code": null,
+            "site_name": null,
+            "zone_code": null,
+            "zone_name": null,
+            "category_code": "PRELIMINARY",
+            "category_name": "Preliminary Works",
+            "unit_code": "NOS",
+            "unit_name": "Numbers",
+            "unit_symbol": "Nos"
+        },
+        "totals": {
+            "boq_total": 106250,
+            "sections": [
+                {
+                    "id": "2",
+                    "section_code": "SEC-CIVIL",
+                    "section_amount": "106250.00"
+                },
+                {
+                    "id": "3",
+                    "section_code": "SEC-EXC",
+                    "section_amount": "106250.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 43-boq-item-temp-create.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item created successfully.",
+    "data": {
+        "boq_item": {
+            "id": 5,
+            "company_id": 1,
+            "project_id": 1,
+            "boq_id": 8,
+            "section_id": 3,
+            "site_id": null,
+            "work_zone_id": null,
+            "work_category_id": 1,
+            "uom_id": 1,
+            "item_code": "ITEM-TEMP-24482",
+            "item_name": "Temporary Test Item",
+            "specification": "Created for deletion testing",
+            "quantity": 10,
+            "rate": 500,
+            "amount": 5000,
+            "wastage_percentage": 0,
+            "progress_weightage": 1,
+            "is_provisional": true,
+            "display_order": 99,
+            "notes": "Delete after testing",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 09:36:54",
+            "updated_at": "2026-08-03 09:36:54",
+            "deleted_at": null,
+            "section_code": "SEC-EXC",
+            "section_name": "Excavation and Earthworks",
+            "site_code": null,
+            "site_name": null,
+            "zone_code": null,
+            "zone_name": null,
+            "category_code": "PRELIMINARY",
+            "category_name": "Preliminary Works",
+            "unit_code": "NOS",
+            "unit_name": "Numbers",
+            "unit_symbol": "Nos"
+        },
+        "totals": {
+            "boq_total": 111250,
+            "sections": [
+                {
+                    "id": "2",
+                    "section_code": "SEC-CIVIL",
+                    "section_amount": "111250.00"
+                },
+                {
+                    "id": "3",
+                    "section_code": "SEC-EXC",
+                    "section_amount": "111250.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 44-boq-items-list.json ==================== 
+{
+    "success": true,
+    "message": "BOQ items retrieved successfully.",
+    "data": {
+        "boq_items": [
+            {
+                "id": 4,
+                "company_id": 1,
+                "project_id": 1,
+                "boq_id": 8,
+                "section_id": 3,
+                "site_id": null,
+                "work_zone_id": null,
+                "work_category_id": 1,
+                "uom_id": 1,
+                "item_code": "ITEM-EXC-24046",
+                "item_name": "Foundation Excavation",
+                "specification": "Excavation for foundation in ordinary soil",
+                "quantity": 125,
+                "rate": 850,
+                "amount": 106250,
+                "wastage_percentage": 2,
+                "progress_weightage": 15,
+                "is_provisional": false,
+                "display_order": 10,
+                "notes": "Main BOQ item API test",
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-08-03 09:36:53",
+                "updated_at": "2026-08-03 09:36:53",
+                "deleted_at": null,
+                "section_code": "SEC-EXC",
+                "section_name": "Excavation and Earthworks",
+                "site_code": null,
+                "site_name": null,
+                "zone_code": null,
+                "zone_name": null,
+                "category_code": "PRELIMINARY",
+                "category_name": "Preliminary Works",
+                "unit_code": "NOS",
+                "unit_name": "Numbers",
+                "unit_symbol": "Nos"
+            },
+            {
+                "id": 5,
+                "company_id": 1,
+                "project_id": 1,
+                "boq_id": 8,
+                "section_id": 3,
+                "site_id": null,
+                "work_zone_id": null,
+                "work_category_id": 1,
+                "uom_id": 1,
+                "item_code": "ITEM-TEMP-24482",
+                "item_name": "Temporary Test Item",
+                "specification": "Created for deletion testing",
+                "quantity": 10,
+                "rate": 500,
+                "amount": 5000,
+                "wastage_percentage": 0,
+                "progress_weightage": 1,
+                "is_provisional": true,
+                "display_order": 99,
+                "notes": "Delete after testing",
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-08-03 09:36:54",
+                "updated_at": "2026-08-03 09:36:54",
+                "deleted_at": null,
+                "section_code": "SEC-EXC",
+                "section_name": "Excavation and Earthworks",
+                "site_code": null,
+                "site_name": null,
+                "zone_code": null,
+                "zone_name": null,
+                "category_code": "PRELIMINARY",
+                "category_name": "Preliminary Works",
+                "unit_code": "NOS",
+                "unit_name": "Numbers",
+                "unit_symbol": "Nos"
+            }
+        ]
+    }
+} 
+==================== 45-boq-item-view.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item retrieved successfully.",
+    "data": {
+        "boq_item": {
+            "id": 4,
+            "company_id": 1,
+            "project_id": 1,
+            "boq_id": 8,
+            "section_id": 3,
+            "site_id": null,
+            "work_zone_id": null,
+            "work_category_id": 1,
+            "uom_id": 1,
+            "item_code": "ITEM-EXC-24046",
+            "item_name": "Foundation Excavation",
+            "specification": "Excavation for foundation in ordinary soil",
+            "quantity": 125,
+            "rate": 850,
+            "amount": 106250,
+            "wastage_percentage": 2,
+            "progress_weightage": 15,
+            "is_provisional": false,
+            "display_order": 10,
+            "notes": "Main BOQ item API test",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 09:36:53",
+            "updated_at": "2026-08-03 09:36:53",
+            "deleted_at": null,
+            "section_code": "SEC-EXC",
+            "section_name": "Excavation and Earthworks",
+            "site_code": null,
+            "site_name": null,
+            "zone_code": null,
+            "zone_name": null,
+            "category_code": "PRELIMINARY",
+            "category_name": "Preliminary Works",
+            "unit_code": "NOS",
+            "unit_name": "Numbers",
+            "unit_symbol": "Nos"
+        }
+    }
+} 
+==================== 46-boq-items-search.json ==================== 
+{
+    "success": true,
+    "message": "BOQ items retrieved successfully.",
+    "data": {
+        "boq_items": [
+            {
+                "id": 4,
+                "company_id": 1,
+                "project_id": 1,
+                "boq_id": 8,
+                "section_id": 3,
+                "site_id": null,
+                "work_zone_id": null,
+                "work_category_id": 1,
+                "uom_id": 1,
+                "item_code": "ITEM-EXC-24046",
+                "item_name": "Foundation Excavation",
+                "specification": "Excavation for foundation in ordinary soil",
+                "quantity": 125,
+                "rate": 850,
+                "amount": 106250,
+                "wastage_percentage": 2,
+                "progress_weightage": 15,
+                "is_provisional": false,
+                "display_order": 10,
+                "notes": "Main BOQ item API test",
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-08-03 09:36:53",
+                "updated_at": "2026-08-03 09:36:53",
+                "deleted_at": null,
+                "section_code": "SEC-EXC",
+                "section_name": "Excavation and Earthworks",
+                "site_code": null,
+                "site_name": null,
+                "zone_code": null,
+                "zone_name": null,
+                "category_code": "PRELIMINARY",
+                "category_name": "Preliminary Works",
+                "unit_code": "NOS",
+                "unit_name": "Numbers",
+                "unit_symbol": "Nos"
+            }
+        ]
+    }
+} 
+==================== 47-boq-items-section-filter.json ==================== 
+{
+    "success": true,
+    "message": "BOQ items retrieved successfully.",
+    "data": {
+        "boq_items": [
+            {
+                "id": 4,
+                "company_id": 1,
+                "project_id": 1,
+                "boq_id": 8,
+                "section_id": 3,
+                "site_id": null,
+                "work_zone_id": null,
+                "work_category_id": 1,
+                "uom_id": 1,
+                "item_code": "ITEM-EXC-24046",
+                "item_name": "Foundation Excavation",
+                "specification": "Excavation for foundation in ordinary soil",
+                "quantity": 125,
+                "rate": 850,
+                "amount": 106250,
+                "wastage_percentage": 2,
+                "progress_weightage": 15,
+                "is_provisional": false,
+                "display_order": 10,
+                "notes": "Main BOQ item API test",
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-08-03 09:36:53",
+                "updated_at": "2026-08-03 09:36:53",
+                "deleted_at": null,
+                "section_code": "SEC-EXC",
+                "section_name": "Excavation and Earthworks",
+                "site_code": null,
+                "site_name": null,
+                "zone_code": null,
+                "zone_name": null,
+                "category_code": "PRELIMINARY",
+                "category_name": "Preliminary Works",
+                "unit_code": "NOS",
+                "unit_name": "Numbers",
+                "unit_symbol": "Nos"
+            },
+            {
+                "id": 5,
+                "company_id": 1,
+                "project_id": 1,
+                "boq_id": 8,
+                "section_id": 3,
+                "site_id": null,
+                "work_zone_id": null,
+                "work_category_id": 1,
+                "uom_id": 1,
+                "item_code": "ITEM-TEMP-24482",
+                "item_name": "Temporary Test Item",
+                "specification": "Created for deletion testing",
+                "quantity": 10,
+                "rate": 500,
+                "amount": 5000,
+                "wastage_percentage": 0,
+                "progress_weightage": 1,
+                "is_provisional": true,
+                "display_order": 99,
+                "notes": "Delete after testing",
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-08-03 09:36:54",
+                "updated_at": "2026-08-03 09:36:54",
+                "deleted_at": null,
+                "section_code": "SEC-EXC",
+                "section_name": "Excavation and Earthworks",
+                "site_code": null,
+                "site_name": null,
+                "zone_code": null,
+                "zone_name": null,
+                "category_code": "PRELIMINARY",
+                "category_name": "Preliminary Works",
+                "unit_code": "NOS",
+                "unit_name": "Numbers",
+                "unit_symbol": "Nos"
+            }
+        ]
+    }
+} 
+==================== 48-boq-item-update.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item updated successfully.",
+    "data": {
+        "boq_item": {
+            "id": 4,
+            "company_id": 1,
+            "project_id": 1,
+            "boq_id": 8,
+            "section_id": 3,
+            "site_id": null,
+            "work_zone_id": null,
+            "work_category_id": 1,
+            "uom_id": 1,
+            "item_code": "ITEM-EXC-24046",
+            "item_name": "Foundation Excavation and Disposal",
+            "specification": "Excavation and disposal of ordinary soil",
+            "quantity": 150,
+            "rate": 900,
+            "amount": 135000,
+            "wastage_percentage": 3,
+            "progress_weightage": 20,
+            "is_provisional": false,
+            "display_order": 15,
+            "notes": "Updated during complete API testing",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 09:36:53",
+            "updated_at": "2026-08-03 09:36:55",
+            "deleted_at": null,
+            "section_code": "SEC-EXC",
+            "section_name": "Excavation and Earthworks",
+            "site_code": null,
+            "site_name": null,
+            "zone_code": null,
+            "zone_name": null,
+            "category_code": "PRELIMINARY",
+            "category_name": "Preliminary Works",
+            "unit_code": "NOS",
+            "unit_name": "Numbers",
+            "unit_symbol": "Nos"
+        },
+        "totals": {
+            "boq_total": 140000,
+            "sections": [
+                {
+                    "id": "2",
+                    "section_code": "SEC-CIVIL",
+                    "section_amount": "140000.00"
+                },
+                {
+                    "id": "3",
+                    "section_code": "SEC-EXC",
+                    "section_amount": "140000.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 49-boq-item-duplicate.json ==================== 
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "item_code": "The item code already exists in this BOQ."
+    }
+} 
+==================== 50-boq-item-invalid-section.json ==================== 
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "section_id": "Select a valid section from this BOQ."
+    }
+} 
+==================== 51-boq-item-zone-without-site.json ==================== 
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "work_zone_id": "A site is required when a work zone is selected."
+    }
+} 
+==================== 52-boq-item-invalid-percent.json ==================== 
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "wastage_percentage": "The wastage percentage must be between 0 and 100.",
+        "progress_weightage": "The progress weightage must be between 0 and 100."
+    }
+} 
+==================== 53-boq-item-temp-delete.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item deleted successfully.",
+    "data": {
+        "totals": {
+            "boq_total": 135000,
+            "sections": [
+                {
+                    "id": "2",
+                    "section_code": "SEC-CIVIL",
+                    "section_amount": "135000.00"
+                },
+                {
+                    "id": "3",
+                    "section_code": "SEC-EXC",
+                    "section_amount": "135000.00"
+                }
+            ]
+        }
+    }
+} 
+==================== 54-boq-items-final-list.json ==================== 
+{
+    "success": true,
+    "message": "BOQ items retrieved successfully.",
+    "data": {
+        "boq_items": [
+            {
+                "id": 4,
+                "company_id": 1,
+                "project_id": 1,
+                "boq_id": 8,
+                "section_id": 3,
+                "site_id": null,
+                "work_zone_id": null,
+                "work_category_id": 1,
+                "uom_id": 1,
+                "item_code": "ITEM-EXC-24046",
+                "item_name": "Foundation Excavation and Disposal",
+                "specification": "Excavation and disposal of ordinary soil",
+                "quantity": 150,
+                "rate": 900,
+                "amount": 135000,
+                "wastage_percentage": 3,
+                "progress_weightage": 20,
+                "is_provisional": false,
+                "display_order": 15,
+                "notes": "Updated during complete API testing",
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-08-03 09:36:53",
+                "updated_at": "2026-08-03 09:36:55",
+                "deleted_at": null,
+                "section_code": "SEC-EXC",
+                "section_name": "Excavation and Earthworks",
+                "site_code": null,
+                "site_name": null,
+                "zone_code": null,
+                "zone_name": null,
+                "category_code": "PRELIMINARY",
+                "category_name": "Preliminary Works",
+                "unit_code": "NOS",
+                "unit_name": "Numbers",
+                "unit_symbol": "Nos"
+            }
+        ]
+    }
+}
+==================== DATABASE VERIFICATION ====================
+id	item_code	item_name	quantity	rate	amount	deleted_at
+3	ITEM-EXC-4347	Duplicate Item	1.0000	100.0000	100.00	2026-08-03 09:36:40
+4	ITEM-EXC-24046	Foundation Excavation and Disposal	150.0000	900.0000	135000.00	NULL
+5	ITEM-TEMP-24482	Temporary Test Item	10.0000	500.0000	5000.00	2026-08-03 09:36:57
+id	section_code	parent_section_id	section_amount
+2	SEC-CIVIL	NULL	135000.00
+3	SEC-EXC	2	135000.00
+id	boq_code	total_amount	status_id	status_code	status_name
+8	BOQ-SEC-5951	135000.00	1	DRAFT	Draft

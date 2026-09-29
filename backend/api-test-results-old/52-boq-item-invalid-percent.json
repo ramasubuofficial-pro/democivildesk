@@ -1,0 +1,8 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "wastage_percentage": "The wastage percentage must be between 0 and 100.",
+        "progress_weightage": "The progress weightage must be between 0 and 100."
+    }
+}

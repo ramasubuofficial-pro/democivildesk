@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "planned_rate": "The planned rate must be zero or greater."
+    }
+}

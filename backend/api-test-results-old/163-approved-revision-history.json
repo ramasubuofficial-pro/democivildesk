@@ -1,0 +1,42 @@
+{
+    "success": true,
+    "message": "Budget revision history retrieved successfully.",
+    "data": {
+        "approvals": [
+            {
+                "id": "5",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_id": "1",
+                "approval_level": "1",
+                "action_id": "1",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:46:50",
+                "comments": "Submitted through complete revision workflow test",
+                "action_code": "SUBMITTED",
+                "action_name": "Submitted",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            },
+            {
+                "id": "6",
+                "company_id": "1",
+                "project_id": "1",
+                "budget_id": "2",
+                "revision_id": "1",
+                "approval_level": "1",
+                "action_id": "2",
+                "action_by": "1",
+                "action_at": "2026-08-03 11:46:52",
+                "comments": "Approved and applied through complete revision test",
+                "action_code": "APPROVED",
+                "action_name": "Approved",
+                "employee_code": null,
+                "first_name": "Admin",
+                "last_name": "Civilpro"
+            }
+        ]
+    }
+}

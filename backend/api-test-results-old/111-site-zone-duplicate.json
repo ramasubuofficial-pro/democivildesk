@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "zone_code": "The zone code already exists for the selected site."
+    }
+}

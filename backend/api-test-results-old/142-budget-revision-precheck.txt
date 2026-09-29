@@ -1,0 +1,5 @@
+id	budget_code	direct_cost	overhead_cost	contingency_amount	total_budget	status_code
+2	BUD-API-20376	13200.00	1000.00	500.00	14700.00	APPROVED
+id	line_code	planned_quantity	planned_rate	planned_amount	deleted_at
+4	MAT-13117	12.0000	1100.0000	13200.00	NULL
+5	OVH-7424	2.0000	500.0000	1000.00	NULL

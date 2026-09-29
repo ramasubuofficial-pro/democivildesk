@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "section_id": "Select a valid section from this BOQ."
+    }
+}

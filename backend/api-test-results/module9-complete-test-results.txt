@@ -1,0 +1,52 @@
+﻿Module 9 - Project Expenses and Costing Complete API Test
+Started: 2026-08-04 20:11:52
+
+PASS 01 - Login
+PASS 02 - Authenticated user
+PASS 03 - Expense and costing masters
+PASS 04 - Accessible projects
+PASS 05 - Dynamic project selection
+PASS 06 - Accessible project sites
+PASS 07 - Dynamic site selection
+PASS 08 - Required controlled masters
+PASS 09 - Create expense category
+PASS 10 - Update expense category
+PASS 11 - List expense categories
+PASS 12 - Project budgets
+PASS 13 - Dynamic budget line selection
+PASS 14 - Create expense request
+PASS 15 - Update expense request
+PASS 16 - Add expense request item
+PASS 17 - View calculated expense request
+PASS 18 - List expense requests
+PASS 19 - Submit expense request
+PASS 20 - Approve expense request
+PASS 21 - Create expense bill
+PASS 22 - Update expense bill
+PASS 23 - Add expense bill item
+PASS 24 - Add expense bill document
+PASS 25 - Allocate bill item to budget
+PASS 26 - View calculated bill, documents and allocations
+PASS 27 - List expense bills
+PASS 28 - Submit expense bill
+PASS 29 - Approve expense bill
+PASS 30 - Post expense bill to actual cost
+PASS 31 - Create expense payment
+PASS 32 - Update expense payment
+PASS 33 - View expense payment
+PASS 34 - List expense payments
+PASS 35 - Submit expense payment
+PASS 36 - Approve expense payment
+PASS 37 - Mark expense payment paid
+PASS 38 - Verify bill paid and outstanding values
+PASS 39 - Consolidated project costing summary
+PASS 40 - Generate project cost snapshot
+PASS 41 - List project cost snapshots
+PASS 42 - Load current user's notifications
+PASS 43 - Request notification and email sent
+PASS 44 - Bill notification and email sent
+PASS 45 - Payment notification and email sent
+PASS 46 - Logout
+
+ALL MODULE 9 TESTS PASSED: 46/46
+Completed: 2026-08-04 20:13:06

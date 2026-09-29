@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Permission denied.",
+    "data": {
+        "required_permission": "branch.view"
+    }
+}

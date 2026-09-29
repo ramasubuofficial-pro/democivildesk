@@ -1,0 +1,47 @@
+Module 8 - Subcontract Management Complete API Test
+Started: 2026-08-04 19:04:28
+
+PASS 01 - Login
+PASS 02 - Authenticated user
+PASS 03 - Subcontract masters
+PASS 04 - Accessible projects
+PASS 05 - Dynamic project selection
+PASS 06 - Dynamic site selection
+PASS 07 - Dynamic zone selection
+PASS 08 - Dynamic BOQ header selection
+PASS 09 - Dynamic BOQ selection
+PASS 10 - Create subcontractor
+PASS 11 - List subcontractors
+PASS 12 - View subcontractor
+PASS 13 - Update subcontractor
+PASS 14 - Create subcontractor document
+PASS 15 - Verify subcontractor document
+PASS 16 - Create work order
+PASS 17 - Add work order item
+PASS 18 - View calculated work order
+PASS 19 - Submit work order
+PASS 20 - Approve work order
+PASS 21 - Activate work order
+PASS 22 - Create measurement
+PASS 23 - Add measurement line
+PASS 24 - Submit measurement
+PASS 25 - Verify measurement
+PASS 26 - Approve measurement
+PASS 27 - Create RA bill
+PASS 28 - Add RA bill item
+PASS 29 - Submit RA bill
+PASS 30 - Verify RA bill
+PASS 31 - Approve RA bill
+PASS 32 - Certify RA bill
+PASS 33 - Create payment
+PASS 34 - Submit payment
+PASS 35 - Approve payment
+PASS 36 - Mark payment paid
+PASS 37 - Module 5 and Module 7 supported integrations
+PASS 38 - Applicable in-app notifications
+PASS 39 - Notification records
+PASS 40 - Email delivery or attempt records
+PASS 41 - Logout
+
+ALL MODULE 8 TESTS PASSED: 41/41
+Completed: 2026-08-04 19:05:52

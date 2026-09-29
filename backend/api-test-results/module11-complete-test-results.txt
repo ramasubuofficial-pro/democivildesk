@@ -1,0 +1,38 @@
+﻿Module 11 - Dashboard and Reports Complete API Test
+Started: 2026-08-04 21:03:57
+
+PASS 01 - Login
+PASS 02 - Authenticated user
+PASS 03 - Accessible projects
+PASS 04 - Dynamic project selection
+PASS 05 - Dashboard and report masters
+PASS 06 - Dynamic master selection
+PASS 07 - Company management dashboard
+PASS 08 - Project-filtered management dashboard
+PASS 09 - Project performance dashboard
+PASS 10 - Daily progress report
+PASS 11 - Project cost report
+PASS 12 - Labour utilisation report
+PASS 13 - Material consumption report
+PASS 14 - Subcontract commitment report
+PASS 15 - Expense and outstanding report
+PASS 16 - Create dashboard alert
+PASS 17 - List dashboard alerts
+PASS 18 - Verify exact dashboard alert
+PASS 19 - Acknowledge dashboard alert
+PASS 20 - Start dashboard alert action
+PASS 21 - Resolve dashboard alert
+PASS 22 - Verify resolved alert status
+PASS 23 - Exact alert resolved
+PASS 24 - Create management review
+PASS 25 - List management reviews
+PASS 26 - Verify exact management review
+PASS 27 - Start management review action
+PASS 28 - Complete management review action
+PASS 29 - Reload completed management review
+PASS 30 - Exact management review completed
+PASS 31 - Dashboard reflects Module 11 alert state
+PASS 32 - Logout
+
+ALL MODULE 11 TESTS PASSED: 32/32
+Completed: 2026-08-04 21:04:10

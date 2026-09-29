@@ -1,0 +1,24 @@
+{
+    "status": "success",
+    "message": "Role retrieved successfully.",
+    "data": {
+        "role": {
+            "id": 5,
+            "company_id": 1,
+            "role_code": "ACCOUNTS",
+            "role_name": "Accounts User",
+            "description": "Verifies expenses, billing, receipts and project financial information.",
+            "role_scope_id": 1,
+            "role_scope_code": "COMPANY",
+            "role_scope_name": "Company",
+            "is_system_role": true,
+            "is_active": true,
+            "created_by": null,
+            "updated_by": null,
+            "created_at": "2026-07-23 14:29:28",
+            "updated_at": "2026-07-26 16:26:09",
+            "permissions": [],
+            "permission_count": 0
+        }
+    }
+}

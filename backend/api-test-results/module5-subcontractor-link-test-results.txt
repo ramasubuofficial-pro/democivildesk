@@ -1,0 +1,12 @@
+Module 5 Labour-Subcontractor Link Test
+Started: 2026-08-04 17:39:06
+
+FAIL 01 - Unexpected test error
+Invoke-RestMethod : The remote name could not be resolved: 'civil-site-management.local'
+At C:\xampp8.2\htdocs\civil-site-management\module5-subcontractor-link-test.ps1:32 char:18
++     try { return Invoke-RestMethod @args } catch { throw $_ }
++                  ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Invoke-RestMethod], WebException
+    + FullyQualifiedErrorId : System.Net.WebException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+ 
+

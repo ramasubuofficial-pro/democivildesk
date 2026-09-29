@@ -1,0 +1,51 @@
+{
+    "success": true,
+    "message": "User retrieved successfully.",
+    "data": {
+        "user": {
+            "id": 6,
+            "company_id": "1",
+            "default_branch_id": "1",
+            "employee_code": "TEST6930",
+            "username": "siteengineer6930",
+            "email": "siteengineer6930@test.com",
+            "phone": "9000000000",
+            "password_hash": "$2y$12$X1FinJFz4oDtrLGDx8e3r.EQrjdypQ8dgLr4vzV/yhJeQS.Gow5eC",
+            "first_name": "API Test Updated",
+            "last_name": "User",
+            "designation": "Senior Site Engineer",
+            "user_type_id": "4",
+            "user_status_id": "2",
+            "active": true,
+            "status_message": null,
+            "last_active": null,
+            "must_change_password": "0",
+            "failed_login_attempts": "0",
+            "locked_until": null,
+            "last_login_at": null,
+            "last_login_ip": null,
+            "password_changed_at": null,
+            "email_verified_at": null,
+            "remember_token": null,
+            "is_super_admin": "0",
+            "is_active": "1",
+            "created_by": "1",
+            "updated_by": "1",
+            "created_at": {
+                "date": "2026-07-26 13:43:21.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "updated_at": {
+                "date": "2026-07-26 13:43:22.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "deleted_at": null,
+            "user_type_code": "SITE_ENGINEER",
+            "user_type_name": "Site Engineer",
+            "user_status_code": "ACTIVE",
+            "user_status_name": "Active"
+        }
+    }
+}

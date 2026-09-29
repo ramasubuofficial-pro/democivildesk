@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "section_code": "The section code already exists in this BOQ."
+    }
+}

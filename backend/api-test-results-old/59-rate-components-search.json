@@ -1,0 +1,45 @@
+{
+    "success": true,
+    "message": "BOQ item rate components retrieved successfully.",
+    "data": {
+        "boq_item": {
+            "id": "4",
+            "boq_id": "8",
+            "item_code": "ITEM-EXC-24046",
+            "item_name": "Foundation Excavation and Disposal",
+            "quantity": "150.0000",
+            "rate": "900.0000",
+            "amount": "135000.00",
+            "status_code": "DRAFT"
+        },
+        "rate_components": [
+            {
+                "id": 5,
+                "boq_item_id": 4,
+                "component_type_id": 1,
+                "component_name": "Material-7853",
+                "quantity_factor": 1.25,
+                "component_rate": 400,
+                "component_amount": 500,
+                "remarks": "Main rate component API test",
+                "display_order": 10,
+                "created_by": 1,
+                "created_at": "2026-08-03 10:04:43",
+                "updated_at": "2026-08-03 10:04:43",
+                "deleted_at": null,
+                "component_type_code": "MATERIAL",
+                "component_type_name": "Material",
+                "component_type_sort_order": "1"
+            }
+        ],
+        "rate_analysis": {
+            "component_count": 2,
+            "component_total_rate": 700,
+            "boq_item_rate": 900,
+            "rate_variance": 200,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 105000,
+            "boq_item_amount": 135000
+        }
+    }
+}

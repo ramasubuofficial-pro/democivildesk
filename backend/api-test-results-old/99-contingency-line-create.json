@@ -1,0 +1,75 @@
+{
+    "success": true,
+    "message": "Project budget line created successfully.",
+    "data": {
+        "budget_line": {
+            "id": 6,
+            "company_id": 1,
+            "project_id": 1,
+            "budget_id": 2,
+            "boq_item_id": null,
+            "site_id": null,
+            "work_zone_id": null,
+            "work_category_id": 1,
+            "cost_type_id": 6,
+            "line_code": "CON-8898",
+            "line_description": "Budget contingency provision",
+            "planned_quantity": 1,
+            "uom_id": 1,
+            "planned_rate": 500,
+            "planned_amount": 500,
+            "committed_amount": 0,
+            "actual_amount": 0,
+            "display_order": 30,
+            "notes": "Contingency line API test",
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-08-03 11:06:16",
+            "updated_at": "2026-08-03 11:06:16",
+            "deleted_at": null,
+            "cost_type_code": "CONTINGENCY",
+            "cost_type_name": "Contingency",
+            "category_code": "PRELIMINARY",
+            "category_name": "Preliminary Works",
+            "unit_code": "NOS",
+            "unit_name": "Numbers",
+            "unit_symbol": "Nos",
+            "site_code": null,
+            "site_name": null,
+            "zone_code": null,
+            "zone_name": null,
+            "boq_item_code": null,
+            "boq_item_name": null
+        },
+        "summary": {
+            "direct_cost": "10000.00",
+            "overhead_cost": "1000.00",
+            "contingency_amount": "500.00",
+            "total_budget": "11500.00",
+            "line_count": 3,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "10000.00"
+                },
+                {
+                    "cost_type_id": "5",
+                    "cost_type_code": "OVERHEAD",
+                    "cost_type_name": "Overhead",
+                    "line_count": "1",
+                    "planned_amount": "1000.00"
+                },
+                {
+                    "cost_type_id": "6",
+                    "cost_type_code": "CONTINGENCY",
+                    "cost_type_name": "Contingency",
+                    "line_count": "1",
+                    "planned_amount": "500.00"
+                }
+            ]
+        }
+    }
+}

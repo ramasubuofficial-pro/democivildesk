@@ -1,0 +1,42 @@
+{
+    "success": true,
+    "message": "Work location updated successfully.",
+    "data": {
+        "work_location": {
+            "id": 1,
+            "company_id": 1,
+            "project_id": 1,
+            "site_id": 1,
+            "zone_id": 1,
+            "parent_location_id": null,
+            "location_code": "WL_API_001",
+            "location_name": "API Test Work Area",
+            "location_type_id": 2,
+            "description": "Work location created through API test",
+            "planned_start_date": "2026-08-01",
+            "planned_end_date": "2027-03-31",
+            "status_id": 1,
+            "progress_percentage": 0,
+            "display_order": 200,
+            "is_active": true,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-07-29 11:40:55",
+            "updated_at": "2026-07-29 11:41:32",
+            "deleted_at": null,
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1",
+            "project_branch_id": "1",
+            "site_code": "SITE-01",
+            "site_name": "Greenfield Residency Main Site",
+            "zone_code": "ZONE-A",
+            "zone_name": "Tower A Work Zone",
+            "parent_location_code": null,
+            "parent_location_name": null,
+            "location_type_code": "WORK_AREA",
+            "location_type_name": "Work Area",
+            "status_code": "PLANNED",
+            "status_name": "Planned"
+        }
+    }
+}

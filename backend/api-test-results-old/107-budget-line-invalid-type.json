@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "cost_type_id": "Select an active budget cost type."
+    }
+}

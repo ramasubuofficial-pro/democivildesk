@@ -1,0 +1,15 @@
+{
+    "success": true,
+    "message": "BOQ item rate component deleted successfully.",
+    "data": {
+        "rate_analysis": {
+            "component_count": 1,
+            "component_total_rate": 630,
+            "boq_item_rate": 900,
+            "rate_variance": 270,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 94500,
+            "boq_item_amount": 135000
+        }
+    }
+}

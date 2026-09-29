@@ -1,0 +1,37 @@
+{
+    "success": true,
+    "message": "Site team member updated successfully.",
+    "data": {
+        "team_member": {
+            "id": 1,
+            "company_id": 1,
+            "project_id": 1,
+            "site_id": 1,
+            "user_id": 3,
+            "team_role_id": 2,
+            "responsibility": "Lead daily execution, quality coordination and reporting",
+            "assignment_start": "2026-07-29",
+            "assignment_end": "2027-04-30",
+            "is_primary": true,
+            "can_approve": false,
+            "is_active": true,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-07-29 11:19:29",
+            "updated_at": "2026-07-29 11:20:39",
+            "deleted_at": null,
+            "employee_code": "EMP001",
+            "username": "siteengineer1",
+            "first_name": "Site",
+            "last_name": "Engineer",
+            "email": "siteengineer1@civilpro.com",
+            "designation": "Site Engineer",
+            "team_role_code": "SITE_ENGINEER",
+            "team_role_name": "Site Engineer",
+            "site_code": "SITE-01",
+            "site_name": "Greenfield Residency Main Site",
+            "project_code": "PRJ-2026-001",
+            "project_name": "Greenfield Residency - Phase 1"
+        }
+    }
+}

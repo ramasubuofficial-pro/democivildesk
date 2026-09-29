@@ -1,0 +1,7 @@
+{
+    "success": true,
+    "message": "Labour Categories retrieved successfully.",
+    "data": {
+        "labour_categories": []
+    }
+}

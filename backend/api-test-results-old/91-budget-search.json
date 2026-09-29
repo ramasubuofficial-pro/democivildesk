@@ -1,0 +1,43 @@
+{
+    "success": true,
+    "message": "Project budgets retrieved successfully.",
+    "data": {
+        "project_budgets": [
+            {
+                "id": 2,
+                "company_id": 1,
+                "project_id": 1,
+                "financial_year_id": null,
+                "source_boq_id": 8,
+                "budget_code": "BUD-API-20376",
+                "budget_name": "Project Budget Core API Test",
+                "version_no": 1,
+                "budget_date": "2026-08-03",
+                "currency_code": "INR",
+                "direct_cost": 0,
+                "overhead_cost": 0,
+                "contingency_amount": 0,
+                "total_budget": 0,
+                "status_id": 1,
+                "notes": "Project Budget Core complete API test",
+                "submitted_by": null,
+                "submitted_at": null,
+                "approved_by": null,
+                "approved_at": null,
+                "created_by": 1,
+                "updated_by": 1,
+                "created_at": "2026-08-03 11:06:13",
+                "updated_at": "2026-08-03 11:06:13",
+                "deleted_at": null,
+                "project_code": "PRJ-2026-001",
+                "project_name": "Greenfield Residency - Phase 1",
+                "branch_id": "1",
+                "financial_year_code": null,
+                "source_boq_code": "BOQ-SEC-5951",
+                "source_boq_name": "Complete BOQ Sections API Test",
+                "status_code": "DRAFT",
+                "status_name": "Draft"
+            }
+        ]
+    }
+}

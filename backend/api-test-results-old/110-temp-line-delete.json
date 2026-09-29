@@ -1,0 +1,36 @@
+{
+    "success": true,
+    "message": "Project budget line deleted successfully.",
+    "data": {
+        "summary": {
+            "direct_cost": "13200.00",
+            "overhead_cost": "1000.00",
+            "contingency_amount": "500.00",
+            "total_budget": "14700.00",
+            "line_count": 3,
+            "by_cost_type": [
+                {
+                    "cost_type_id": "1",
+                    "cost_type_code": "MATERIAL",
+                    "cost_type_name": "Material",
+                    "line_count": "1",
+                    "planned_amount": "13200.00"
+                },
+                {
+                    "cost_type_id": "5",
+                    "cost_type_code": "OVERHEAD",
+                    "cost_type_name": "Overhead",
+                    "line_count": "1",
+                    "planned_amount": "1000.00"
+                },
+                {
+                    "cost_type_id": "6",
+                    "cost_type_code": "CONTINGENCY",
+                    "cost_type_name": "Contingency",
+                    "line_count": "1",
+                    "planned_amount": "500.00"
+                }
+            ]
+        }
+    }
+}

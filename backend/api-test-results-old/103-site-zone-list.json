@@ -1,0 +1,41 @@
+{
+    "success": true,
+    "message": "Site zones retrieved successfully.",
+    "data": {
+        "zones": [
+            {
+                "id": 1,
+                "company_id": 1,
+                "project_id": 1,
+                "site_id": 1,
+                "parent_zone_id": null,
+                "zone_code": "ZONE-A",
+                "zone_name": "Tower A Work Zone",
+                "zone_type_id": 2,
+                "description": "Execution zone covering Tower A and its immediate surroundings.",
+                "planned_start_date": "2026-08-01",
+                "planned_end_date": "2027-05-31",
+                "status_id": 1,
+                "progress_percentage": 0,
+                "display_order": 10,
+                "is_active": true,
+                "created_by": null,
+                "updated_by": null,
+                "created_at": "2026-07-23 20:21:04",
+                "updated_at": "2026-07-23 20:21:04",
+                "deleted_at": null,
+                "project_code": "PRJ-2026-001",
+                "project_name": "Greenfield Residency - Phase 1",
+                "project_branch_id": "1",
+                "site_code": "SITE-01",
+                "site_name": "Greenfield Residency Main Site",
+                "parent_zone_code": null,
+                "parent_zone_name": null,
+                "zone_type_code": "TOWER",
+                "zone_type_name": "Tower",
+                "status_code": "PLANNED",
+                "status_name": "Planned"
+            }
+        ]
+    }
+}

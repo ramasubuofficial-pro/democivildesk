@@ -1,0 +1,427 @@
+MAIN_TYPE_ID=
+MAIN_NAME=Material-7853
+TEMP_NAME=Labour-12418
+55 CREATE MAIN COMPONENT: HTTP 201
+56 CREATE TEMP COMPONENT: HTTP 201
+57 LIST COMPONENTS: HTTP 200
+58 VIEW COMPONENT: HTTP 200
+59 SEARCH COMPONENTS: HTTP 200
+60 TYPE FILTER: HTTP 200
+61 UPDATE COMPONENT: HTTP 200
+62 DUPLICATE COMPONENT: HTTP 422
+63 INVALID TYPE: HTTP 422
+64 NEGATIVE FACTOR: HTTP 422
+65 NEGATIVE RATE: HTTP 422
+66 INVALID COMPONENT VIEW: HTTP 404
+67 DELETE TEMP COMPONENT: HTTP 200
+68 FINAL COMPONENT LIST: HTTP 200
+ 
+==================== 55-rate-component-create.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item rate component created successfully.",
+    "data": {
+        "rate_component": {
+            "id": 5,
+            "boq_item_id": 4,
+            "component_type_id": 1,
+            "component_name": "Material-7853",
+            "quantity_factor": 1.25,
+            "component_rate": 400,
+            "component_amount": 500,
+            "remarks": "Main rate component API test",
+            "display_order": 10,
+            "created_by": 1,
+            "created_at": "2026-08-03 10:04:43",
+            "updated_at": "2026-08-03 10:04:43",
+            "deleted_at": null,
+            "component_type_code": "MATERIAL",
+            "component_type_name": "Material",
+            "component_type_sort_order": "1"
+        },
+        "rate_analysis": {
+            "component_count": 1,
+            "component_total_rate": 500,
+            "boq_item_rate": 900,
+            "rate_variance": 400,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 75000,
+            "boq_item_amount": 135000
+        }
+    }
+} 
+==================== 56-rate-component-temp-create.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item rate component created successfully.",
+    "data": {
+        "rate_component": {
+            "id": 6,
+            "boq_item_id": 4,
+            "component_type_id": 2,
+            "component_name": "Labour-12418",
+            "quantity_factor": 2,
+            "component_rate": 100,
+            "component_amount": 200,
+            "remarks": "Temporary component for deletion test",
+            "display_order": 99,
+            "created_by": 1,
+            "created_at": "2026-08-03 10:04:43",
+            "updated_at": "2026-08-03 10:04:43",
+            "deleted_at": null,
+            "component_type_code": "LABOUR",
+            "component_type_name": "Labour",
+            "component_type_sort_order": "2"
+        },
+        "rate_analysis": {
+            "component_count": 2,
+            "component_total_rate": 700,
+            "boq_item_rate": 900,
+            "rate_variance": 200,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 105000,
+            "boq_item_amount": 135000
+        }
+    }
+} 
+==================== 57-rate-components-list.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item rate components retrieved successfully.",
+    "data": {
+        "boq_item": {
+            "id": "4",
+            "boq_id": "8",
+            "item_code": "ITEM-EXC-24046",
+            "item_name": "Foundation Excavation and Disposal",
+            "quantity": "150.0000",
+            "rate": "900.0000",
+            "amount": "135000.00",
+            "status_code": "DRAFT"
+        },
+        "rate_components": [
+            {
+                "id": 5,
+                "boq_item_id": 4,
+                "component_type_id": 1,
+                "component_name": "Material-7853",
+                "quantity_factor": 1.25,
+                "component_rate": 400,
+                "component_amount": 500,
+                "remarks": "Main rate component API test",
+                "display_order": 10,
+                "created_by": 1,
+                "created_at": "2026-08-03 10:04:43",
+                "updated_at": "2026-08-03 10:04:43",
+                "deleted_at": null,
+                "component_type_code": "MATERIAL",
+                "component_type_name": "Material",
+                "component_type_sort_order": "1"
+            },
+            {
+                "id": 6,
+                "boq_item_id": 4,
+                "component_type_id": 2,
+                "component_name": "Labour-12418",
+                "quantity_factor": 2,
+                "component_rate": 100,
+                "component_amount": 200,
+                "remarks": "Temporary component for deletion test",
+                "display_order": 99,
+                "created_by": 1,
+                "created_at": "2026-08-03 10:04:43",
+                "updated_at": "2026-08-03 10:04:43",
+                "deleted_at": null,
+                "component_type_code": "LABOUR",
+                "component_type_name": "Labour",
+                "component_type_sort_order": "2"
+            }
+        ],
+        "rate_analysis": {
+            "component_count": 2,
+            "component_total_rate": 700,
+            "boq_item_rate": 900,
+            "rate_variance": 200,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 105000,
+            "boq_item_amount": 135000
+        }
+    }
+} 
+==================== 58-rate-component-view.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item rate component retrieved successfully.",
+    "data": {
+        "rate_component": {
+            "id": 5,
+            "boq_item_id": 4,
+            "component_type_id": 1,
+            "component_name": "Material-7853",
+            "quantity_factor": 1.25,
+            "component_rate": 400,
+            "component_amount": 500,
+            "remarks": "Main rate component API test",
+            "display_order": 10,
+            "created_by": 1,
+            "created_at": "2026-08-03 10:04:43",
+            "updated_at": "2026-08-03 10:04:43",
+            "deleted_at": null,
+            "component_type_code": "MATERIAL",
+            "component_type_name": "Material",
+            "component_type_sort_order": "1"
+        },
+        "rate_analysis": {
+            "component_count": 2,
+            "component_total_rate": 700,
+            "boq_item_rate": 900,
+            "rate_variance": 200,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 105000,
+            "boq_item_amount": 135000
+        }
+    }
+} 
+==================== 59-rate-components-search.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item rate components retrieved successfully.",
+    "data": {
+        "boq_item": {
+            "id": "4",
+            "boq_id": "8",
+            "item_code": "ITEM-EXC-24046",
+            "item_name": "Foundation Excavation and Disposal",
+            "quantity": "150.0000",
+            "rate": "900.0000",
+            "amount": "135000.00",
+            "status_code": "DRAFT"
+        },
+        "rate_components": [
+            {
+                "id": 5,
+                "boq_item_id": 4,
+                "component_type_id": 1,
+                "component_name": "Material-7853",
+                "quantity_factor": 1.25,
+                "component_rate": 400,
+                "component_amount": 500,
+                "remarks": "Main rate component API test",
+                "display_order": 10,
+                "created_by": 1,
+                "created_at": "2026-08-03 10:04:43",
+                "updated_at": "2026-08-03 10:04:43",
+                "deleted_at": null,
+                "component_type_code": "MATERIAL",
+                "component_type_name": "Material",
+                "component_type_sort_order": "1"
+            }
+        ],
+        "rate_analysis": {
+            "component_count": 2,
+            "component_total_rate": 700,
+            "boq_item_rate": 900,
+            "rate_variance": 200,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 105000,
+            "boq_item_amount": 135000
+        }
+    }
+} 
+==================== 60-rate-components-type-filter.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item rate components retrieved successfully.",
+    "data": {
+        "boq_item": {
+            "id": "4",
+            "boq_id": "8",
+            "item_code": "ITEM-EXC-24046",
+            "item_name": "Foundation Excavation and Disposal",
+            "quantity": "150.0000",
+            "rate": "900.0000",
+            "amount": "135000.00",
+            "status_code": "DRAFT"
+        },
+        "rate_components": [
+            {
+                "id": 5,
+                "boq_item_id": 4,
+                "component_type_id": 1,
+                "component_name": "Material-7853",
+                "quantity_factor": 1.25,
+                "component_rate": 400,
+                "component_amount": 500,
+                "remarks": "Main rate component API test",
+                "display_order": 10,
+                "created_by": 1,
+                "created_at": "2026-08-03 10:04:43",
+                "updated_at": "2026-08-03 10:04:43",
+                "deleted_at": null,
+                "component_type_code": "MATERIAL",
+                "component_type_name": "Material",
+                "component_type_sort_order": "1"
+            }
+        ],
+        "rate_analysis": {
+            "component_count": 2,
+            "component_total_rate": 700,
+            "boq_item_rate": 900,
+            "rate_variance": 200,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 105000,
+            "boq_item_amount": 135000
+        }
+    }
+} 
+==================== 61-rate-component-update.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item rate component updated successfully.",
+    "data": {
+        "rate_component": {
+            "id": 5,
+            "boq_item_id": 4,
+            "component_type_id": 1,
+            "component_name": "Material-7853",
+            "quantity_factor": 1.5,
+            "component_rate": 420,
+            "component_amount": 630,
+            "remarks": "Updated main rate component",
+            "display_order": 15,
+            "created_by": 1,
+            "created_at": "2026-08-03 10:04:43",
+            "updated_at": "2026-08-03 10:04:45",
+            "deleted_at": null,
+            "component_type_code": "MATERIAL",
+            "component_type_name": "Material",
+            "component_type_sort_order": "1"
+        },
+        "rate_analysis": {
+            "component_count": 2,
+            "component_total_rate": 830,
+            "boq_item_rate": 900,
+            "rate_variance": 70,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 124500,
+            "boq_item_amount": 135000
+        }
+    }
+} 
+==================== 62-rate-component-duplicate.json ==================== 
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "component_name": "This component name already exists for the selected type and BOQ item."
+    }
+} 
+==================== 63-rate-component-invalid-type.json ==================== 
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "component_type_id": "Select an active rate component type."
+    }
+} 
+==================== 64-rate-component-negative-factor.json ==================== 
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "quantity_factor": "The quantity factor cannot be negative."
+    }
+} 
+==================== 65-rate-component-negative-rate.json ==================== 
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "component_rate": "The component rate cannot be negative."
+    }
+} 
+==================== 66-rate-component-invalid-view.json ==================== 
+{
+    "success": false,
+    "message": "BOQ item rate component not found."
+} 
+==================== 67-rate-component-temp-delete.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item rate component deleted successfully.",
+    "data": {
+        "rate_analysis": {
+            "component_count": 1,
+            "component_total_rate": 630,
+            "boq_item_rate": 900,
+            "rate_variance": 270,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 94500,
+            "boq_item_amount": 135000
+        }
+    }
+} 
+==================== 68-rate-components-final-list.json ==================== 
+{
+    "success": true,
+    "message": "BOQ item rate components retrieved successfully.",
+    "data": {
+        "boq_item": {
+            "id": "4",
+            "boq_id": "8",
+            "item_code": "ITEM-EXC-24046",
+            "item_name": "Foundation Excavation and Disposal",
+            "quantity": "150.0000",
+            "rate": "900.0000",
+            "amount": "135000.00",
+            "status_code": "DRAFT"
+        },
+        "rate_components": [
+            {
+                "id": 5,
+                "boq_item_id": 4,
+                "component_type_id": 1,
+                "component_name": "Material-7853",
+                "quantity_factor": 1.5,
+                "component_rate": 420,
+                "component_amount": 630,
+                "remarks": "Updated main rate component",
+                "display_order": 15,
+                "created_by": 1,
+                "created_at": "2026-08-03 10:04:43",
+                "updated_at": "2026-08-03 10:04:45",
+                "deleted_at": null,
+                "component_type_code": "MATERIAL",
+                "component_type_name": "Material",
+                "component_type_sort_order": "1"
+            }
+        ],
+        "rate_analysis": {
+            "component_count": 1,
+            "component_total_rate": 630,
+            "boq_item_rate": 900,
+            "rate_variance": 270,
+            "boq_item_quantity": 150,
+            "analysed_total_amount": 94500,
+            "boq_item_amount": 135000
+        }
+    }
+}
+==================== COMPONENT TYPE MASTERS ====================
+id	component_type_code	component_type_name	sort_order	is_active
+1	MATERIAL	Material	1	1
+2	LABOUR	Labour	2	1
+3	EQUIPMENT	Equipment	3	1
+4	SUBCONTRACT	Subcontract	4	1
+5	OVERHEAD	Overhead	5	1
+6	PROFIT	Profit	6	1
+7	OTHER	Other	7	1
+
+==================== DATABASE VERIFICATION ====================
+id	boq_item_id	component_type_id	component_type_code	component_name	quantity_factor	component_rate	component_amount	deleted_at
+5	4	1	MATERIAL	Material-7853	1.5000	420.0000	630.0000	NULL
+6	4	2	LABOUR	Labour-12418	2.0000	100.0000	200.0000	2026-08-03 10:04:47
+id	item_code	item_name	quantity	rate	amount
+4	ITEM-EXC-24046	Foundation Excavation and Disposal	150.0000	900.0000	135000.00
+id	boq_code	total_amount	status_code
+8	BOQ-SEC-5951	135000.00	DRAFT

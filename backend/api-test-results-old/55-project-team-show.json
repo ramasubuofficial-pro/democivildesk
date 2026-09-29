@@ -1,0 +1,32 @@
+{
+    "success": true,
+    "message": "Project team member retrieved successfully.",
+    "data": {
+        "team_member": {
+            "id": 1,
+            "company_id": 1,
+            "project_id": 1,
+            "user_id": 3,
+            "team_role_id": 1,
+            "responsibility": "Overall project planning and execution",
+            "assignment_start": "2026-07-26",
+            "assignment_end": "2027-03-31",
+            "is_primary": true,
+            "can_approve": true,
+            "is_active": true,
+            "created_by": 1,
+            "updated_by": 1,
+            "created_at": "2026-07-26 16:25:07",
+            "updated_at": "2026-07-26 16:25:07",
+            "deleted_at": null,
+            "employee_code": "EMP001",
+            "username": "siteengineer1",
+            "first_name": "Site",
+            "last_name": "Engineer",
+            "email": "siteengineer1@civilpro.com",
+            "designation": "Site Engineer",
+            "team_role_code": "PROJECT_MANAGER",
+            "team_role_name": "Project Manager"
+        }
+    }
+}

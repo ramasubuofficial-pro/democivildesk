@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "Validation failed.",
+    "errors": {
+        "parent_location_id": "A work location cannot be its own parent."
+    }
+}
