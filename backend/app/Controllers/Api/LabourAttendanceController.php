@@ -45,11 +45,23 @@ class LabourAttendanceController extends LabourApiController
         return $this->ok('Attendance batches retrieved successfully.', 'attendance_batches', $b->orderBy('b.attendance_date', 'DESC')->orderBy('b.id', 'DESC')->get()->getResultArray());
     }
 
+    private function fullBatch(int $id, int $companyId): ?array
+    {
+        return db_connect()->table('labour_attendance_batches b')
+            ->select('b.*,p.project_code,p.project_name,s.site_code,s.site_name,st.status_code,st.status_name')
+            ->join('projects p', 'p.id=b.project_id', 'left')
+            ->join('project_sites s', 's.id=b.site_id', 'left')
+            ->join('labour_attendance_batches_status_masters st', 'st.id=b.status_id', 'left')
+            ->where('b.id', $id)
+            ->where('b.company_id', $companyId)
+            ->get()->getRowArray();
+    }
+
     public function show(int $id): ResponseInterface
     {
         $u = $this->user();
         if (!$u) return $this->unauthorized();
-        $b = $this->record('labour_attendance_batches', $id, $this->companyId($u));
+        $b = $this->fullBatch($id, $this->companyId($u));
         if (!$b) return $this->notFound();
         
         $b['entries'] = db_connect()->table('labour_attendance_entries e')
@@ -102,12 +114,12 @@ class LabourAttendanceController extends LabourApiController
             ])->get()->getRowArray();
             
         if ($existing) {
-            return $this->ok('Attendance batch retrieved successfully.', 'attendance_batch', $this->record('labour_attendance_batches', (int)$existing['id'], $d['company_id']), 200);
+            return $this->ok('Attendance batch retrieved successfully.', 'attendance_batch', $this->fullBatch((int)$existing['id'], $d['company_id']), 200);
         }
         
         db_connect()->table('labour_attendance_batches')->insert($d);
         $id = (int)db_connect()->insertID();
-        return $this->ok('Attendance batch created successfully.', 'attendance_batch', $this->record('labour_attendance_batches', $id, $d['company_id']), 201);
+        return $this->ok('Attendance batch created successfully.', 'attendance_batch', $this->fullBatch($id, $d['company_id']), 201);
     }
 
     public function entries(int $batchId): ResponseInterface
@@ -352,7 +364,7 @@ class LabourAttendanceController extends LabourApiController
         db_connect()->table('labour_attendance_batches')->where('id', $id)->update($d);
         $this->statusLog($c, 'ATTENDANCE', $id, $old, $to, $action, $in['remarks'] ?? null, (int)$u->id);
         
-        return $this->ok('Attendance batch ' . strtolower($to) . ' successfully.', 'attendance_batch', $this->record('labour_attendance_batches', $id, $c));
+        return $this->ok('Attendance batch ' . strtolower($to) . ' successfully.', 'attendance_batch', $this->fullBatch($id, $c));
     }
 
     private function statusCode(int $id): string

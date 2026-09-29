@@ -923,8 +923,15 @@ export function DailyAttendancePage() {
     return 'neutral';
   };
 
-  // Check if current status allows editing
-  const isEditable = !activeBatch || activeBatch.status_code === 'DRAFT' || activeBatch.status_code === 'REJECTED' || !activeBatch.status_code;
+  // Check current status safely with fallbacks
+  const currentBatchStatus = (
+    activeBatch?.status_code ||
+    activeBatch?.status_name ||
+    (Number(activeBatch?.status_id) === 1 ? 'DRAFT' : '') ||
+    'DRAFT'
+  ).toUpperCase();
+
+  const isEditable = !activeBatch || currentBatchStatus === 'DRAFT' || currentBatchStatus === 'REJECTED';
 
   const currentProjectName = projects.find(p => String(p.id) === String(selectedProjectId))?.project_name || 'Selected Project';
   const currentSiteName = sites.find(s => String(s.id) === String(selectedSiteId))?.site_name || 'Selected Site';
@@ -1032,8 +1039,14 @@ export function DailyAttendancePage() {
 
           <div className="flex items-center gap-2 justify-end">
             {activeBatch && (
-              <span className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded bg-secondary/10 text-secondary border border-secondary/20`}>
-                Muster Status: {activeBatch.status_name || activeBatch.status_code || 'Draft'}
+              <span className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded ${
+                currentBatchStatus === 'APPROVED' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
+                currentBatchStatus === 'SUBMITTED' ? 'bg-blue-100 text-blue-800 border border-blue-300' :
+                currentBatchStatus === 'REJECTED' ? 'bg-red-100 text-red-800 border border-red-300' :
+                currentBatchStatus === 'LOCKED' ? 'bg-slate-200 text-slate-800 border border-slate-300' :
+                'bg-amber-100 text-amber-800 border border-amber-300'
+              }`}>
+                Muster Status: {activeBatch.status_name || currentBatchStatus}
               </span>
             )}
           </div>
@@ -1152,11 +1165,11 @@ export function DailyAttendancePage() {
                   </Button>
                 )}
 
-                {/* Workflow Transitions */}
-                {activeBatch.status_code === 'DRAFT' && (
+                {/* Workflow Transitions: Submit Muster, Approve, Reject, Lock */}
+                {(currentBatchStatus === 'DRAFT' || currentBatchStatus === 'REJECTED') && (
                   <Button
                     variant="primary"
-                    className="h-9 px-3.5 text-[13px]"
+                    className="h-9 px-4 text-[13px] font-semibold bg-primary hover:bg-primary/90 text-white shadow-sm flex items-center gap-2 cursor-pointer"
                     leftIcon={<Send className="w-4 h-4" />}
                     onClick={() => {
                       setBatchActionType('submit');
@@ -1167,37 +1180,37 @@ export function DailyAttendancePage() {
                   </Button>
                 )}
 
-                {activeBatch.status_code === 'SUBMITTED' && (
+                {currentBatchStatus === 'SUBMITTED' && (
                   <>
                     <Button
                       variant="primary"
-                      className="h-9 px-3 text-[13px] bg-emerald-600 hover:bg-emerald-700"
+                      className="h-9 px-3.5 text-[13px] font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm cursor-pointer"
                       leftIcon={<Check className="w-4 h-4" />}
                       onClick={() => {
                         setBatchActionType('approve');
                         setActionRemarks('');
                       }}
                     >
-                      Approve
+                      Approve Muster
                     </Button>
                     <Button
-                      variant="danger"
-                      className="h-9 px-3 text-[13px]"
+                      variant="outline"
+                      className="h-9 px-3.5 text-[13px] font-semibold text-red-600 border-red-300 hover:bg-red-50 cursor-pointer"
                       leftIcon={<XCircle className="w-4 h-4" />}
                       onClick={() => {
                         setBatchActionType('reject');
                         setActionRemarks('');
                       }}
                     >
-                      Reject
+                      Reject Muster
                     </Button>
                   </>
                 )}
 
-                {activeBatch.status_code === 'APPROVED' && (
+                {currentBatchStatus === 'APPROVED' && (
                   <Button
-                    variant="primary"
-                    className="h-9 px-3 text-[13px]"
+                    variant="outline"
+                    className="h-9 px-3.5 text-[13px] font-semibold text-slate-700 border-slate-300 hover:bg-slate-100 cursor-pointer"
                     leftIcon={<Lock className="w-4 h-4" />}
                     onClick={() => {
                       setBatchActionType('lock');
