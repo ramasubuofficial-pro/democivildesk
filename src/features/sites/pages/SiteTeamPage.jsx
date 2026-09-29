@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Users, UserCheck, Shield, Plus, Edit, Trash2, Search, Briefcase,
-  MapPin, Star, UserPlus, Calendar, Activity, Layers, CheckCircle2, Eye
+  MapPin, Star, UserPlus, Calendar, Activity, Layers, CheckCircle2, Eye,
+  AlertCircle
 } from 'lucide-react';
 import { PageHeader } from '../../../components/layout/PageHeader';
 import { PageContainer } from '../../../components/layout/PageContainer';
@@ -20,16 +21,20 @@ import { ConfirmDialog } from '../../../components/composite/ConfirmDialog';
 import { toast } from '../../../components/composite/Toast';
 import { sitesApi, projectsApi, usersApi, mastersApi } from '../../../api/apiservice';
 
+const EMPTY_MEMBER_ROW = {
+  user_id: '',
+  team_role_id: '',
+  is_primary: false,
+  can_approve: false,
+};
+
 const EMPTY_MEMBER_FORM = {
   project_id: '',
   site_id: '',
-  user_id: '',
-  team_role_id: '',
+  members: [{ ...EMPTY_MEMBER_ROW }],
   responsibility: '',
   assignment_start: '',
   assignment_end: '',
-  is_primary: false,
-  can_approve: false,
   is_active: true,
 };
 
@@ -136,6 +141,7 @@ export function SiteTeamPage() {
       ...EMPTY_MEMBER_FORM,
       project_id: defaultProj,
       site_id: defaultSite,
+      members: [{ ...EMPTY_MEMBER_ROW }],
     });
     setErrors({});
     setIsAddOpen(true);
@@ -145,13 +151,15 @@ export function SiteTeamPage() {
     setForm({
       project_id: String(member.project_id || ''),
       site_id: String(member.site_id || ''),
-      user_id: String(member.user_id || ''),
-      team_role_id: String(member.team_role_id || ''),
+      members: [{
+        user_id: String(member.user_id || ''),
+        team_role_id: String(member.team_role_id || ''),
+        is_primary: Boolean(member.is_primary),
+        can_approve: Boolean(member.can_approve),
+      }],
       responsibility: member.responsibility || '',
       assignment_start: member.assignment_start ? member.assignment_start.split(' ')[0] : '',
       assignment_end: member.assignment_end ? member.assignment_end.split(' ')[0] : '',
-      is_primary: Boolean(member.is_primary),
-      can_approve: Boolean(member.can_approve),
       is_active: member.is_active !== undefined ? Boolean(member.is_active) : true,
     });
     setErrors({});
@@ -163,39 +171,165 @@ export function SiteTeamPage() {
     setErrors(prev => ({ ...prev, [field]: null }));
   };
 
+  const handleAddMemberRow = () => {
+    setForm(prev => ({
+      ...prev,
+      members: [...prev.members, { ...EMPTY_MEMBER_ROW }],
+    }));
+  };
+
+  const handleRemoveMemberRow = (index) => {
+    setForm(prev => {
+      if (prev.members.length <= 1) return prev;
+      return {
+        ...prev,
+        members: prev.members.filter((_, idx) => idx !== index),
+      };
+    });
+    setErrors(prev => {
+      const updated = { ...prev };
+      delete updated[`member_${index}_user`];
+      delete updated[`member_${index}_role`];
+      delete updated[`member_${index}_duplicate`];
+      return updated;
+    });
+  };
+
+  const handleMemberRowChange = (index, field, value) => {
+    setForm(prev => {
+      const updated = [...prev.members];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, members: updated };
+    });
+    setErrors(prev => {
+      const updated = { ...prev };
+      delete updated[`member_${index}_${field}`];
+      delete updated[`member_${index}_duplicate`];
+      delete updated.general;
+      return updated;
+    });
+  };
+
+  const validateForm = () => {
+    const errs = {};
+    if (!form.project_id) errs.project_id = 'Project is required.';
+    if (!form.site_id) errs.site_id = 'Site is required.';
+
+    if (!form.members || form.members.length === 0) {
+      errs.general = 'Please add at least one team member.';
+      return errs;
+    }
+
+    const seenCombos = new Map();
+    const existingCombos = new Set(
+      teamMembers
+        .filter(m => String(m.site_id) === String(form.site_id) && (!editingMember || m.id !== editingMember.id))
+        .map(m => `${m.user_id}_${m.team_role_id}`)
+    );
+
+    form.members.forEach((m, idx) => {
+      if (!m.user_id) {
+        errs[`member_${idx}_user`] = 'Staff member is required.';
+      }
+      if (!m.team_role_id) {
+        errs[`member_${idx}_role`] = 'Site role is required.';
+      }
+
+      if (m.user_id && m.team_role_id) {
+        const comboKey = `${m.user_id}_${m.team_role_id}`;
+
+        // 1. Check duplicate within the same form submission
+        if (seenCombos.has(comboKey)) {
+          const uObj = users.find(u => String(u.id) === String(m.user_id));
+          const rObj = teamRoles.find(r => String(r.id) === String(m.team_role_id));
+          const uName = `${uObj?.first_name || ''} ${uObj?.last_name || ''}`.trim() || uObj?.name || 'Selected user';
+          const rName = rObj?.name || rObj?.role_name || 'selected role';
+          errs[`member_${idx}_duplicate`] = `Duplicate assignment: ${uName} is already assigned as ${rName} in Member #${seenCombos.get(comboKey) + 1}.`;
+        } else {
+          seenCombos.set(comboKey, idx);
+        }
+
+        // 2. Check if user + role is already assigned to this site in the system
+        if (!editingMember && existingCombos.has(comboKey)) {
+          const uObj = users.find(u => String(u.id) === String(m.user_id));
+          const rObj = teamRoles.find(r => String(r.id) === String(m.team_role_id));
+          const uName = `${uObj?.first_name || ''} ${uObj?.last_name || ''}`.trim() || uObj?.name || 'Selected user';
+          const rName = rObj?.name || rObj?.role_name || 'selected role';
+          errs[`member_${idx}_duplicate`] = `${uName} is already assigned as ${rName} on this site.`;
+        }
+      }
+    });
+
+    return errs;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const errs = {};
-    if (!form.site_id) errs.site_id = 'Site is required';
-    if (!form.user_id) errs.user_id = 'User is required';
-    if (!form.team_role_id) errs.team_role_id = 'Role is required';
-
+    const errs = validateForm();
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
+      const duplicateMsg = Object.values(errs).find(msg => typeof msg === 'string' && (msg.includes('Duplicate') || msg.includes('already assigned')));
+      if (duplicateMsg) {
+        toast.error(duplicateMsg);
+      } else {
+        toast.error('Please fix the errors in the staff member assignments.');
+      }
       return;
     }
 
     setSaving(true);
     try {
-      const payload = {
-        project_id: Number(form.project_id || 1),
-        site_id: Number(form.site_id),
-        user_id: Number(form.user_id),
-        team_role_id: Number(form.team_role_id),
-        responsibility: form.responsibility || null,
-        assignment_start: form.assignment_start || null,
-        assignment_end: form.assignment_end || null,
-        is_primary: form.is_primary ? 1 : 0,
-        can_approve: form.can_approve ? 1 : 0,
-        is_active: form.is_active ? 1 : 0,
-      };
-
       if (editingMember?.id) {
+        const single = form.members[0];
+        const payload = {
+          project_id: Number(form.project_id || 1),
+          site_id: Number(form.site_id),
+          user_id: Number(single.user_id),
+          team_role_id: Number(single.team_role_id),
+          responsibility: form.responsibility || null,
+          assignment_start: form.assignment_start || null,
+          assignment_end: form.assignment_end || null,
+          is_primary: single.is_primary ? 1 : 0,
+          can_approve: single.can_approve ? 1 : 0,
+          is_active: form.is_active ? 1 : 0,
+        };
+
         await sitesApi.teamMembers.update(payload.site_id, editingMember.id, payload);
         toast.success('Site team assignment updated.');
       } else {
-        await sitesApi.teamMembers.create(payload.site_id, payload);
-        toast.success('Site team member assigned successfully.');
+        let successCount = 0;
+        const creationErrors = [];
+
+        for (const m of form.members) {
+          const payload = {
+            project_id: Number(form.project_id || 1),
+            site_id: Number(form.site_id),
+            user_id: Number(m.user_id),
+            team_role_id: Number(m.team_role_id),
+            responsibility: form.responsibility || null,
+            assignment_start: form.assignment_start || null,
+            assignment_end: form.assignment_end || null,
+            is_primary: m.is_primary ? 1 : 0,
+            can_approve: m.can_approve ? 1 : 0,
+            is_active: form.is_active ? 1 : 0,
+          };
+
+          try {
+            await sitesApi.teamMembers.create(payload.site_id, payload);
+            successCount++;
+          } catch (err) {
+            const uObj = users.find(u => String(u.id) === String(m.user_id));
+            const uName = `${uObj?.first_name || ''} ${uObj?.last_name || ''}`.trim() || uObj?.name || `User #${m.user_id}`;
+            creationErrors.push(`${uName}: ${err?.message || 'Failed to assign'}`);
+          }
+        }
+
+        if (successCount > 0) {
+          toast.success(`Successfully assigned ${successCount} site team member${successCount > 1 ? 's' : ''}.`);
+        }
+        if (creationErrors.length > 0) {
+          toast.error(creationErrors.join(' | '));
+        }
       }
 
       setIsAddOpen(false);
@@ -203,7 +337,7 @@ export function SiteTeamPage() {
       fetchSiteTeamMembers();
     } catch (err) {
       setErrors(err?.errors ?? {});
-      toast.error(err?.message || 'Failed to save site team member.');
+      toast.error(err?.message || 'Failed to save site team members.');
     } finally {
       setSaving(false);
     }
@@ -588,7 +722,8 @@ export function SiteTeamPage() {
         />
         <form id="site-team-form" onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col overflow-hidden">
           <EntityEditModal.Body>
-            <EntityEditModal.Section title="Assignment Mapping">
+            {/* Target Location */}
+            <EntityEditModal.Section title="Target Location" description="Select the project and site for team allocation.">
               <EntityEditModal.Grid>
                 <FormField label="Target Project" required error={errors.project_id}>
                   <Select
@@ -599,6 +734,7 @@ export function SiteTeamPage() {
                       const s = sites.find(item => String(item.project_id) === String(v));
                       if (s) handleFormChange('site_id', String(s.id));
                     }}
+                    disabled={Boolean(editingMember)}
                   />
                 </FormField>
 
@@ -609,27 +745,144 @@ export function SiteTeamPage() {
                       .map(s => ({ value: String(s.id), label: s.site_name || s.name }))}
                     value={form.site_id}
                     onChange={(v) => handleFormChange('site_id', v)}
-                  />
-                </FormField>
-
-                <FormField label="Staff Member (User)" required error={errors.user_id}>
-                  <Select
-                    options={users.map(u => ({ value: String(u.id), label: `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.name || u.email || 'User' }))}
-                    value={form.user_id}
-                    onChange={(v) => handleFormChange('user_id', v)}
-                  />
-                </FormField>
-
-                <FormField label="Site Role" required error={errors.team_role_id}>
-                  <Select
-                    options={teamRoles.map(r => ({ value: String(r.id), label: r.name || r.role_name }))}
-                    value={form.team_role_id}
-                    onChange={(v) => handleFormChange('team_role_id', v)}
+                    disabled={Boolean(editingMember)}
                   />
                 </FormField>
               </EntityEditModal.Grid>
             </EntityEditModal.Section>
 
+            {/* Staff Members & Roles */}
+            <EntityEditModal.Section 
+              title={editingMember ? "Assigned Staff Member" : "Staff Members & Site Roles"}
+              description={editingMember ? "Modify site role and privileges for this staff member." : "Assign one or multiple team members to this site at once."}
+            >
+              {errors.general && (
+                <div className="mb-4 flex items-center gap-2 p-3 rounded-lg bg-error/10 border border-error/20 text-error text-xs font-medium">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{errors.general}</span>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                {form.members.map((memberRow, idx) => {
+                  const userErr = errors[`member_${idx}_user`];
+                  const roleErr = errors[`member_${idx}_role`];
+                  const dupErr = errors[`member_${idx}_duplicate`];
+
+                  return (
+                    <div 
+                      key={idx} 
+                      className={`relative rounded-xl border p-4 transition-all duration-150 ${
+                        dupErr 
+                          ? 'border-error/40 bg-error/5' 
+                          : 'border-border/80 bg-surface-muted/20 hover:border-border'
+                      }`}
+                    >
+                      {/* Row Header */}
+                      <div className="flex items-center justify-between pb-3 mb-3 border-b border-border/40">
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold">
+                            {idx + 1}
+                          </span>
+                          <span className="text-xs font-semibold text-text-primary">
+                            Staff Member #{idx + 1}
+                          </span>
+                        </div>
+
+                        {!editingMember && form.members.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleRemoveMemberRow(idx)}
+                            className="h-7 px-2 text-xs text-error hover:text-error-hover hover:bg-error/10 gap-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Remove</span>
+                          </Button>
+                        )}
+                      </div>
+
+                      {/* Dropdowns Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <FormField label="Staff Member (User)" required error={userErr}>
+                          <Select
+                            options={users.map(u => ({ 
+                              value: String(u.id), 
+                              label: `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.name || u.email || `User #${u.id}` 
+                            }))}
+                            value={memberRow.user_id}
+                            onChange={(v) => handleMemberRowChange(idx, 'user_id', v)}
+                            placeholder="Select staff member"
+                            error={Boolean(userErr || dupErr)}
+                          />
+                        </FormField>
+
+                        <FormField label="Site Role" required error={roleErr}>
+                          <Select
+                            options={teamRoles.map(r => ({ 
+                              value: String(r.id), 
+                              label: r.name || r.role_name || r.code || `Role #${r.id}` 
+                            }))}
+                            value={memberRow.team_role_id}
+                            onChange={(v) => handleMemberRowChange(idx, 'team_role_id', v)}
+                            placeholder="Select site role"
+                            error={Boolean(roleErr || dupErr)}
+                          />
+                        </FormField>
+                      </div>
+
+                      {/* Duplicate Alert Banner */}
+                      {dupErr && (
+                        <div className="mt-3 flex items-center gap-2 p-2.5 rounded-md bg-error/10 border border-error/20 text-error text-xs font-medium animate-in fade-in duration-150">
+                          <AlertCircle className="w-4 h-4 shrink-0 text-error" />
+                          <span>{dupErr}</span>
+                        </div>
+                      )}
+
+                      {/* Row Specific Permissions */}
+                      <div className="mt-3.5 pt-3 border-t border-border/40 flex flex-wrap items-center gap-5">
+                        <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-text-primary">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(memberRow.is_primary)}
+                            onChange={(e) => handleMemberRowChange(idx, 'is_primary', e.target.checked)}
+                            className="rounded border-border text-primary focus:ring-primary h-4 w-4"
+                          />
+                          <span>Primary Site Incharge</span>
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-text-primary">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(memberRow.can_approve)}
+                            onChange={(e) => handleMemberRowChange(idx, 'can_approve', e.target.checked)}
+                            className="rounded border-border text-primary focus:ring-primary h-4 w-4"
+                          />
+                          <span>Site Approval Authority</span>
+                        </label>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Add Another Member Button */}
+                {!editingMember && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleAddMemberRow}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 border-dashed border-primary/40 text-primary hover:bg-primary/5 hover:border-primary font-medium text-xs rounded-lg transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>+ Add Another Member</span>
+                  </Button>
+                )}
+              </div>
+            </EntityEditModal.Section>
+
+            {/* Timeline & Responsibility */}
             <EntityEditModal.Section title="Timeline & Responsibility">
               <EntityEditModal.Grid>
                 <FormField label="Assignment Start Date">
@@ -659,44 +912,27 @@ export function SiteTeamPage() {
               </EntityEditModal.Grid>
             </EntityEditModal.Section>
 
-            <EntityEditModal.Section title="Authority Flags">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-text-primary">
-                  <input
-                    type="checkbox"
-                    checked={form.is_primary}
-                    onChange={(e) => handleFormChange('is_primary', e.target.checked)}
-                    className="rounded border-border text-primary focus:ring-primary h-4 w-4"
-                  />
-                  <span>Primary Site Incharge</span>
-                </label>
-
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-text-primary">
-                  <input
-                    type="checkbox"
-                    checked={form.can_approve}
-                    onChange={(e) => handleFormChange('can_approve', e.target.checked)}
-                    className="rounded border-border text-primary focus:ring-primary h-4 w-4"
-                  />
-                  <span>Site Approval Authority</span>
-                </label>
-
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-text-primary">
-                  <input
-                    type="checkbox"
-                    checked={form.is_active}
-                    onChange={(e) => handleFormChange('is_active', e.target.checked)}
-                    className="rounded border-border text-primary focus:ring-primary h-4 w-4"
-                  />
-                  <span>Active Assignment</span>
-                </label>
-              </div>
+            {/* Status Flag */}
+            <EntityEditModal.Section title="Status & Validity" noBorder>
+              <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-text-primary">
+                <input
+                  type="checkbox"
+                  checked={form.is_active}
+                  onChange={(e) => handleFormChange('is_active', e.target.checked)}
+                  className="rounded border-border text-primary focus:ring-primary h-4 w-4"
+                />
+                <span>Active Assignment Status</span>
+              </label>
             </EntityEditModal.Section>
           </EntityEditModal.Body>
 
           <EntityEditModal.Footer
             formId="site-team-form"
-            submitLabel={editingMember ? 'Update Assignment' : 'Assign to Site'}
+            submitLabel={
+              editingMember 
+                ? 'Update Assignment' 
+                : (form.members.length > 1 ? `Assign ${form.members.length} Members to Site` : 'Assign to Site')
+            }
             onCancel={() => { setIsAddOpen(false); setEditingMember(null); }}
             isSubmitting={saving}
           />
