@@ -231,7 +231,6 @@ export function DailyAttendancePage() {
   // -------------------------------------------------------------
   // INITIALIZE ATTENDANCE ROLL MODAL HANDLERS
   // -------------------------------------------------------------
-  // Open modal, fetch labours for site, let user mark Present/Absent, then save & show in table
   const handleOpenInitModal = async () => {
     if (!selectedProjectId || !selectedSiteId) {
       toast.error('Please select a project and site location first.');
@@ -329,7 +328,7 @@ export function DailyAttendancePage() {
     }
   };
 
-  // Toggle status for a worker inside the initialization modal
+  // Toggle status inside modal
   const handleInitToggleStatus = (workerId, statusCode) => {
     setInitWorkersList(prev => prev.map(w => {
       if (String(w.worker_id) !== String(workerId)) return w;
@@ -348,7 +347,7 @@ export function DailyAttendancePage() {
     }));
   };
 
-  // Bulk mark all inside initialization modal
+  // Bulk mark all inside modal
   const handleInitMarkAll = (statusCode) => {
     const isPres = statusCode === 'PRESENT';
     const isHalf = statusCode === 'HALF_DAY';
@@ -364,7 +363,6 @@ export function DailyAttendancePage() {
     })));
   };
 
-  // Update working hours inside initialization modal
   const handleInitUpdateHours = (workerId, field, val) => {
     const num = Math.max(0, Math.min(24, Number(val) || 0));
     setInitWorkersList(prev => prev.map(w => {
@@ -373,7 +371,6 @@ export function DailyAttendancePage() {
     }));
   };
 
-  // Update remarks inside initialization modal
   const handleInitUpdateRemarks = (workerId, text) => {
     setInitWorkersList(prev => prev.map(w => {
       if (String(w.worker_id) !== String(workerId)) return w;
@@ -438,7 +435,6 @@ export function DailyAttendancePage() {
       for (const item of initWorkersList) {
         let assignmentId = item.assignment_id;
 
-        // Auto create assignment if worker didn't have one
         if (!assignmentId) {
           try {
             const resNewAssign = await labourApi.assignments.create({
@@ -1081,20 +1077,22 @@ export function DailyAttendancePage() {
             <RefreshCw className="w-4 h-4 animate-spin text-primary" />
             Loading attendance records...
           </div>
-        ) : !activeBatch ? (
-          /* When Attendance Roll has NOT been initialized yet */
-          <div className="flex flex-col items-center justify-center p-8 text-center bg-surface border border-border rounded-xl shadow-sm max-w-xl mx-auto my-6">
-            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-4 border border-primary/20">
-              <Calendar className="w-7 h-7 text-primary" />
+        ) : (!activeBatch || records.length === 0) ? (
+          /* When Attendance Roll has NOT been populated yet */
+          <div className="flex flex-col items-center justify-center p-8 sm:p-12 text-center bg-surface border border-border rounded-xl shadow-sm max-w-xl mx-auto my-6">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 border border-primary/20 text-primary">
+              <ClipboardCheck className="w-8 h-8" />
             </div>
-            <h3 className="text-base font-bold text-text-primary mb-1">Muster Roll Not Initialized</h3>
-            <p className="text-[12.5px] text-text-muted max-w-md mb-6 leading-relaxed">
-              No daily muster sheet is active for <strong className="text-text-primary">{currentSiteName}</strong> on <strong className="text-text-primary">{selectedDate}</strong>. Click below to load the labours list for this site, mark who is Present/Absent, and generate the daily muster roll.
+            <h3 className="text-base sm:text-lg font-bold text-text-primary mb-1.5">
+              Initialize Daily Attendance Roll
+            </h3>
+            <p className="text-xs sm:text-[13px] text-text-muted max-w-md mb-6 leading-relaxed">
+              No daily muster entries are active for <strong className="text-text-primary">{currentSiteName}</strong> on <strong className="text-text-primary">{selectedDate}</strong> ({selectedShift}). Click below to load all site labours and mark who is Present or Absent.
             </p>
             <Button
               variant="primary"
               size="lg"
-              className="px-6 py-2.5 text-[14px] font-semibold shadow-md flex items-center gap-2"
+              className="px-6 py-2.5 text-[14px] font-semibold shadow-md flex items-center gap-2 hover:scale-[1.02] transition-transform cursor-pointer"
               onClick={handleOpenInitModal}
             >
               <ClipboardCheck className="w-5 h-5" />
@@ -1130,7 +1128,7 @@ export function DailyAttendancePage() {
                 </div>
 
                 {/* Re-open Bulk Marking Sheet or Quick Actions */}
-                {isEditable && records.length > 0 && (
+                {isEditable && (
                   <div className="flex items-center gap-1.5 pl-2 border-l border-border">
                     <Button
                       variant="outline"
@@ -1676,7 +1674,7 @@ export function DailyAttendancePage() {
 
               {filteredInitWorkers.length === 0 ? (
                 <div className="text-center py-12 border border-dashed border-border rounded-lg text-text-muted text-xs">
-                  No labours found matching your search.
+                  No labours found for this site. Make sure workers are registered in the Labour Register.
                 </div>
               ) : (
                 <div className="border border-border rounded-lg overflow-hidden bg-surface shadow-2xs">
