@@ -3,7 +3,7 @@ import {
   Calendar, CheckCircle2, XCircle, Clock, Users, IndianRupee,
   Search, Filter, Eye, Edit, Trash2, Plus, ArrowLeft, ArrowRight,
   Sun, Moon, ShieldCheck, Check, AlertCircle, Sparkles, Send, RefreshCw, Lock,
-  CheckCheck, UserCheck, UserX
+  CheckCheck, UserCheck, UserX, UserPlus, ClipboardCheck, X
 } from 'lucide-react';
 import { PageHeader } from '../../../components/layout/PageHeader';
 import { PageContainer } from '../../../components/layout/PageContainer';
@@ -43,21 +43,26 @@ export function DailyAttendancePage() {
   const [loading, setLoading] = useState(false);
   const [loadingConfig, setLoadingConfig] = useState(false);
 
-  // Filters & Search
+  // Filters & Search for Main Table
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const perPage = 15;
 
-  // Modals
+  // Initialize / Bulk Attendance Marking Modal State
+  const [isInitModalOpen, setIsInitModalOpen] = useState(false);
+  const [initWorkersList, setInitWorkersList] = useState([]);
+  const [initSearch, setInitSearch] = useState('');
+  const [savingBatch, setSavingBatch] = useState(false);
+
+  // Single Worker Modals
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [editingRecord, setEditingRecord] = useState(null);
   const [viewingRecord, setViewingRecord] = useState(null);
   const [deletingRecord, setDeletingRecord] = useState(null);
   const [batchActionType, setBatchActionType] = useState(null); // 'submit', 'approve', 'reject', 'lock'
   const [actionRemarks, setActionRemarks] = useState('');
 
-  // Manual entry form state
+  // Manual entry form state for single worker
   const [manualForm, setManualForm] = useState({
     assignment_id: '',
     worker_id: '',
@@ -206,7 +211,505 @@ export function DailyAttendancePage() {
     fetchBatch(selectedProjectId, selectedSiteId, selectedDate, selectedShift);
   }, [selectedProjectId, selectedSiteId, selectedDate, selectedShift, fetchBatch]);
 
-  // Load available workers for manual add dialog
+  // Quick Day Navigation
+  const handlePrevDay = () => {
+    const d = new Date(selectedDate);
+    d.setDate(d.getDate() - 1);
+    setSelectedDate(d.toISOString().split('T')[0]);
+  };
+
+  const handleNextDay = () => {
+    const d = new Date(selectedDate);
+    d.setDate(d.getDate() + 1);
+    setSelectedDate(d.toISOString().split('T')[0]);
+  };
+
+  const handleToday = () => {
+    setSelectedDate(new Date().toISOString().split('T')[0]);
+  };
+
+  // -------------------------------------------------------------
+  // INITIALIZE ATTENDANCE ROLL MODAL HANDLERS
+  // -------------------------------------------------------------
+  // Open modal, fetch labours for site, let user mark Present/Absent, then save & show in table
+  const handleOpenInitModal = async () => {
+    if (!selectedProjectId || !selectedSiteId) {
+      toast.error('Please select a project and site location first.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const [resAssignments, resWorkers] = await Promise.all([
+        labourApi.assignments.list({ project_id: Number(selectedProjectId), site_id: Number(selectedSiteId) }).catch(() => ({ data: [] })),
+        labourApi.workers.list().catch(() => ({ data: [] })),
+      ]);
+
+      const assignmentList = resAssignments?.data?.labour_assignments ?? resAssignments?.labour_assignments ?? (Array.isArray(resAssignments?.data) ? resAssignments.data : Array.isArray(resAssignments) ? resAssignments : []);
+      const workerList = resWorkers?.data?.labour_workers ?? resWorkers?.labour_workers ?? (Array.isArray(resWorkers?.data) ? resWorkers.data : Array.isArray(resWorkers) ? resWorkers : []);
+
+      // Filter site specific assignments
+      let siteAssignments = assignmentList.filter(a => String(a.site_id) === String(selectedSiteId) && String(a.project_id) === String(selectedProjectId));
+      if (siteAssignments.length === 0) {
+        siteAssignments = assignmentList.filter(a => String(a.project_id) === String(selectedProjectId));
+      }
+
+      const workerMap = new Map();
+
+      // 1. Add deployed workers for this site
+      siteAssignments.forEach(a => {
+        workerMap.set(String(a.worker_id), {
+          assignment_id: a.id,
+          worker_id: a.worker_id,
+          worker_name: a.worker_name,
+          worker_code: a.worker_code,
+          contractor_name: a.contractor_name || 'Direct / Payroll',
+          category_name: a.category_name || 'General Labour',
+          status_code: 'PRESENT',
+          status_name: 'Present',
+          regular_hours: 8,
+          overtime_hours: 0,
+          check_in_time: '09:00:00',
+          check_out_time: '17:00:00',
+          remarks: '',
+        });
+      });
+
+      // 2. If no direct assignments exist yet, load all registered company workers
+      if (workerMap.size === 0) {
+        workerList.forEach(w => {
+          workerMap.set(String(w.id), {
+            assignment_id: null,
+            worker_id: w.id,
+            worker_name: w.worker_name,
+            worker_code: w.worker_code,
+            contractor_name: w.contractor_name || 'Direct / Payroll',
+            category_name: w.category_name || 'General Labour',
+            status_code: 'PRESENT',
+            status_name: 'Present',
+            regular_hours: 8,
+            overtime_hours: 0,
+            check_in_time: '09:00:00',
+            check_out_time: '17:00:00',
+            remarks: '',
+            base_wage_rate: w.base_wage_rate,
+            labour_category_id: w.labour_category_id || w.category_id,
+          });
+        });
+      }
+
+      // 3. If records already exist on current table, map existing marked statuses
+      if (records.length > 0) {
+        records.forEach(r => {
+          if (workerMap.has(String(r.worker_id))) {
+            const current = workerMap.get(String(r.worker_id));
+            workerMap.set(String(r.worker_id), {
+              ...current,
+              id: r.id,
+              status_code: r.attendance_status_code || 'PRESENT',
+              status_name: r.attendance_status_name || 'Present',
+              regular_hours: r.regular_hours !== undefined ? Number(r.regular_hours) : 8,
+              overtime_hours: r.overtime_hours !== undefined ? Number(r.overtime_hours) : 0,
+              check_in_time: r.check_in_time,
+              check_out_time: r.check_out_time,
+              remarks: r.remarks || '',
+            });
+          }
+        });
+      }
+
+      const list = Array.from(workerMap.values());
+      setInitWorkersList(list);
+      setInitSearch('');
+      setIsInitModalOpen(true);
+    } catch (err) {
+      console.error('Error fetching site labours:', err);
+      toast.error('Failed to retrieve labour list for this site.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Toggle status for a worker inside the initialization modal
+  const handleInitToggleStatus = (workerId, statusCode) => {
+    setInitWorkersList(prev => prev.map(w => {
+      if (String(w.worker_id) !== String(workerId)) return w;
+      const isPres = statusCode === 'PRESENT';
+      const isHalf = statusCode === 'HALF_DAY';
+      const isAbs = statusCode === 'ABSENT';
+      return {
+        ...w,
+        status_code: statusCode,
+        status_name: isPres ? 'Present' : isHalf ? 'Half Day' : 'Absent',
+        regular_hours: isPres ? 8 : isHalf ? 4 : 0,
+        overtime_hours: isAbs ? 0 : w.overtime_hours,
+        check_in_time: isAbs ? null : '09:00:00',
+        check_out_time: isAbs ? null : isHalf ? '13:00:00' : '17:00:00',
+      };
+    }));
+  };
+
+  // Bulk mark all inside initialization modal
+  const handleInitMarkAll = (statusCode) => {
+    const isPres = statusCode === 'PRESENT';
+    const isHalf = statusCode === 'HALF_DAY';
+    const isAbs = statusCode === 'ABSENT';
+    setInitWorkersList(prev => prev.map(w => ({
+      ...w,
+      status_code: statusCode,
+      status_name: isPres ? 'Present' : isHalf ? 'Half Day' : 'Absent',
+      regular_hours: isPres ? 8 : isHalf ? 4 : 0,
+      overtime_hours: isAbs ? 0 : w.overtime_hours,
+      check_in_time: isAbs ? null : '09:00:00',
+      check_out_time: isAbs ? null : isHalf ? '13:00:00' : '17:00:00',
+    })));
+  };
+
+  // Update working hours inside initialization modal
+  const handleInitUpdateHours = (workerId, field, val) => {
+    const num = Math.max(0, Math.min(24, Number(val) || 0));
+    setInitWorkersList(prev => prev.map(w => {
+      if (String(w.worker_id) !== String(workerId)) return w;
+      return { ...w, [field]: num };
+    }));
+  };
+
+  // Update remarks inside initialization modal
+  const handleInitUpdateRemarks = (workerId, text) => {
+    setInitWorkersList(prev => prev.map(w => {
+      if (String(w.worker_id) !== String(workerId)) return w;
+      return { ...w, remarks: text };
+    }));
+  };
+
+  // Save marked attendance from modal and render table
+  const handleSaveInitAttendance = async () => {
+    if (initWorkersList.length === 0) {
+      toast.error('No labours found for this site.');
+      return;
+    }
+    setSavingBatch(true);
+    try {
+      const statuses = getAttendanceStatuses();
+      const sources = getAttendanceSources();
+      const manualSource = sources.find(s => s.attendance_source_code === 'MANUAL') || sources[0] || { id: 1 };
+
+      // 1. Create or retrieve batch on backend
+      let batch = null;
+      try {
+        const resCreate = await attendanceApi.create({
+          project_id: Number(selectedProjectId),
+          site_id: Number(selectedSiteId),
+          attendance_date: selectedDate,
+          shift_code: selectedShift || 'GENERAL',
+          remarks: 'Daily Site Attendance Recorded',
+        });
+        batch = resCreate?.data?.attendance_batch ?? resCreate?.attendance_batch ?? resCreate?.data;
+      } catch (createErr) {
+        try {
+          const resList = await attendanceApi.list({
+            project_id: Number(selectedProjectId),
+            site_id: Number(selectedSiteId),
+            date_from: selectedDate,
+            date_to: selectedDate,
+          });
+          const batches = resList?.data?.attendance_batches ?? resList?.attendance_batches ?? (Array.isArray(resList?.data) ? resList.data : Array.isArray(resList) ? resList : []);
+          batch = batches.find(b => b.shift_code === (selectedShift || 'GENERAL'));
+        } catch (e) {}
+
+        if (!batch) {
+          batch = {
+            id: Date.now(),
+            project_id: Number(selectedProjectId),
+            site_id: Number(selectedSiteId),
+            attendance_date: selectedDate,
+            shift_code: selectedShift || 'GENERAL',
+            status_code: 'DRAFT',
+            status_name: 'Draft',
+          };
+        }
+      }
+
+      const defaultWageBasis = masters?.['assignment-wage-bases']?.[0]?.id || 1;
+      const defaultStatus = masters?.['assignment-statuses']?.find(s => s.status_code === 'ACTIVE')?.id || 1;
+
+      const newRecords = [];
+
+      // 2. Save each worker entry with marked status
+      for (const item of initWorkersList) {
+        let assignmentId = item.assignment_id;
+
+        // Auto create assignment if worker didn't have one
+        if (!assignmentId) {
+          try {
+            const resNewAssign = await labourApi.assignments.create({
+              project_id: Number(selectedProjectId),
+              site_id: Number(selectedSiteId),
+              worker_id: Number(item.worker_id),
+              labour_category_id: Number(item.labour_category_id || 1),
+              assigned_from: selectedDate,
+              wage_basis_id: Number(defaultWageBasis),
+              agreed_wage_rate: Number(item.base_wage_rate || 850),
+              status_id: Number(defaultStatus),
+              remarks: 'Auto-assigned on attendance muster initialization',
+            });
+            const newAssign = resNewAssign?.data?.labour_assignment ?? resNewAssign?.labour_assignment;
+            if (newAssign?.id) assignmentId = newAssign.id;
+          } catch (e) {
+            assignmentId = Date.now() + Math.floor(Math.random() * 1000);
+          }
+        }
+
+        const statusObj = statuses.find(s => s.attendance_status_code === item.status_code) || {
+          id: item.status_code === 'PRESENT' ? 1 : item.status_code === 'ABSENT' ? 2 : 3,
+          attendance_status_name: item.status_name,
+        };
+
+        const payload = {
+          assignment_id: Number(assignmentId),
+          worker_id: Number(item.worker_id),
+          attendance_status_id: Number(statusObj.id),
+          attendance_source_id: Number(manualSource.id),
+          check_in_time: item.check_in_time || null,
+          check_out_time: item.check_out_time || null,
+          regular_hours: Number(item.regular_hours || 0),
+          overtime_hours: Number(item.overtime_hours || 0),
+          remarks: item.remarks || `Marked ${item.status_name}`,
+        };
+
+        let entryId = item.id || (Date.now() + Math.floor(Math.random() * 100000));
+        if (batch?.id && typeof batch.id === 'number' && batch.id < 1000000000000) {
+          try {
+            if (item.id && typeof item.id === 'number' && item.id < 1000000000000) {
+              await attendanceApi.updateEntry(batch.id, item.id, payload);
+            } else {
+              const resEntry = await attendanceApi.createEntry(batch.id, payload);
+              const createdEntry = resEntry?.data?.attendance_entry ?? resEntry?.attendance_entry;
+              if (createdEntry?.id) entryId = createdEntry.id;
+            }
+          } catch (e) {
+            console.warn('Entry save warning:', e);
+          }
+        }
+
+        newRecords.push({
+          id: entryId,
+          assignment_id: assignmentId,
+          worker_id: item.worker_id,
+          worker_name: item.worker_name,
+          worker_code: item.worker_code,
+          contractor_name: item.contractor_name || 'Direct / Payroll',
+          category_name: item.category_name || 'General Labour',
+          attendance_status_id: statusObj.id,
+          attendance_status_code: item.status_code,
+          attendance_status_name: item.status_name,
+          regular_hours: item.regular_hours,
+          overtime_hours: item.overtime_hours,
+          check_in_time: item.check_in_time,
+          check_out_time: item.check_out_time,
+          remarks: item.remarks || '',
+        });
+      }
+
+      const totalWorkers = newRecords.length;
+      const presentWorkers = newRecords.filter(r => r.attendance_status_code === 'PRESENT' || r.attendance_status_code === 'HALF_DAY').length;
+      const absentWorkers = newRecords.filter(r => r.attendance_status_code === 'ABSENT').length;
+      const totalRegularHours = newRecords.reduce((sum, r) => sum + (Number(r.regular_hours) || 0), 0);
+      const totalOtHours = newRecords.reduce((sum, r) => sum + (Number(r.overtime_hours) || 0), 0);
+
+      const finalizedBatch = {
+        ...batch,
+        status_code: batch.status_code || 'DRAFT',
+        status_name: batch.status_name || 'Draft',
+        total_workers: totalWorkers,
+        present_workers: presentWorkers,
+        absent_workers: absentWorkers,
+        total_regular_hours: totalRegularHours,
+        total_overtime_hours: totalOtHours,
+        entries: newRecords,
+      };
+
+      setActiveBatch(finalizedBatch);
+      setRecords(newRecords);
+      setIsInitModalOpen(false);
+
+      toast.success(`Attendance Roll Saved! ${presentWorkers} Present, ${absentWorkers} Absent. Displaying muster table.`);
+    } catch (err) {
+      console.error('Error saving attendance:', err);
+      toast.error(err?.message || 'Failed to save attendance roll.');
+    } finally {
+      setSavingBatch(false);
+    }
+  };
+
+  // -------------------------------------------------------------
+  // TABLE ROW-LEVEL STATUS TOGGLES & BULK ACTIONS
+  // -------------------------------------------------------------
+  const handleToggleStatus = async (record, statusCode) => {
+    if (!activeBatch) return;
+    const statuses = getAttendanceStatuses();
+    const sources = getAttendanceSources();
+    const statusObj = statuses.find(s => s.attendance_status_code === statusCode) || {
+      id: statusCode === 'PRESENT' ? 1 : statusCode === 'ABSENT' ? 2 : statusCode === 'HALF_DAY' ? 3 : 4,
+      attendance_status_code: statusCode,
+      attendance_status_name: statusCode === 'PRESENT' ? 'Present' : statusCode === 'ABSENT' ? 'Absent' : statusCode === 'HALF_DAY' ? 'Half Day' : 'Leave',
+    };
+    const sourceObj = sources.find(s => s.attendance_source_code === 'MANUAL') || sources[0] || { id: 1, attendance_source_code: 'MANUAL', attendance_source_name: 'Manual' };
+
+    const regHours = statusCode === 'PRESENT' ? 8 : statusCode === 'HALF_DAY' ? 4 : 0;
+    const otHours = statusCode === 'ABSENT' ? 0 : (Number(record.overtime_hours) || 0);
+    const checkIn = statusCode === 'ABSENT' ? null : (record.check_in_time || '09:00:00');
+    const checkOut = statusCode === 'ABSENT' ? null : statusCode === 'HALF_DAY' ? '13:00:00' : '17:00:00';
+
+    const payload = {
+      assignment_id: Number(record.assignment_id),
+      worker_id: Number(record.worker_id),
+      attendance_status_id: Number(statusObj.id),
+      attendance_source_id: Number(sourceObj.id),
+      check_in_time: checkIn,
+      check_out_time: checkOut,
+      regular_hours: regHours,
+      overtime_hours: otHours,
+      remarks: record.remarks || `Marked ${statusObj.attendance_status_name}`,
+    };
+
+    const updatedRecords = records.map(r => r.id === record.id ? {
+      ...r,
+      ...payload,
+      attendance_status_code: statusCode,
+      attendance_status_name: statusObj.attendance_status_name,
+    } : r);
+
+    setRecords(updatedRecords);
+    updateBatchKpis(updatedRecords);
+
+    if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
+      try {
+        if (typeof record.id === 'number' && record.id < 1000000000000) {
+          await attendanceApi.updateEntry(activeBatch.id, record.id, payload);
+        } else {
+          const resEntry = await attendanceApi.createEntry(activeBatch.id, payload);
+          const createdEntry = resEntry?.data?.attendance_entry ?? resEntry?.attendance_entry;
+          if (createdEntry?.id) {
+            setRecords(prev => prev.map(r => r.id === record.id ? { ...r, id: createdEntry.id } : r));
+          }
+        }
+      } catch (err) {
+        console.warn('API sync warning:', err);
+      }
+    }
+
+    toast.success(`Marked ${record.worker_name} as ${statusObj.attendance_status_name}`);
+  };
+
+  const handleMarkAllPresent = async () => {
+    if (!activeBatch || records.length === 0) return;
+    const statuses = getAttendanceStatuses();
+    const sources = getAttendanceSources();
+    const presentStatus = statuses.find(s => s.attendance_status_code === 'PRESENT') || { id: 1, attendance_status_code: 'PRESENT', attendance_status_name: 'Present' };
+    const sourceObj = sources.find(s => s.attendance_source_code === 'MANUAL') || { id: 1, attendance_source_code: 'MANUAL', attendance_source_name: 'Manual' };
+
+    const updatedRecords = records.map(r => ({
+      ...r,
+      attendance_status_id: presentStatus.id,
+      attendance_status_code: 'PRESENT',
+      attendance_status_name: presentStatus.attendance_status_name,
+      regular_hours: 8,
+      check_in_time: '09:00:00',
+      check_out_time: '17:00:00',
+    }));
+
+    setRecords(updatedRecords);
+    updateBatchKpis(updatedRecords);
+    toast.success('All workers marked as Present (8 hrs).');
+
+    if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
+      Promise.all(updatedRecords.map(r => {
+        const payload = {
+          assignment_id: Number(r.assignment_id),
+          worker_id: Number(r.worker_id),
+          attendance_status_id: Number(presentStatus.id),
+          attendance_source_id: Number(sourceObj.id),
+          check_in_time: '09:00:00',
+          check_out_time: '17:00:00',
+          regular_hours: 8,
+          overtime_hours: Number(r.overtime_hours) || 0,
+          remarks: 'Marked Present',
+        };
+        return typeof r.id === 'number' && r.id < 1000000000000
+          ? attendanceApi.updateEntry(activeBatch.id, r.id, payload).catch(() => {})
+          : attendanceApi.createEntry(activeBatch.id, payload).catch(() => {});
+      }));
+    }
+  };
+
+  const handleMarkAllAbsent = async () => {
+    if (!activeBatch || records.length === 0) return;
+    const statuses = getAttendanceStatuses();
+    const sources = getAttendanceSources();
+    const absentStatus = statuses.find(s => s.attendance_status_code === 'ABSENT') || { id: 2, attendance_status_code: 'ABSENT', attendance_status_name: 'Absent' };
+    const sourceObj = sources.find(s => s.attendance_source_code === 'MANUAL') || { id: 1, attendance_source_code: 'MANUAL', attendance_source_name: 'Manual' };
+
+    const updatedRecords = records.map(r => ({
+      ...r,
+      attendance_status_id: absentStatus.id,
+      attendance_status_code: 'ABSENT',
+      attendance_status_name: absentStatus.attendance_status_name,
+      regular_hours: 0,
+      overtime_hours: 0,
+      check_in_time: null,
+      check_out_time: null,
+    }));
+
+    setRecords(updatedRecords);
+    updateBatchKpis(updatedRecords);
+    toast.success('All workers marked as Absent.');
+
+    if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
+      Promise.all(updatedRecords.map(r => {
+        const payload = {
+          assignment_id: Number(r.assignment_id),
+          worker_id: Number(r.worker_id),
+          attendance_status_id: Number(absentStatus.id),
+          attendance_source_id: Number(sourceObj.id),
+          check_in_time: null,
+          check_out_time: null,
+          regular_hours: 0,
+          overtime_hours: 0,
+          remarks: 'Marked Absent',
+        };
+        return typeof r.id === 'number' && r.id < 1000000000000
+          ? attendanceApi.updateEntry(activeBatch.id, r.id, payload).catch(() => {})
+          : attendanceApi.createEntry(activeBatch.id, payload).catch(() => {});
+      }));
+    }
+  };
+
+  const handleUpdateHours = async (record, field, value) => {
+    const numVal = Math.max(0, Math.min(24, Number(value) || 0));
+    const payload = {
+      assignment_id: Number(record.assignment_id),
+      worker_id: Number(record.worker_id),
+      attendance_status_id: Number(record.attendance_status_id),
+      attendance_source_id: Number(record.attendance_source_id || 1),
+      check_in_time: record.check_in_time || '09:00:00',
+      check_out_time: record.check_out_time || '17:00:00',
+      regular_hours: field === 'regular_hours' ? numVal : Number(record.regular_hours) || 0,
+      overtime_hours: field === 'overtime_hours' ? numVal : Number(record.overtime_hours) || 0,
+      remarks: record.remarks || '',
+    };
+
+    const updatedRecords = records.map(r => r.id === record.id ? { ...r, [field]: numVal } : r);
+    setRecords(updatedRecords);
+    updateBatchKpis(updatedRecords);
+
+    if (activeBatch?.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
+      if (typeof record.id === 'number' && record.id < 1000000000000) {
+        attendanceApi.updateEntry(activeBatch.id, record.id, payload).catch(() => {});
+      }
+    }
+  };
+
+  // Load single worker dialog
   const loadAvailableWorkers = async () => {
     if (!selectedProjectId || !selectedSiteId) return;
     try {
@@ -220,7 +723,6 @@ export function DailyAttendancePage() {
 
       const existingWorkerIds = new Set(records.map(r => String(r.worker_id)));
 
-      // Combine existing assignments with registered workers
       const available = [];
       const seenIds = new Set();
 
@@ -275,427 +777,7 @@ export function DailyAttendancePage() {
     }
   };
 
-  // Quick Day Navigation
-  const handlePrevDay = () => {
-    const d = new Date(selectedDate);
-    d.setDate(d.getDate() - 1);
-    setSelectedDate(d.toISOString().split('T')[0]);
-  };
-
-  const handleNextDay = () => {
-    const d = new Date(selectedDate);
-    d.setDate(d.getDate() + 1);
-    setSelectedDate(d.toISOString().split('T')[0]);
-  };
-
-  const handleToday = () => {
-    setSelectedDate(new Date().toISOString().split('T')[0]);
-  };
-
-  // Initialize Batch & Populate active workers for site
-  const handleInitializeBatch = async () => {
-    if (!selectedProjectId || !selectedSiteId || !selectedDate) {
-      toast.error('Please select a project and site location first.');
-      return;
-    }
-    setLoading(true);
-    try {
-      const statuses = getAttendanceStatuses();
-      const sources = getAttendanceSources();
-      const presentStatus = statuses.find(s => s.attendance_status_code === 'PRESENT') || statuses[0] || { id: 1, attendance_status_code: 'PRESENT', attendance_status_name: 'Present' };
-      const manualSource = sources.find(s => s.attendance_source_code === 'MANUAL') || sources[0] || { id: 1, attendance_source_code: 'MANUAL', attendance_source_name: 'Manual' };
-
-      // 1. Create or retrieve the batch
-      let currentBatch = null;
-      try {
-        const resCreate = await attendanceApi.create({
-          project_id: Number(selectedProjectId),
-          site_id: Number(selectedSiteId),
-          attendance_date: selectedDate,
-          shift_code: selectedShift || 'GENERAL',
-          remarks: 'Daily Site Roster Initialized',
-        });
-        currentBatch = resCreate?.data?.attendance_batch ?? resCreate?.attendance_batch ?? resCreate?.data;
-      } catch (createErr) {
-        // If batch already exists in backend, fetch existing
-        try {
-          const resList = await attendanceApi.list({
-            project_id: Number(selectedProjectId),
-            site_id: Number(selectedSiteId),
-            date_from: selectedDate,
-            date_to: selectedDate,
-          });
-          const batches = resList?.data?.attendance_batches ?? resList?.attendance_batches ?? (Array.isArray(resList?.data) ? resList.data : Array.isArray(resList) ? resList : []);
-          currentBatch = batches.find(b => b.shift_code === (selectedShift || 'GENERAL'));
-        } catch (e) {
-          console.warn('Batch lookup warning:', e);
-        }
-
-        if (!currentBatch) {
-          currentBatch = {
-            id: Date.now(),
-            project_id: Number(selectedProjectId),
-            site_id: Number(selectedSiteId),
-            attendance_date: selectedDate,
-            shift_code: selectedShift || 'GENERAL',
-            status_code: 'DRAFT',
-            status_name: 'Draft',
-          };
-        }
-      }
-
-      // If existing batch already has entries, fetch details
-      if (currentBatch?.id && typeof currentBatch.id === 'number' && currentBatch.id < 1000000000000) {
-        try {
-          const resDetail = await attendanceApi.get(currentBatch.id);
-          const detail = resDetail?.data?.attendance_batch ?? resDetail?.attendance_batch;
-          if (detail && Array.isArray(detail.entries) && detail.entries.length > 0) {
-            setActiveBatch(detail);
-            setRecords(detail.entries);
-            toast.success('Attendance muster loaded with existing entries.');
-            return;
-          }
-        } catch (e) {
-          console.warn('Batch detail fetch warning:', e);
-        }
-      }
-
-      // 2. Fetch active assignments / deployments for this site
-      let assignments = [];
-      try {
-        const resAssignments = await labourApi.assignments.list({
-          project_id: Number(selectedProjectId),
-          site_id: Number(selectedSiteId),
-        });
-        const list = resAssignments?.data?.labour_assignments ?? resAssignments?.labour_assignments ?? (Array.isArray(resAssignments?.data) ? resAssignments.data : Array.isArray(resAssignments) ? resAssignments : []);
-        // Filter by selected site & project
-        assignments = list.filter(a => String(a.site_id) === String(selectedSiteId) && String(a.project_id) === String(selectedProjectId));
-        if (assignments.length === 0) {
-          assignments = list.filter(a => String(a.project_id) === String(selectedProjectId));
-        }
-      } catch (err) {
-        console.warn('Assignments list fetch warning:', err);
-      }
-
-      // 3. Fallback: If no assignments exist for this site, fetch registered workers and auto-assign them to the site
-      if (assignments.length === 0) {
-        try {
-          const resWorkers = await labourApi.workers.list();
-          const allWorkers = resWorkers?.data?.labour_workers ?? resWorkers?.labour_workers ?? (Array.isArray(resWorkers?.data) ? resWorkers.data : Array.isArray(resWorkers) ? resWorkers : []);
-          
-          if (allWorkers.length > 0) {
-            toast.info(`Preparing roster for ${allWorkers.length} site workers...`);
-            const defaultWageBasis = masters?.['assignment-wage-bases']?.[0]?.id || 1;
-            const defaultStatus = masters?.['assignment-statuses']?.find(s => s.status_code === 'ACTIVE')?.id || 1;
-
-            for (const worker of allWorkers) {
-              const categoryId = worker.labour_category_id || worker.category_id || 1;
-              try {
-                const resNewAssign = await labourApi.assignments.create({
-                  project_id: Number(selectedProjectId),
-                  site_id: Number(selectedSiteId),
-                  worker_id: Number(worker.id),
-                  labour_category_id: Number(categoryId),
-                  assigned_from: selectedDate,
-                  wage_basis_id: Number(defaultWageBasis),
-                  agreed_wage_rate: Number(worker.base_wage_rate || 850),
-                  status_id: Number(defaultStatus),
-                  remarks: 'Auto-assigned on attendance muster initialization',
-                });
-                const newAssign = resNewAssign?.data?.labour_assignment ?? resNewAssign?.labour_assignment;
-                if (newAssign?.id) {
-                  assignments.push({
-                    ...newAssign,
-                    worker_name: worker.worker_name,
-                    worker_code: worker.worker_code,
-                    contractor_name: worker.contractor_name,
-                  });
-                } else {
-                  assignments.push({
-                    id: Date.now() + Math.floor(Math.random() * 1000),
-                    project_id: Number(selectedProjectId),
-                    site_id: Number(selectedSiteId),
-                    worker_id: worker.id,
-                    worker_name: worker.worker_name,
-                    worker_code: worker.worker_code,
-                    contractor_name: worker.contractor_name,
-                  });
-                }
-              } catch (assignErr) {
-                // If create assignment fails, still add worker optimistically
-                assignments.push({
-                  id: Date.now() + Math.floor(Math.random() * 1000),
-                  project_id: Number(selectedProjectId),
-                  site_id: Number(selectedSiteId),
-                  worker_id: worker.id,
-                  worker_name: worker.worker_name,
-                  worker_code: worker.worker_code,
-                  contractor_name: worker.contractor_name,
-                });
-              }
-            }
-          }
-        } catch (workerErr) {
-          console.warn('Worker list fetch error:', workerErr);
-        }
-      }
-
-      // 4. Create attendance entries for all workers
-      const newRecords = [];
-      if (assignments.length > 0) {
-        toast.info(`Populating attendance roll with ${assignments.length} workers...`);
-        for (const a of assignments) {
-          const payload = {
-            assignment_id: Number(a.id),
-            worker_id: Number(a.worker_id),
-            attendance_status_id: Number(presentStatus.id),
-            attendance_source_id: Number(manualSource.id),
-            check_in_time: '09:00:00',
-            check_out_time: '17:00:00',
-            regular_hours: 8,
-            overtime_hours: 0,
-            remarks: 'Present on site',
-          };
-
-          let entryId = Date.now() + Math.floor(Math.random() * 100000);
-          if (currentBatch?.id && typeof currentBatch.id === 'number' && currentBatch.id < 1000000000000) {
-            try {
-              const resEntry = await attendanceApi.createEntry(currentBatch.id, payload);
-              const createdEntry = resEntry?.data?.attendance_entry ?? resEntry?.attendance_entry;
-              if (createdEntry?.id) {
-                entryId = createdEntry.id;
-              }
-            } catch (entryErr) {
-              console.warn('Entry create warning:', entryErr);
-            }
-          }
-
-          newRecords.push({
-            id: entryId,
-            assignment_id: a.id,
-            worker_id: a.worker_id,
-            worker_name: a.worker_name || 'Worker',
-            worker_code: a.worker_code || `W-${a.worker_id}`,
-            contractor_name: a.contractor_name || 'Direct / Payroll',
-            attendance_status_id: presentStatus.id,
-            attendance_status_code: 'PRESENT',
-            attendance_status_name: presentStatus.attendance_status_name || 'Present',
-            regular_hours: 8,
-            overtime_hours: 0,
-            check_in_time: '09:00:00',
-            check_out_time: '17:00:00',
-            remarks: '',
-          });
-        }
-      }
-
-      const totalWorkers = newRecords.length;
-      const presentWorkers = newRecords.length;
-      const absentWorkers = 0;
-      const totalRegularHours = newRecords.length * 8;
-      const totalOtHours = 0;
-
-      const finalizedBatch = {
-        ...currentBatch,
-        status_code: currentBatch.status_code || 'DRAFT',
-        status_name: currentBatch.status_name || 'Draft',
-        total_workers: totalWorkers,
-        present_workers: presentWorkers,
-        absent_workers: absentWorkers,
-        total_regular_hours: totalRegularHours,
-        total_overtime_hours: totalOtHours,
-        entries: newRecords,
-      };
-
-      setActiveBatch(finalizedBatch);
-      setRecords(newRecords);
-
-      if (newRecords.length > 0) {
-        toast.success(`Attendance Roll initialized with ${newRecords.length} workers. You can now mark attendance.`);
-      } else {
-        toast.info('Attendance roll initialized. Click "Add Worker" to add workers.');
-      }
-    } catch (err) {
-      console.error('Initialize batch error:', err);
-      toast.error(err?.message || 'Failed to initialize daily muster.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Quick toggle status button: P (Present), HD (Half Day), A (Absent)
-  const handleToggleStatus = async (record, statusCode) => {
-    if (!activeBatch) return;
-    const statuses = getAttendanceStatuses();
-    const sources = getAttendanceSources();
-    const statusObj = statuses.find(s => s.attendance_status_code === statusCode) || {
-      id: statusCode === 'PRESENT' ? 1 : statusCode === 'ABSENT' ? 2 : statusCode === 'HALF_DAY' ? 3 : 4,
-      attendance_status_code: statusCode,
-      attendance_status_name: statusCode === 'PRESENT' ? 'Present' : statusCode === 'ABSENT' ? 'Absent' : statusCode === 'HALF_DAY' ? 'Half Day' : 'Leave',
-    };
-    const sourceObj = sources.find(s => s.attendance_source_code === 'MANUAL') || sources[0] || { id: 1, attendance_source_code: 'MANUAL', attendance_source_name: 'Manual' };
-
-    const regHours = statusCode === 'PRESENT' ? 8 : statusCode === 'HALF_DAY' ? 4 : 0;
-    const otHours = statusCode === 'ABSENT' ? 0 : (Number(record.overtime_hours) || 0);
-    const checkIn = statusCode === 'ABSENT' ? null : (record.check_in_time || '09:00:00');
-    const checkOut = statusCode === 'ABSENT' ? null : statusCode === 'HALF_DAY' ? '13:00:00' : '17:00:00';
-
-    const payload = {
-      assignment_id: Number(record.assignment_id),
-      worker_id: Number(record.worker_id),
-      attendance_status_id: Number(statusObj.id),
-      attendance_source_id: Number(sourceObj.id),
-      check_in_time: checkIn,
-      check_out_time: checkOut,
-      regular_hours: regHours,
-      overtime_hours: otHours,
-      remarks: record.remarks || `Marked ${statusObj.attendance_status_name}`,
-    };
-
-    const updatedRecords = records.map(r => r.id === record.id ? {
-      ...r,
-      ...payload,
-      attendance_status_code: statusCode,
-      attendance_status_name: statusObj.attendance_status_name,
-    } : r);
-
-    setRecords(updatedRecords);
-    updateBatchKpis(updatedRecords);
-
-    // Sync to API if valid batch ID exists
-    if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
-      try {
-        if (typeof record.id === 'number' && record.id < 1000000000000) {
-          await attendanceApi.updateEntry(activeBatch.id, record.id, payload);
-        } else {
-          const resEntry = await attendanceApi.createEntry(activeBatch.id, payload);
-          const createdEntry = resEntry?.data?.attendance_entry ?? resEntry?.attendance_entry;
-          if (createdEntry?.id) {
-            setRecords(prev => prev.map(r => r.id === record.id ? { ...r, id: createdEntry.id } : r));
-          }
-        }
-      } catch (err) {
-        console.warn('API sync warning:', err);
-      }
-    }
-
-    toast.success(`Marked ${record.worker_name} as ${statusObj.attendance_status_name}`);
-  };
-
-  // Bulk Mark All Present
-  const handleMarkAllPresent = async () => {
-    if (!activeBatch || records.length === 0) return;
-    const statuses = getAttendanceStatuses();
-    const sources = getAttendanceSources();
-    const presentStatus = statuses.find(s => s.attendance_status_code === 'PRESENT') || { id: 1, attendance_status_code: 'PRESENT', attendance_status_name: 'Present' };
-    const sourceObj = sources.find(s => s.attendance_source_code === 'MANUAL') || { id: 1, attendance_source_code: 'MANUAL', attendance_source_name: 'Manual' };
-
-    const updatedRecords = records.map(r => ({
-      ...r,
-      attendance_status_id: presentStatus.id,
-      attendance_status_code: 'PRESENT',
-      attendance_status_name: presentStatus.attendance_status_name,
-      regular_hours: 8,
-      check_in_time: '09:00:00',
-      check_out_time: '17:00:00',
-    }));
-
-    setRecords(updatedRecords);
-    updateBatchKpis(updatedRecords);
-    toast.success('All workers marked as Present (8 hrs).');
-
-    // Sync in background
-    if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
-      Promise.all(updatedRecords.map(r => {
-        const payload = {
-          assignment_id: Number(r.assignment_id),
-          worker_id: Number(r.worker_id),
-          attendance_status_id: Number(presentStatus.id),
-          attendance_source_id: Number(sourceObj.id),
-          check_in_time: '09:00:00',
-          check_out_time: '17:00:00',
-          regular_hours: 8,
-          overtime_hours: Number(r.overtime_hours) || 0,
-          remarks: 'Marked Present',
-        };
-        return typeof r.id === 'number' && r.id < 1000000000000
-          ? attendanceApi.updateEntry(activeBatch.id, r.id, payload).catch(() => {})
-          : attendanceApi.createEntry(activeBatch.id, payload).catch(() => {});
-      }));
-    }
-  };
-
-  // Bulk Mark All Absent
-  const handleMarkAllAbsent = async () => {
-    if (!activeBatch || records.length === 0) return;
-    const statuses = getAttendanceStatuses();
-    const sources = getAttendanceSources();
-    const absentStatus = statuses.find(s => s.attendance_status_code === 'ABSENT') || { id: 2, attendance_status_code: 'ABSENT', attendance_status_name: 'Absent' };
-    const sourceObj = sources.find(s => s.attendance_source_code === 'MANUAL') || { id: 1, attendance_source_code: 'MANUAL', attendance_source_name: 'Manual' };
-
-    const updatedRecords = records.map(r => ({
-      ...r,
-      attendance_status_id: absentStatus.id,
-      attendance_status_code: 'ABSENT',
-      attendance_status_name: absentStatus.attendance_status_name,
-      regular_hours: 0,
-      overtime_hours: 0,
-      check_in_time: null,
-      check_out_time: null,
-    }));
-
-    setRecords(updatedRecords);
-    updateBatchKpis(updatedRecords);
-    toast.success('All workers marked as Absent.');
-
-    // Sync in background
-    if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
-      Promise.all(updatedRecords.map(r => {
-        const payload = {
-          assignment_id: Number(r.assignment_id),
-          worker_id: Number(r.worker_id),
-          attendance_status_id: Number(absentStatus.id),
-          attendance_source_id: Number(sourceObj.id),
-          check_in_time: null,
-          check_out_time: null,
-          regular_hours: 0,
-          overtime_hours: 0,
-          remarks: 'Marked Absent',
-        };
-        return typeof r.id === 'number' && r.id < 1000000000000
-          ? attendanceApi.updateEntry(activeBatch.id, r.id, payload).catch(() => {})
-          : attendanceApi.createEntry(activeBatch.id, payload).catch(() => {});
-      }));
-    }
-  };
-
-  // Update working hours directly
-  const handleUpdateHours = async (record, field, value) => {
-    const numVal = Math.max(0, Math.min(24, Number(value) || 0));
-    const payload = {
-      assignment_id: Number(record.assignment_id),
-      worker_id: Number(record.worker_id),
-      attendance_status_id: Number(record.attendance_status_id),
-      attendance_source_id: Number(record.attendance_source_id || 1),
-      check_in_time: record.check_in_time || '09:00:00',
-      check_out_time: record.check_out_time || '17:00:00',
-      regular_hours: field === 'regular_hours' ? numVal : Number(record.regular_hours) || 0,
-      overtime_hours: field === 'overtime_hours' ? numVal : Number(record.overtime_hours) || 0,
-      remarks: record.remarks || '',
-    };
-
-    const updatedRecords = records.map(r => r.id === record.id ? { ...r, [field]: numVal } : r);
-    setRecords(updatedRecords);
-    updateBatchKpis(updatedRecords);
-
-    if (activeBatch?.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
-      if (typeof record.id === 'number' && record.id < 1000000000000) {
-        attendanceApi.updateEntry(activeBatch.id, record.id, payload).catch(() => {});
-      }
-    }
-  };
-
-  // Save manual worker entry
+  // Add single worker manual entry
   const handleAddManualEntry = async (e) => {
     e.preventDefault();
     if (!activeBatch?.id || (!manualForm.assignment_id && !manualForm.worker_id)) return;
@@ -714,7 +796,6 @@ export function DailyAttendancePage() {
     try {
       let assignmentId = worker.assignment_id;
 
-      // If worker doesn't have an assignment for this site yet, create one
       if (!assignmentId) {
         const defaultWageBasis = masters?.['assignment-wage-bases']?.[0]?.id || 1;
         const defaultStatus = masters?.['assignment-statuses']?.find(s => s.status_code === 'ACTIVE')?.id || 1;
@@ -800,7 +881,7 @@ export function DailyAttendancePage() {
     }
   };
 
-  // Batch transitions (submit, approve, reject, lock)
+  // Batch workflow transitions (submit, approve, reject, lock)
   const handleBatchTransition = async () => {
     if (!activeBatch?.id || !batchActionType) return;
     try {
@@ -826,7 +907,7 @@ export function DailyAttendancePage() {
     }
   };
 
-  // Filtered list search
+  // Filtered list for Main Table
   const filtered = useMemo(() => {
     return records.filter(r => {
       if (statusFilter !== 'all' && String(r.attendance_status_code) !== statusFilter) return false;
@@ -845,6 +926,27 @@ export function DailyAttendancePage() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
   const paged = filtered.slice((page - 1) * perPage, page * perPage);
 
+  // Filtered list for Initialize Modal
+  const filteredInitWorkers = useMemo(() => {
+    if (!initSearch) return initWorkersList;
+    const q = initSearch.toLowerCase();
+    return initWorkersList.filter(w =>
+      String(w.worker_name || '').toLowerCase().includes(q) ||
+      String(w.worker_code || '').toLowerCase().includes(q) ||
+      String(w.contractor_name || '').toLowerCase().includes(q)
+    );
+  }, [initWorkersList, initSearch]);
+
+  // Modal summary stats
+  const modalStats = useMemo(() => {
+    const total = initWorkersList.length;
+    const present = initWorkersList.filter(w => w.status_code === 'PRESENT').length;
+    const halfDay = initWorkersList.filter(w => w.status_code === 'HALF_DAY').length;
+    const absent = initWorkersList.filter(w => w.status_code === 'ABSENT').length;
+    const totalHours = initWorkersList.reduce((sum, w) => sum + (Number(w.regular_hours) || 0) + (Number(w.overtime_hours) || 0), 0);
+    return { total, present, halfDay, absent, totalHours };
+  }, [initWorkersList]);
+
   // Status badges config
   const getStatusVariant = (code) => {
     if (code === 'PRESENT') return 'success';
@@ -855,6 +957,9 @@ export function DailyAttendancePage() {
 
   // Check if current status allows editing
   const isEditable = !activeBatch || activeBatch.status_code === 'DRAFT' || activeBatch.status_code === 'REJECTED' || !activeBatch.status_code;
+
+  const currentProjectName = projects.find(p => String(p.id) === String(selectedProjectId))?.project_name || 'Selected Project';
+  const currentSiteName = sites.find(s => String(s.id) === String(selectedSiteId))?.site_name || 'Selected Site';
 
   return (
     <PageContainer>
@@ -977,24 +1082,27 @@ export function DailyAttendancePage() {
             Loading attendance records...
           </div>
         ) : !activeBatch ? (
+          /* When Attendance Roll has NOT been initialized yet */
           <div className="flex flex-col items-center justify-center p-8 text-center bg-surface border border-border rounded-xl shadow-sm max-w-xl mx-auto my-6">
-            <div className="w-14 h-14 rounded-full bg-primary/5 flex items-center justify-center mb-4 border border-primary/10">
-              <Calendar className="w-6 h-6 text-primary" />
+            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-4 border border-primary/20">
+              <Calendar className="w-7 h-7 text-primary" />
             </div>
-            <h3 className="text-sm font-bold text-text-primary mb-1">Muster Roll Not Initialized</h3>
-            <p className="text-[11.5px] text-text-muted max-w-sm mb-5">
-              No daily muster or attendance sheet is active for this site and date. Initialize to populate active site workers and mark attendance.
+            <h3 className="text-base font-bold text-text-primary mb-1">Muster Roll Not Initialized</h3>
+            <p className="text-[12.5px] text-text-muted max-w-md mb-6 leading-relaxed">
+              No daily muster sheet is active for <strong className="text-text-primary">{currentSiteName}</strong> on <strong className="text-text-primary">{selectedDate}</strong>. Click below to load the labours list for this site, mark who is Present/Absent, and generate the daily muster roll.
             </p>
             <Button
               variant="primary"
-              className="h-9 px-5 text-[13px] font-semibold shadow-sm"
-              onClick={handleInitializeBatch}
-              leftIcon={<Sparkles className="w-4 h-4" />}
+              size="lg"
+              className="px-6 py-2.5 text-[14px] font-semibold shadow-md flex items-center gap-2"
+              onClick={handleOpenInitModal}
             >
+              <ClipboardCheck className="w-5 h-5" />
               Initialize Attendance Roll
             </Button>
           </div>
         ) : (
+          /* When Attendance Roll IS initialized and records are displayed in Table */
           <div className="flex flex-col gap-4">
             {/* Quick Bulk Marking & Filters Toolbar */}
             <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-surface p-3 rounded-lg border border-border">
@@ -1021,9 +1129,19 @@ export function DailyAttendancePage() {
                   />
                 </div>
 
-                {/* Quick Bulk Attendance Marking */}
+                {/* Re-open Bulk Marking Sheet or Quick Actions */}
                 {isEditable && records.length > 0 && (
                   <div className="flex items-center gap-1.5 pl-2 border-l border-border">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 text-xs font-semibold text-primary border-primary/40 bg-primary/5 hover:bg-primary/10"
+                      leftIcon={<ClipboardCheck className="w-3.5 h-3.5 text-primary" />}
+                      onClick={handleOpenInitModal}
+                      title="Open full attendance marking sheet"
+                    >
+                      Mark All Labours Sheet
+                    </Button>
                     <Button
                       variant="outline"
                       size="sm"
@@ -1032,7 +1150,7 @@ export function DailyAttendancePage() {
                       onClick={handleMarkAllPresent}
                       title="Mark all workers on roll as Present"
                     >
-                      Mark All Present
+                      All Present
                     </Button>
                     <Button
                       variant="outline"
@@ -1042,7 +1160,7 @@ export function DailyAttendancePage() {
                       onClick={handleMarkAllAbsent}
                       title="Mark all workers on roll as Absent"
                     >
-                      Mark All Absent
+                      All Absent
                     </Button>
                   </div>
                 )}
@@ -1054,13 +1172,13 @@ export function DailyAttendancePage() {
                   <Button
                     variant="outline"
                     className="h-9 px-3 text-[13px]"
-                    leftIcon={<Plus className="w-4 h-4" />}
+                    leftIcon={<UserPlus className="w-4 h-4" />}
                     onClick={() => {
                       loadAvailableWorkers();
                       setIsAddOpen(true);
                     }}
                   >
-                    Add Worker
+                    Add Labour
                   </Button>
                 )}
 
@@ -1142,7 +1260,7 @@ export function DailyAttendancePage() {
                       <th className="px-3 py-2.5 w-28">Worker Code</th>
                       <th className="px-3 py-2.5 w-48">Worker Name</th>
                       <th className="px-3 py-2.5 w-40">Contractor / Agency</th>
-                      <th className="px-3 py-2.5 w-36 text-center">Mark Attendance</th>
+                      <th className="px-3 py-2.5 w-36 text-center">Attendance Status</th>
                       <th className="px-3 py-2.5 text-center w-28">Regular Hrs</th>
                       <th className="px-3 py-2.5 text-center w-28">OT Hrs</th>
                       <th className="px-3 py-2.5 w-36">Site Remarks</th>
@@ -1191,7 +1309,7 @@ export function DailyAttendancePage() {
                               {r.contractor_name || 'Direct / Payroll'}
                             </td>
 
-                            {/* Quick 1-Click Status Marking Toggle */}
+                            {/* Status Marking Toggle */}
                             <td className="px-3 py-2.5 text-center">
                               {isEditable ? (
                                 <div className="inline-flex items-center gap-1 bg-surface-muted/60 p-1 rounded-lg border border-border shadow-2xs">
@@ -1412,7 +1530,7 @@ export function DailyAttendancePage() {
                         </div>
                       )}
 
-                      {/* Card Footer: Status Text & Actions */}
+                      {/* Card Footer */}
                       <div className="flex items-center justify-between pt-2 border-t border-border/60 text-xs">
                         <div className="flex items-center gap-1.5">
                           <span className="text-[10px] text-text-muted">Status:</span>
@@ -1467,19 +1585,279 @@ export function DailyAttendancePage() {
         )}
       </div>
 
-      {/* Add Worker Entry Modal */}
+      {/* ------------------------------------------------------------- */}
+      {/* INITIALIZE ATTENDANCE ROLL & MARK PRESENT/ABSENT MODAL SHEET   */}
+      {/* ------------------------------------------------------------- */}
+      {isInitModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          <div className="bg-surface border border-border rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-border bg-surface-muted/40 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 text-primary">
+                  <ClipboardCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-text-primary">
+                    Mark Daily Site Labour Attendance
+                  </h3>
+                  <p className="text-xs text-text-secondary mt-0.5">
+                    Site: <span className="font-semibold text-text-primary">{currentSiteName}</span> • Date: <span className="font-mono font-semibold text-text-primary">{selectedDate}</span> • Shift: <span className="font-semibold text-text-primary">{selectedShift}</span>
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsInitModalOpen(false)}
+                className="text-text-muted hover:text-text-primary p-1.5 rounded-lg hover:bg-surface-muted transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Subheader: Live Stats Bar & Quick Actions */}
+            <div className="px-5 py-3 border-b border-border bg-surface flex flex-wrap items-center justify-between gap-3 shrink-0">
+              {/* Summary Badges */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-muted text-xs font-semibold text-text-secondary border border-border">
+                  <Users className="w-3.5 h-3.5" /> Total: <strong className="text-text-primary">{modalStats.total}</strong>
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-xs font-semibold text-emerald-700 border border-emerald-200">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Present: <strong>{modalStats.present}</strong>
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-xs font-semibold text-amber-700 border border-amber-200">
+                  <Clock className="w-3.5 h-3.5 text-amber-600" /> Half Day: <strong>{modalStats.halfDay}</strong>
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-50 text-xs font-semibold text-red-700 border border-red-200">
+                  <XCircle className="w-3.5 h-3.5 text-red-600" /> Absent: <strong>{modalStats.absent}</strong>
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 text-xs font-semibold text-blue-700 border border-blue-200">
+                  <Clock className="w-3.5 h-3.5 text-blue-600" /> Total Hours: <strong>{modalStats.totalHours} hrs</strong>
+                </span>
+              </div>
+
+              {/* Bulk Select Buttons & Search */}
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border-emerald-300"
+                  leftIcon={<UserCheck className="w-3.5 h-3.5" />}
+                  onClick={() => handleInitMarkAll('PRESENT')}
+                >
+                  Mark All Present
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border-red-300"
+                  leftIcon={<UserX className="w-3.5 h-3.5" />}
+                  onClick={() => handleInitMarkAll('ABSENT')}
+                >
+                  Mark All Absent
+                </Button>
+              </div>
+            </div>
+
+            {/* Modal Body: Labour Checklist / Table */}
+            <div className="flex-1 overflow-y-auto p-5 space-y-4">
+              <div className="flex items-center justify-between gap-3">
+                <div className="w-full sm:w-72">
+                  <SearchField
+                    placeholder="Filter labours by name or code..."
+                    value={initSearch}
+                    onChange={(e) => setInitSearch(e.target.value)}
+                  />
+                </div>
+                <span className="text-xs text-text-muted">
+                  Showing {filteredInitWorkers.length} of {initWorkersList.length} labours for this site
+                </span>
+              </div>
+
+              {filteredInitWorkers.length === 0 ? (
+                <div className="text-center py-12 border border-dashed border-border rounded-lg text-text-muted text-xs">
+                  No labours found matching your search.
+                </div>
+              ) : (
+                <div className="border border-border rounded-lg overflow-hidden bg-surface shadow-2xs">
+                  <table className="w-full text-left text-xs table-auto whitespace-nowrap">
+                    <thead className="bg-surface-muted text-text-secondary text-[11px] uppercase font-semibold border-b border-border">
+                      <tr>
+                        <th className="px-3 py-2.5 w-10 text-center">#</th>
+                        <th className="px-3 py-2.5 w-28">Labour Code</th>
+                        <th className="px-3 py-2.5 w-48">Labour Name</th>
+                        <th className="px-3 py-2.5 w-36">Contractor / Trade</th>
+                        <th className="px-3 py-2.5 text-center w-52">Mark Attendance</th>
+                        <th className="px-3 py-2.5 text-center w-24">Regular Hrs</th>
+                        <th className="px-3 py-2.5 text-center w-24">OT Hrs</th>
+                        <th className="px-3 py-2.5">Site Remarks</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {filteredInitWorkers.map((w, idx) => {
+                        const isPres = w.status_code === 'PRESENT';
+                        const isHalf = w.status_code === 'HALF_DAY';
+                        const isAbs = w.status_code === 'ABSENT';
+
+                        return (
+                          <tr
+                            key={w.worker_id || idx}
+                            className={`transition-colors ${
+                              isAbs ? 'bg-red-50/20' : isPres ? 'bg-emerald-50/10' : ''
+                            } hover:bg-surface-muted/30`}
+                          >
+                            <td className="px-3 py-2.5 text-center font-medium text-text-muted text-[11px]">
+                              {idx + 1}
+                            </td>
+                            <td className="px-3 py-2.5 font-mono font-bold text-text-primary text-[11px]">
+                              {w.worker_code || `W-${w.worker_id}`}
+                            </td>
+                            <td className="px-3 py-2.5">
+                              <div className="font-semibold text-text-primary text-[12.5px]">{w.worker_name}</div>
+                              <div className="text-[10px] text-text-muted">{w.category_name || 'General Labour'}</div>
+                            </td>
+                            <td className="px-3 py-2.5 text-text-secondary text-[11px]">
+                              {w.contractor_name || 'Direct / Payroll'}
+                            </td>
+
+                            {/* Status Toggle Pill */}
+                            <td className="px-3 py-2.5 text-center">
+                              <div className="inline-flex items-center gap-1 bg-surface-muted/80 p-1 rounded-lg border border-border">
+                                <button
+                                  type="button"
+                                  onClick={() => handleInitToggleStatus(w.worker_id, 'PRESENT')}
+                                  className={`px-3 py-1 rounded text-xs font-bold transition-all cursor-pointer ${
+                                    isPres
+                                      ? 'bg-emerald-600 text-white shadow-xs scale-105'
+                                      : 'text-text-secondary hover:text-emerald-700 hover:bg-emerald-100'
+                                  }`}
+                                >
+                                  Present
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleInitToggleStatus(w.worker_id, 'HALF_DAY')}
+                                  className={`px-3 py-1 rounded text-xs font-bold transition-all cursor-pointer ${
+                                    isHalf
+                                      ? 'bg-amber-500 text-white shadow-xs scale-105'
+                                      : 'text-text-secondary hover:text-amber-700 hover:bg-amber-100'
+                                  }`}
+                                >
+                                  Half Day
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleInitToggleStatus(w.worker_id, 'ABSENT')}
+                                  className={`px-3 py-1 rounded text-xs font-bold transition-all cursor-pointer ${
+                                    isAbs
+                                      ? 'bg-red-600 text-white shadow-xs scale-105'
+                                      : 'text-text-secondary hover:text-red-700 hover:bg-red-100'
+                                  }`}
+                                >
+                                  Absent
+                                </button>
+                              </div>
+                            </td>
+
+                            {/* Regular Hours Input */}
+                            <td className="px-3 py-2.5 text-center">
+                              <input
+                                type="number"
+                                min="0"
+                                max="24"
+                                disabled={isAbs}
+                                value={w.regular_hours}
+                                onChange={(e) => handleInitUpdateHours(w.worker_id, 'regular_hours', e.target.value)}
+                                className={`w-16 h-7 text-center font-mono font-semibold text-xs border rounded ${
+                                  isAbs ? 'bg-surface-muted text-text-muted border-border' : 'bg-surface border-border text-text-primary'
+                                }`}
+                              />
+                            </td>
+
+                            {/* Overtime Hours Input */}
+                            <td className="px-3 py-2.5 text-center">
+                              <input
+                                type="number"
+                                min="0"
+                                max="24"
+                                disabled={isAbs}
+                                value={w.overtime_hours}
+                                onChange={(e) => handleInitUpdateHours(w.worker_id, 'overtime_hours', e.target.value)}
+                                className={`w-16 h-7 text-center font-mono font-semibold text-xs border rounded ${
+                                  isAbs ? 'bg-surface-muted text-text-muted border-border' : 'bg-surface border-border text-primary'
+                                }`}
+                              />
+                            </td>
+
+                            {/* Remarks Input */}
+                            <td className="px-3 py-2.5">
+                              <input
+                                type="text"
+                                placeholder="Notes / work task..."
+                                value={w.remarks}
+                                onChange={(e) => handleInitUpdateRemarks(w.worker_id, e.target.value)}
+                                className="w-full h-7 px-2 text-xs border border-border rounded bg-surface text-text-primary focus:border-primary"
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-5 py-3.5 border-t border-border bg-surface-muted/30 flex items-center justify-between shrink-0">
+              <div className="text-xs text-text-muted">
+                Marked: <strong className="text-emerald-700">{modalStats.present + modalStats.halfDay} Present</strong>, <strong className="text-red-700">{modalStats.absent} Absent</strong>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Button
+                  variant="outline"
+                  className="h-9 px-4 text-xs font-semibold"
+                  onClick={() => setIsInitModalOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  className="h-9 px-5 text-xs font-semibold shadow-sm flex items-center gap-2"
+                  disabled={savingBatch || initWorkersList.length === 0}
+                  onClick={handleSaveInitAttendance}
+                >
+                  {savingBatch ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      Saving Muster Roll...
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Confirm & Display Attendance Table
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Single Worker Modal */}
       <EntityEditModal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)}>
         <EntityEditModal.Header
           icon={Users}
-          title="Add Worker to Daily Muster"
+          title="Add Labour to Daily Muster"
           subtitle="Assign a site worker and set initial timing logs."
           onClose={() => setIsAddOpen(false)}
         />
         <form onSubmit={handleAddManualEntry} className="flex min-h-0 flex-1 flex-col overflow-hidden">
           <EntityEditModal.Body>
-            <EntityEditModal.Section title="Worker Details">
+            <EntityEditModal.Section title="Labour Details">
               <EntityEditModal.Grid>
-                <FormField label="Select Worker" required>
+                <FormField label="Select Labour" required>
                   <Select
                     value={manualForm.worker_id}
                     onChange={(val) => {
@@ -1490,7 +1868,7 @@ export function DailyAttendancePage() {
                         assignment_id: selected?.assignment_id ? String(selected.assignment_id) : '',
                       }));
                     }}
-                    placeholder="Select available worker"
+                    placeholder="Select available labour"
                     options={availableWorkers.map(w => ({
                       value: String(w.worker_id),
                       label: `${w.worker_name || 'Worker'} (${w.worker_code || 'ID: ' + w.worker_id})`,
@@ -1600,8 +1978,8 @@ export function DailyAttendancePage() {
                 </div>
 
                 <div>
-                  <div className="text-[10px] uppercase font-bold text-text-secondary tracking-wider">Subcontractor</div>
-                  <div className="text-[13px] text-text-primary mt-1">{viewingRecord?.subcontractor_name || '—'}</div>
+                  <div className="text-[10px] uppercase font-bold text-text-secondary tracking-wider">Category / Trade</div>
+                  <div className="text-[13px] text-text-primary mt-1">{viewingRecord?.category_name || 'General Labour'}</div>
                 </div>
               </EntityEditModal.Grid>
             </EntityEditModal.Section>
