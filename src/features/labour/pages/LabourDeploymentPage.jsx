@@ -207,7 +207,6 @@ export function LabourDeploymentPage() {
     if (!form.project_id) errs.project_id = 'Project is required';
     if (!form.site_id) errs.site_id = 'Site is required';
     if (!form.assigned_from) errs.assigned_from = 'Start date is required';
-    if (!form.labour_category_id) errs.labour_category_id = 'Select a labour category';
     if (!form.wage_basis_id) errs.wage_basis_id = 'Select a wage basis';
     if (!form.status_id) errs.status_id = 'Select a status';
 
@@ -219,12 +218,13 @@ export function LabourDeploymentPage() {
     setSaving(true);
     try {
       const selectedWorker = workers.find(w => String(w.id) === String(form.worker_id));
+      const categoryId = form.labour_category_id || selectedWorker?.category_id || selectedWorker?.labour_category_id || 1;
 
       const payload = {
         project_id: Number(form.project_id),
         site_id: Number(form.site_id),
         worker_id: Number(form.worker_id),
-        labour_category_id: Number(form.labour_category_id),
+        labour_category_id: Number(categoryId),
         assigned_from: form.assigned_from,
         assigned_until: form.assigned_until || null,
         wage_basis_id: Number(form.wage_basis_id),
@@ -769,17 +769,6 @@ export function LabourDeploymentPage() {
                     ]}
                     value={form.shift_name}
                     onChange={(v) => handleFormChange('shift_name', v)}
-                  />
-                </FormField>
-
-                <FormField label="Labour Category" required error={errors.labour_category_id}>
-                  <Select
-                    options={[
-                      { value: '', label: 'Select Category' },
-                      ...categories.map(c => ({ value: String(c.id), label: c.category_name }))
-                    ]}
-                    value={form.labour_category_id}
-                    onChange={(v) => handleFormChange('labour_category_id', v)}
                   />
                 </FormField>
 
