@@ -402,6 +402,7 @@ export function DailyAttendancePage() {
         });
         batch = resCreate?.data?.attendance_batch ?? resCreate?.attendance_batch ?? resCreate?.data;
       } catch (createErr) {
+        // If batch already exists, find existing batch from list
         try {
           const resList = await attendanceApi.list({
             project_id: Number(selectedProjectId),
@@ -411,26 +412,23 @@ export function DailyAttendancePage() {
           });
           const batches = resList?.data?.attendance_batches ?? resList?.attendance_batches ?? (Array.isArray(resList?.data) ? resList.data : Array.isArray(resList) ? resList : []);
           batch = batches.find(b => b.shift_code === (selectedShift || 'GENERAL'));
-        } catch (e) {}
-
-        if (!batch) {
-          batch = {
-            id: Date.now(),
-            project_id: Number(selectedProjectId),
-            site_id: Number(selectedSiteId),
-            attendance_date: selectedDate,
-            shift_code: selectedShift || 'GENERAL',
-            status_code: 'DRAFT',
-            status_name: 'Draft',
-          };
+        } catch (e) {
+          console.warn('Batch lookup warning:', e);
         }
       }
 
+      if (!batch?.id) {
+        throw new Error('Unable to initialize attendance batch for this site and date.');
+      }
+
+      const batchId = Number(batch.id);
+
       // 2. Save each worker entry with marked status
+      const savedEntries = [];
       for (const item of initWorkersList) {
         const statusObj = statuses.find(s => s.attendance_status_code === item.status_code) || {
-          id: item.status_code === 'PRESENT' ? 1 : item.status_code === 'ABSENT' ? 2 : 3,
-          attendance_status_name: item.status_name,
+          id: item.status_code === 'PRESENT' ? 1 : item.status_code === 'ABSENT' ? 2 : item.status_code === 'HALF_DAY' ? 3 : 1,
+          attendance_status_name: item.status_name || (item.status_code === 'PRESENT' ? 'Present' : item.status_code === 'ABSENT' ? 'Absent' : 'Half Day'),
         };
 
         const payload = {
@@ -442,27 +440,49 @@ export function DailyAttendancePage() {
           check_out_time: item.check_out_time || null,
           regular_hours: Number(item.regular_hours || 0),
           overtime_hours: Number(item.overtime_hours || 0),
-          remarks: item.remarks || `Marked ${item.status_name}`,
+          remarks: item.remarks || `Marked ${statusObj.attendance_status_name}`,
         };
 
-        if (batch?.id && typeof batch.id === 'number' && batch.id < 1000000000000) {
-          try {
-            if (item.id && typeof item.id === 'number' && item.id < 1000000000000) {
-              await attendanceApi.updateEntry(batch.id, item.id, payload);
-            } else {
-              await attendanceApi.createEntry(batch.id, payload);
-            }
-          } catch (e) {
-            console.warn('Entry save warning:', e);
+        try {
+          const itemId = Number(item.id);
+          if (itemId > 0 && itemId < 1000000000000) {
+            const resEntry = await attendanceApi.updateEntry(batchId, itemId, payload);
+            const entryData = resEntry?.data?.attendance_entry ?? resEntry?.attendance_entry ?? { ...payload, id: itemId };
+            savedEntries.push({
+              ...item,
+              ...entryData,
+              attendance_status_code: item.status_code,
+              attendance_status_name: statusObj.attendance_status_name,
+            });
+          } else {
+            const resEntry = await attendanceApi.createEntry(batchId, payload);
+            const entryData = resEntry?.data?.attendance_entry ?? resEntry?.attendance_entry ?? { ...payload, id: Date.now() };
+            savedEntries.push({
+              ...item,
+              ...entryData,
+              attendance_status_code: item.status_code,
+              attendance_status_name: statusObj.attendance_status_name,
+            });
           }
+        } catch (e) {
+          console.warn(`Entry save warning for worker ${item.worker_id}:`, e);
+          savedEntries.push({
+            ...item,
+            ...payload,
+            id: item.id || Date.now() + Math.random(),
+            attendance_status_code: item.status_code,
+            attendance_status_name: statusObj.attendance_status_name,
+          });
         }
       }
 
+      // Immediately set the records so the table displays all workers without delay
+      setRecords(savedEntries);
+      updateBatchKpis(savedEntries, batch);
       setIsInitModalOpen(false);
-      // Re-fetch batch from backend so entries and IDs are 100% verified & in sync
-      if (batch?.id && typeof batch.id === 'number' && batch.id < 1000000000000) {
-        await fetchBatch(selectedProjectId, selectedSiteId, selectedDate, selectedShift);
-      }
+
+      // Re-fetch batch from backend so relations, IDs, and totals are 100% verified & in sync
+      await fetchBatch(selectedProjectId, selectedSiteId, selectedDate, selectedShift);
       toast.success('Attendance Roll Saved and synchronized successfully!');
     } catch (err) {
       console.error('Error saving attendance:', err);
@@ -476,7 +496,7 @@ export function DailyAttendancePage() {
   // TABLE ROW-LEVEL STATUS TOGGLES & BULK ACTIONS
   // -------------------------------------------------------------
   const handleToggleStatus = async (record, statusCode) => {
-    if (!activeBatch) return;
+    if (!activeBatch?.id) return;
     const statuses = getAttendanceStatuses();
     const sources = getAttendanceSources();
     const statusObj = statuses.find(s => s.attendance_status_code === statusCode) || {
@@ -513,12 +533,14 @@ export function DailyAttendancePage() {
     setRecords(updatedRecords);
     updateBatchKpis(updatedRecords);
 
-    if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
+    const batchId = Number(activeBatch.id);
+    if (batchId > 0 && batchId < 1000000000000) {
       try {
-        if (typeof record.id === 'number' && record.id < 1000000000000) {
-          await attendanceApi.updateEntry(activeBatch.id, record.id, payload);
+        const entryId = Number(record.id);
+        if (entryId > 0 && entryId < 1000000000000) {
+          await attendanceApi.updateEntry(batchId, entryId, payload);
         } else {
-          const resEntry = await attendanceApi.createEntry(activeBatch.id, payload);
+          const resEntry = await attendanceApi.createEntry(batchId, payload);
           const createdEntry = resEntry?.data?.attendance_entry ?? resEntry?.attendance_entry;
           if (createdEntry?.id) {
             setRecords(prev => prev.map(r => r.id === record.id ? { ...r, id: createdEntry.id } : r));
@@ -533,7 +555,7 @@ export function DailyAttendancePage() {
   };
 
   const handleMarkAllPresent = async () => {
-    if (!activeBatch || records.length === 0) return;
+    if (!activeBatch?.id || records.length === 0) return;
     const statuses = getAttendanceStatuses();
     const sources = getAttendanceSources();
     const presentStatus = statuses.find(s => s.attendance_status_code === 'PRESENT') || { id: 1, attendance_status_code: 'PRESENT', attendance_status_name: 'Present' };
@@ -553,7 +575,8 @@ export function DailyAttendancePage() {
     updateBatchKpis(updatedRecords);
     toast.success('All workers marked as Present (8 hrs).');
 
-    if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
+    const batchId = Number(activeBatch.id);
+    if (batchId > 0 && batchId < 1000000000000) {
       Promise.all(updatedRecords.map(r => {
         const payload = {
           assignment_id: Number(r.assignment_id || 0),
@@ -566,15 +589,16 @@ export function DailyAttendancePage() {
           overtime_hours: Number(r.overtime_hours) || 0,
           remarks: 'Marked Present',
         };
-        return typeof r.id === 'number' && r.id < 1000000000000
-          ? attendanceApi.updateEntry(activeBatch.id, r.id, payload).catch(() => {})
-          : attendanceApi.createEntry(activeBatch.id, payload).catch(() => {});
+        const entryId = Number(r.id);
+        return entryId > 0 && entryId < 1000000000000
+          ? attendanceApi.updateEntry(batchId, entryId, payload).catch(() => {})
+          : attendanceApi.createEntry(batchId, payload).catch(() => {});
       }));
     }
   };
 
   const handleMarkAllAbsent = async () => {
-    if (!activeBatch || records.length === 0) return;
+    if (!activeBatch?.id || records.length === 0) return;
     const statuses = getAttendanceStatuses();
     const sources = getAttendanceSources();
     const absentStatus = statuses.find(s => s.attendance_status_code === 'ABSENT') || { id: 2, attendance_status_code: 'ABSENT', attendance_status_name: 'Absent' };
@@ -595,7 +619,8 @@ export function DailyAttendancePage() {
     updateBatchKpis(updatedRecords);
     toast.success('All workers marked as Absent.');
 
-    if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
+    const batchId = Number(activeBatch.id);
+    if (batchId > 0 && batchId < 1000000000000) {
       Promise.all(updatedRecords.map(r => {
         const payload = {
           assignment_id: Number(r.assignment_id || 0),
@@ -608,9 +633,10 @@ export function DailyAttendancePage() {
           overtime_hours: 0,
           remarks: 'Marked Absent',
         };
-        return typeof r.id === 'number' && r.id < 1000000000000
-          ? attendanceApi.updateEntry(activeBatch.id, r.id, payload).catch(() => {})
-          : attendanceApi.createEntry(activeBatch.id, payload).catch(() => {});
+        const entryId = Number(r.id);
+        return entryId > 0 && entryId < 1000000000000
+          ? attendanceApi.updateEntry(batchId, entryId, payload).catch(() => {})
+          : attendanceApi.createEntry(batchId, payload).catch(() => {});
       }));
     }
   };
@@ -633,10 +659,10 @@ export function DailyAttendancePage() {
     setRecords(updatedRecords);
     updateBatchKpis(updatedRecords);
 
-    if (activeBatch?.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
-      if (typeof record.id === 'number' && record.id < 1000000000000) {
-        attendanceApi.updateEntry(activeBatch.id, record.id, payload).catch(() => {});
-      }
+    const batchId = Number(activeBatch?.id);
+    const entryId = Number(record.id);
+    if (batchId > 0 && batchId < 1000000000000 && entryId > 0 && entryId < 1000000000000) {
+      attendanceApi.updateEntry(batchId, entryId, payload).catch(() => {});
     }
   };
 
@@ -739,9 +765,10 @@ export function DailyAttendancePage() {
       };
 
       let entryId = Date.now();
-      if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
+      const batchId = Number(activeBatch.id);
+      if (batchId > 0 && batchId < 1000000000000) {
         try {
-          const resEntry = await attendanceApi.createEntry(activeBatch.id, payload);
+          const resEntry = await attendanceApi.createEntry(batchId, payload);
           const createdEntry = resEntry?.data?.attendance_entry ?? resEntry?.attendance_entry;
           if (createdEntry?.id) entryId = createdEntry.id;
         } catch (e) {
@@ -775,8 +802,10 @@ export function DailyAttendancePage() {
   const handleDeleteEntry = async () => {
     if (!activeBatch?.id || !deletingRecord?.id) return;
     try {
-      if (typeof deletingRecord.id === 'number' && deletingRecord.id < 1000000000000) {
-        await attendanceApi.removeEntry(activeBatch.id, deletingRecord.id).catch(() => {});
+      const batchId = Number(activeBatch.id);
+      const entryId = Number(deletingRecord.id);
+      if (batchId > 0 && batchId < 1000000000000 && entryId > 0 && entryId < 1000000000000) {
+        await attendanceApi.removeEntry(batchId, entryId).catch(() => {});
       }
       const updatedRecords = records.filter(r => r.id !== deletingRecord.id);
       setRecords(updatedRecords);
@@ -792,6 +821,7 @@ export function DailyAttendancePage() {
   const handleBatchTransition = async () => {
     if (!activeBatch?.id || !batchActionType) return;
     try {
+      const batchId = Number(activeBatch.id);
       const payload = { remarks: actionRemarks.trim() || null };
       if (batchActionType === 'submit') {
         if (records.length === 0) {
@@ -817,23 +847,24 @@ export function DailyAttendancePage() {
             overtime_hours: Number(r.overtime_hours || 0),
             remarks: r.remarks || '',
           };
-          if (typeof r.id === 'number' && r.id < 1000000000000) {
-            return attendanceApi.updateEntry(activeBatch.id, r.id, entryPayload).catch(() => {});
+          const entryId = Number(r.id);
+          if (entryId > 0 && entryId < 1000000000000) {
+            return attendanceApi.updateEntry(batchId, entryId, entryPayload).catch(() => {});
           } else {
-            return attendanceApi.createEntry(activeBatch.id, entryPayload).catch(() => {});
+            return attendanceApi.createEntry(batchId, entryPayload).catch(() => {});
           }
         }));
 
-        await attendanceApi.submit(activeBatch.id, payload);
+        await attendanceApi.submit(batchId, payload);
         toast.success('Attendance batch submitted for approval.');
       } else if (batchActionType === 'approve') {
-        await attendanceApi.approve(activeBatch.id, payload);
+        await attendanceApi.approve(batchId, payload);
         toast.success('Attendance batch approved.');
       } else if (batchActionType === 'reject') {
-        await attendanceApi.reject(activeBatch.id, payload);
+        await attendanceApi.reject(batchId, payload);
         toast.success('Attendance batch rejected.');
       } else if (batchActionType === 'lock') {
-        await attendanceApi.lock(activeBatch.id, payload);
+        await attendanceApi.lock(batchId, payload);
         toast.success('Attendance batch locked.');
       }
       setBatchActionType(null);
