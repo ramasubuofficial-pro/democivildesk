@@ -857,15 +857,19 @@ export function DailyAttendancePage() {
 
         await attendanceApi.submit(batchId, payload);
         toast.success('Attendance batch submitted for approval.');
+        setActiveBatch(prev => prev ? { ...prev, status_code: 'SUBMITTED', status_name: 'Submitted', status_id: 2 } : null);
       } else if (batchActionType === 'approve') {
         await attendanceApi.approve(batchId, payload);
         toast.success('Attendance batch approved.');
+        setActiveBatch(prev => prev ? { ...prev, status_code: 'APPROVED', status_name: 'Approved', status_id: 3 } : null);
       } else if (batchActionType === 'reject') {
         await attendanceApi.reject(batchId, payload);
         toast.success('Attendance batch rejected.');
+        setActiveBatch(prev => prev ? { ...prev, status_code: 'REJECTED', status_name: 'Rejected', status_id: 4 } : null);
       } else if (batchActionType === 'lock') {
         await attendanceApi.lock(batchId, payload);
         toast.success('Attendance batch locked.');
+        setActiveBatch(prev => prev ? { ...prev, status_code: 'LOCKED', status_name: 'Locked', status_id: 5 } : null);
       }
       setBatchActionType(null);
       setActionRemarks('');
@@ -923,13 +927,23 @@ export function DailyAttendancePage() {
     return 'neutral';
   };
 
-  // Check current status safely with fallbacks
-  const currentBatchStatus = (
-    activeBatch?.status_code ||
-    activeBatch?.status_name ||
-    (Number(activeBatch?.status_id) === 1 ? 'DRAFT' : '') ||
-    'DRAFT'
-  ).toUpperCase();
+  // Check current status safely with masters and status_id fallbacks
+  const currentBatchStatus = useMemo(() => {
+    if (!activeBatch) return 'DRAFT';
+    if (activeBatch.status_code) return String(activeBatch.status_code).toUpperCase();
+    if (activeBatch.status_name) return String(activeBatch.status_name).toUpperCase();
+    if (activeBatch.status_id && masters?.['attendance-batch-statuses']) {
+      const match = masters['attendance-batch-statuses'].find(s => Number(s.id) === Number(activeBatch.status_id));
+      if (match?.status_code) return String(match.status_code).toUpperCase();
+      if (match?.status_name) return String(match.status_name).toUpperCase();
+    }
+    const sid = Number(activeBatch.status_id);
+    if (sid === 2) return 'SUBMITTED';
+    if (sid === 3) return 'APPROVED';
+    if (sid === 4) return 'REJECTED';
+    if (sid === 5) return 'LOCKED';
+    return 'DRAFT';
+  }, [activeBatch, masters]);
 
   const isEditable = !activeBatch || currentBatchStatus === 'DRAFT' || currentBatchStatus === 'REJECTED';
 

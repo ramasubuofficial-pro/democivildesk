@@ -326,6 +326,9 @@ class LabourAttendanceController extends LabourApiController
         if (!$r) return $this->notFound();
         
         $old = $this->statusCode((int)$r['status_id']);
+        if ($old === $to) {
+            return $this->ok('Attendance batch is already ' . strtolower($to) . '.', 'attendance_batch', $this->fullBatch($id, $c));
+        }
         if ($old !== $from && !($action === 'SUBMIT' && $old === 'REJECTED')) {
             return $this->response->setStatusCode(409)->setJSON([
                 'success' => false,
