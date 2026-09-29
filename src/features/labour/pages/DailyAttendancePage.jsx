@@ -426,42 +426,15 @@ export function DailyAttendancePage() {
         }
       }
 
-      const defaultWageBasis = masters?.['assignment-wage-bases']?.[0]?.id || 1;
-      const defaultStatus = masters?.['assignment-statuses']?.find(s => s.status_code === 'ACTIVE')?.id || 1;
-
-      const newRecords = [];
-
       // 2. Save each worker entry with marked status
       for (const item of initWorkersList) {
-        let assignmentId = item.assignment_id;
-
-        if (!assignmentId) {
-          try {
-            const resNewAssign = await labourApi.assignments.create({
-              project_id: Number(selectedProjectId),
-              site_id: Number(selectedSiteId),
-              worker_id: Number(item.worker_id),
-              labour_category_id: Number(item.labour_category_id || 1),
-              assigned_from: selectedDate,
-              wage_basis_id: Number(defaultWageBasis),
-              agreed_wage_rate: Number(item.base_wage_rate || 850),
-              status_id: Number(defaultStatus),
-              remarks: 'Auto-assigned on attendance muster initialization',
-            });
-            const newAssign = resNewAssign?.data?.labour_assignment ?? resNewAssign?.labour_assignment;
-            if (newAssign?.id) assignmentId = newAssign.id;
-          } catch (e) {
-            assignmentId = Date.now() + Math.floor(Math.random() * 1000);
-          }
-        }
-
         const statusObj = statuses.find(s => s.attendance_status_code === item.status_code) || {
           id: item.status_code === 'PRESENT' ? 1 : item.status_code === 'ABSENT' ? 2 : 3,
           attendance_status_name: item.status_name,
         };
 
         const payload = {
-          assignment_id: Number(assignmentId),
+          assignment_id: Number(item.assignment_id || 0),
           worker_id: Number(item.worker_id),
           attendance_status_id: Number(statusObj.id),
           attendance_source_id: Number(manualSource.id),
@@ -472,63 +445,25 @@ export function DailyAttendancePage() {
           remarks: item.remarks || `Marked ${item.status_name}`,
         };
 
-        let entryId = item.id || (Date.now() + Math.floor(Math.random() * 100000));
         if (batch?.id && typeof batch.id === 'number' && batch.id < 1000000000000) {
           try {
             if (item.id && typeof item.id === 'number' && item.id < 1000000000000) {
               await attendanceApi.updateEntry(batch.id, item.id, payload);
             } else {
-              const resEntry = await attendanceApi.createEntry(batch.id, payload);
-              const createdEntry = resEntry?.data?.attendance_entry ?? resEntry?.attendance_entry;
-              if (createdEntry?.id) entryId = createdEntry.id;
+              await attendanceApi.createEntry(batch.id, payload);
             }
           } catch (e) {
             console.warn('Entry save warning:', e);
           }
         }
-
-        newRecords.push({
-          id: entryId,
-          assignment_id: assignmentId,
-          worker_id: item.worker_id,
-          worker_name: item.worker_name,
-          worker_code: item.worker_code,
-          contractor_name: item.contractor_name || 'Direct / Payroll',
-          category_name: item.category_name || 'General Labour',
-          attendance_status_id: statusObj.id,
-          attendance_status_code: item.status_code,
-          attendance_status_name: item.status_name,
-          regular_hours: item.regular_hours,
-          overtime_hours: item.overtime_hours,
-          check_in_time: item.check_in_time,
-          check_out_time: item.check_out_time,
-          remarks: item.remarks || '',
-        });
       }
 
-      const totalWorkers = newRecords.length;
-      const presentWorkers = newRecords.filter(r => r.attendance_status_code === 'PRESENT' || r.attendance_status_code === 'HALF_DAY').length;
-      const absentWorkers = newRecords.filter(r => r.attendance_status_code === 'ABSENT').length;
-      const totalRegularHours = newRecords.reduce((sum, r) => sum + (Number(r.regular_hours) || 0), 0);
-      const totalOtHours = newRecords.reduce((sum, r) => sum + (Number(r.overtime_hours) || 0), 0);
-
-      const finalizedBatch = {
-        ...batch,
-        status_code: batch.status_code || 'DRAFT',
-        status_name: batch.status_name || 'Draft',
-        total_workers: totalWorkers,
-        present_workers: presentWorkers,
-        absent_workers: absentWorkers,
-        total_regular_hours: totalRegularHours,
-        total_overtime_hours: totalOtHours,
-        entries: newRecords,
-      };
-
-      setActiveBatch(finalizedBatch);
-      setRecords(newRecords);
       setIsInitModalOpen(false);
-
-      toast.success(`Attendance Roll Saved! ${presentWorkers} Present, ${absentWorkers} Absent. Displaying muster table.`);
+      // Re-fetch batch from backend so entries and IDs are 100% verified & in sync
+      if (batch?.id && typeof batch.id === 'number' && batch.id < 1000000000000) {
+        await fetchBatch(selectedProjectId, selectedSiteId, selectedDate, selectedShift);
+      }
+      toast.success('Attendance Roll Saved and synchronized successfully!');
     } catch (err) {
       console.error('Error saving attendance:', err);
       toast.error(err?.message || 'Failed to save attendance roll.');
@@ -557,7 +492,7 @@ export function DailyAttendancePage() {
     const checkOut = statusCode === 'ABSENT' ? null : statusCode === 'HALF_DAY' ? '13:00:00' : '17:00:00';
 
     const payload = {
-      assignment_id: Number(record.assignment_id),
+      assignment_id: Number(record.assignment_id || 0),
       worker_id: Number(record.worker_id),
       attendance_status_id: Number(statusObj.id),
       attendance_source_id: Number(sourceObj.id),
@@ -621,7 +556,7 @@ export function DailyAttendancePage() {
     if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
       Promise.all(updatedRecords.map(r => {
         const payload = {
-          assignment_id: Number(r.assignment_id),
+          assignment_id: Number(r.assignment_id || 0),
           worker_id: Number(r.worker_id),
           attendance_status_id: Number(presentStatus.id),
           attendance_source_id: Number(sourceObj.id),
@@ -663,7 +598,7 @@ export function DailyAttendancePage() {
     if (activeBatch.id && typeof activeBatch.id === 'number' && activeBatch.id < 1000000000000) {
       Promise.all(updatedRecords.map(r => {
         const payload = {
-          assignment_id: Number(r.assignment_id),
+          assignment_id: Number(r.assignment_id || 0),
           worker_id: Number(r.worker_id),
           attendance_status_id: Number(absentStatus.id),
           attendance_source_id: Number(sourceObj.id),
@@ -683,7 +618,7 @@ export function DailyAttendancePage() {
   const handleUpdateHours = async (record, field, value) => {
     const numVal = Math.max(0, Math.min(24, Number(value) || 0));
     const payload = {
-      assignment_id: Number(record.assignment_id),
+      assignment_id: Number(record.assignment_id || 0),
       worker_id: Number(record.worker_id),
       attendance_status_id: Number(record.attendance_status_id),
       attendance_source_id: Number(record.attendance_source_id || 1),
@@ -790,34 +725,8 @@ export function DailyAttendancePage() {
     const statusObj = statuses.find(s => String(s.id) === String(manualForm.attendance_status_id)) || statuses[0];
 
     try {
-      let assignmentId = worker.assignment_id;
-
-      if (!assignmentId) {
-        const defaultWageBasis = masters?.['assignment-wage-bases']?.[0]?.id || 1;
-        const defaultStatus = masters?.['assignment-statuses']?.find(s => s.status_code === 'ACTIVE')?.id || 1;
-        const categoryId = worker.labour_category_id || 1;
-
-        try {
-          const resNewAssign = await labourApi.assignments.create({
-            project_id: Number(selectedProjectId),
-            site_id: Number(selectedSiteId),
-            worker_id: Number(worker.worker_id),
-            labour_category_id: Number(categoryId),
-            assigned_from: selectedDate,
-            wage_basis_id: Number(defaultWageBasis),
-            agreed_wage_rate: Number(worker.base_wage_rate || 850),
-            status_id: Number(defaultStatus),
-            remarks: 'Added from manual attendance roster',
-          });
-          const newAssign = resNewAssign?.data?.labour_assignment ?? resNewAssign?.labour_assignment;
-          if (newAssign?.id) assignmentId = newAssign.id;
-        } catch (e) {
-          assignmentId = Date.now() + Math.floor(Math.random() * 1000);
-        }
-      }
-
       const payload = {
-        assignment_id: Number(assignmentId),
+        assignment_id: Number(worker.assignment_id || 0),
         worker_id: Number(worker.worker_id),
         attendance_status_id: Number(statusObj.id),
         attendance_source_id: Number(manualSource.id),
@@ -835,12 +744,14 @@ export function DailyAttendancePage() {
           const resEntry = await attendanceApi.createEntry(activeBatch.id, payload);
           const createdEntry = resEntry?.data?.attendance_entry ?? resEntry?.attendance_entry;
           if (createdEntry?.id) entryId = createdEntry.id;
-        } catch (e) {}
+        } catch (e) {
+          console.warn('Entry create warning:', e);
+        }
       }
 
       const newRecord = {
         id: entryId,
-        assignment_id: assignmentId,
+        assignment_id: worker.assignment_id,
         worker_id: worker.worker_id,
         worker_name: worker.worker_name,
         worker_code: worker.worker_code,
@@ -883,6 +794,36 @@ export function DailyAttendancePage() {
     try {
       const payload = { remarks: actionRemarks.trim() || null };
       if (batchActionType === 'submit') {
+        if (records.length === 0) {
+          toast.error('Add at least one attendance entry before submitting muster.');
+          return;
+        }
+
+        // Ensure all records exist on backend before submission
+        const statuses = getAttendanceStatuses();
+        const sources = getAttendanceSources();
+        const manualSource = sources.find(s => s.attendance_source_code === 'MANUAL') || sources[0] || { id: 1 };
+        
+        await Promise.all(records.map(async (r) => {
+          const statusObj = statuses.find(s => s.attendance_status_code === r.attendance_status_code) || { id: r.attendance_status_id || 1 };
+          const entryPayload = {
+            assignment_id: Number(r.assignment_id || 0),
+            worker_id: Number(r.worker_id),
+            attendance_status_id: Number(statusObj.id),
+            attendance_source_id: Number(r.attendance_source_id || manualSource.id),
+            check_in_time: r.check_in_time || null,
+            check_out_time: r.check_out_time || null,
+            regular_hours: Number(r.regular_hours || 0),
+            overtime_hours: Number(r.overtime_hours || 0),
+            remarks: r.remarks || '',
+          };
+          if (typeof r.id === 'number' && r.id < 1000000000000) {
+            return attendanceApi.updateEntry(activeBatch.id, r.id, entryPayload).catch(() => {});
+          } else {
+            return attendanceApi.createEntry(activeBatch.id, entryPayload).catch(() => {});
+          }
+        }));
+
         await attendanceApi.submit(activeBatch.id, payload);
         toast.success('Attendance batch submitted for approval.');
       } else if (batchActionType === 'approve') {
@@ -897,9 +838,9 @@ export function DailyAttendancePage() {
       }
       setBatchActionType(null);
       setActionRemarks('');
-      fetchBatch(selectedProjectId, selectedSiteId, selectedDate, selectedShift);
+      await fetchBatch(selectedProjectId, selectedSiteId, selectedDate, selectedShift);
     } catch (err) {
-      toast.error(err?.message || `Failed to complete ${batchActionType} transition.`);
+      toast.error(err?.errors?.entries || err?.message || `Failed to complete ${batchActionType} transition.`);
     }
   };
 
