@@ -34,6 +34,9 @@ const HIDDEN_MODULE_CODES = new Set([
   'PROJECT_OVERVIEW',
   'PROJECT_VIEW',
   'FINANCIAL_DASHBOARD',
+  'TIMESHEETS',
+  'OVERTIME',
+  'LEAVE_MANAGEMENT',
 ]);
 
 const HIDDEN_MODULE_NAMES = new Set([
@@ -51,6 +54,12 @@ const HIDDEN_MODULE_NAMES = new Set([
   'project view',
   'financial dashboard',
   'financial',
+  'timesheets',
+  'overtime',
+  'leave management',
+  'leaves',
+  'weekly timesheets',
+  'labour overtime',
 ]);
 
 const HIDDEN_ROUTES = new Set([
@@ -59,6 +68,11 @@ const HIDDEN_ROUTES = new Set([
   '/dashboards/finance',
   '/dashboard/financial',
   '/dashboard/finance',
+  '/labour/timesheets',
+  '/labour/overtime',
+  '/labour/leave',
+  '/labour/leaves',
+  '/labour/leave-management',
 ]);
 
 function isHiddenMenuItem(item) {

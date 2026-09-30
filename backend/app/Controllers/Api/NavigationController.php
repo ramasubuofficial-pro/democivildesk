@@ -72,6 +72,9 @@ final class NavigationController extends BaseController
                 'COMMUNICATION',
                 'CLIENT_PORTAL',
                 'ADD_NEW_PROJECT',
+                'TIMESHEETS',
+                'OVERTIME',
+                'LEAVE_MANAGEMENT',
             ];
 
             $visible = [];
