@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Menu, Search, Bell, Building, ChevronDown, X } from 'lucide-react';
 import { Select } from '../ui/Select';
 import { useAuth } from '../../features/auth/context/AuthContext';
+import { useNotifications } from '../../features/notifications/context/NotificationContext';
+import { NotificationDropdown } from './NotificationDropdown';
 
 const SITE_OPTIONS = [
   { label: 'All Sites (Acme Builders)', value: 'all' },
@@ -13,11 +15,29 @@ const SITE_OPTIONS = [
 
 export function Header({ selectedSite, onSiteChange, onMenuClick }) {
   const { user, logout } = useAuth();
+  const { unreadCount } = useNotifications();
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileSiteOpen, setMobileSiteOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const notificationRef = useRef(null);
+
+  // Close notifications dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setNotificationsOpen(false);
+      }
+    }
+    if (notificationsOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [notificationsOpen]);
   
   return (
-    <header className="h-16 bg-surface border-b border-border flex items-center justify-between px-6 flex-shrink-0">
+    <header className="h-16 bg-surface border-b border-border flex items-center justify-between px-6 flex-shrink-0 relative z-30">
       <div className="flex items-center gap-4">
         <button 
           onClick={onMenuClick}
@@ -75,11 +95,33 @@ export function Header({ selectedSite, onSiteChange, onMenuClick }) {
           </button>
         </div>
 
-        {/* Notifications */}
-        <button className="p-2 text-text-secondary hover:text-text-primary hover:bg-surface-muted rounded-sm transition-colors relative">
-          <Bell className="w-5 h-5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error border border-surface"></span>
-        </button>
+        {/* Notifications Module with Bell & Dropdown */}
+        <div className="relative" ref={notificationRef}>
+          <button 
+            onClick={() => setNotificationsOpen(prev => !prev)}
+            onMouseEnter={() => setNotificationsOpen(true)}
+            aria-label="Notifications"
+            className={`p-2 rounded-lg transition-all relative ${
+              notificationsOpen 
+                ? 'bg-[#0056C9]/10 text-[#0056C9]' 
+                : 'text-text-secondary hover:text-text-primary hover:bg-surface-muted'
+            }`}
+          >
+            <Bell className="w-5 h-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 bg-[#EF4444] text-white text-[10px] font-extrabold rounded-full flex items-center justify-center ring-2 ring-white shadow-xs animate-in zoom-in-50">
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
+          </button>
+
+          {/* Notifications Dropdown */}
+          {notificationsOpen && (
+            <div className="absolute right-0 top-full mt-2 z-50">
+              <NotificationDropdown onClose={() => setNotificationsOpen(false)} />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Mobile Search Overlay */}
@@ -109,7 +151,7 @@ export function Header({ selectedSite, onSiteChange, onMenuClick }) {
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs font-bold text-text-secondary uppercase">Select Site</span>
               <button onClick={() => setMobileSiteOpen(false)} className="p-1 text-text-secondary hover:bg-surface-muted rounded">
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
             </div>
             <Select 

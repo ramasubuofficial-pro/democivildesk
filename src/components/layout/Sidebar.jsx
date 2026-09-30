@@ -33,6 +33,7 @@ const HIDDEN_MODULE_CODES = new Set([
   'ADD_NEW_PROJECT',
   'PROJECT_OVERVIEW',
   'PROJECT_VIEW',
+  'FINANCIAL_DASHBOARD',
 ]);
 
 const HIDDEN_MODULE_NAMES = new Set([
@@ -48,11 +49,16 @@ const HIDDEN_MODULE_NAMES = new Set([
   'add new project',
   'project overview',
   'project view',
+  'financial dashboard',
+  'financial',
 ]);
 
 const HIDDEN_ROUTES = new Set([
   '/projects/new',
   '/projects/overview',
+  '/dashboards/finance',
+  '/dashboard/financial',
+  '/dashboard/finance',
 ]);
 
 function isHiddenMenuItem(item) {

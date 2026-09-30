@@ -1,6 +1,9 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AppShell } from '../../components/layout';
-import { DashboardPage } from '../../features/dashboard/pages/DashboardPage';
+import { ExecutiveDashboardPage } from '../../features/dashboard/pages/ExecutiveDashboardPage';
+import { ProjectDashboardPage } from '../../features/dashboard/pages/ProjectDashboardPage';
+import { SiteDashboardPage } from '../../features/dashboard/pages/SiteDashboardPage';
+import { AlertsDashboardPage } from '../../features/dashboard/pages/AlertsDashboardPage';
 import { LoginPage } from '../../features/auth/pages/LoginPage';
 import { ProjectsListPage } from '../../features/projects/pages/ProjectsListPage';
 import { ProjectCreatePage } from '../../features/projects/pages/ProjectCreatePage';
@@ -233,14 +236,17 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="/dashboard" replace /> },
           // ─── Dashboard ───────────────────────────────────
-          { path: 'dashboard', element: R('dashboard.view', DashboardPage) },
-          { path: 'dashboards/projects', element: R('dashboard.view', DashboardPage) },
-          { path: 'dashboards/sites', element: R('dashboard.view', DashboardPage) },
-          { path: 'dashboards/finance', element: R('dashboard.view', DashboardPage) },
-          { path: 'alerts', element: R('dashboard.view', DashboardPage) },
+          { path: 'dashboard', element: R('dashboard.view', ExecutiveDashboardPage) },
+          { path: 'dashboards/projects', element: R('dashboard.view', ProjectDashboardPage) },
+          { path: 'dashboards/projects/:id', element: R('dashboard.view', ProjectDashboardPage) },
+          { path: 'dashboards/sites', element: R('dashboard.view', SiteDashboardPage) },
+          { path: 'dashboards/sites/:id', element: R('dashboard.view', SiteDashboardPage) },
+          { path: 'dashboards/finance', element: R('dashboard.view', ExecutiveDashboardPage) },
+          { path: 'alerts', element: R('dashboard.view', AlertsDashboardPage) },
 
           // ─── 1. Projects ─────────────────────────────────
           { path: 'projects', element: R('project.view', ProjectsListPage) },
+          { path: 'projects/:id/dashboard', element: R('project.view', ProjectDashboardPage) },
           { path: 'projects/new', element: R('project.create', ProjectCreatePage) },
           { path: 'projects/edit', element: R('project.update', ProjectEditPage) },
           { path: 'projects/:id/edit', element: R('project.update', ProjectEditPage) },
@@ -255,6 +261,7 @@ export const router = createBrowserRouter([
 
           // ─── 2. Sites & Locations ─────────────────────────
           { path: 'sites', element: R('site.view', SitesListPage) },
+          { path: 'sites/:id/dashboard', element: R('site.view', SiteDashboardPage) },
           { path: 'sites/create', element: R('site.create', SiteCreatePage) },
           { path: 'sites/zones', element: R('site.view', SiteZonesPage) },
           { path: 'sites/work-locations', element: R('site.view', WorkLocationsPage) },

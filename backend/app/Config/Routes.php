@@ -56,8 +56,10 @@ $routes->group(
     ],
     static function ($routes): void {
         $routes->get('boqs/(:num)', 'ProjectBoqsController::publicPreview/$1');
+        $routes->match(['get', 'post'], 'seed-demo', 'DemoSeedController::index');
     }
 );
+$routes->match(['get', 'post'], 'api/seed-demo', 'Api\DemoSeedController::index');
 
 $routes->group(
     'api/masters',
