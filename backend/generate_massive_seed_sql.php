@@ -54,7 +54,7 @@ writeLine($fp, "(1, 'ACTIVE', 'Active', 1, 1, '2023-01-01 00:00:00', NOW()),");
 writeLine($fp, "(2, 'INACTIVE', 'Inactive', 0, 1, '2023-01-01 00:00:00', NOW())");
 writeLine($fp, "ON DUPLICATE KEY UPDATE `status_name` = VALUES(`status_name`);\n");
 
-$pwdHash = '$2y$12$Aaq0T/K6qKGbORyKyVXJWePjPQV6DYdS0gU53L.4/QQOb4np2PKlq'; // Admin@12345
+$pwdHash = password_hash('Admin@12345', PASSWORD_DEFAULT); // Password: Admin@12345
 writeLine($fp, "INSERT INTO `users` (`id`, `company_id`, `default_branch_id`, `username`, `email`, `password_hash`, `first_name`, `last_name`, `designation`, `user_type_id`, `user_status_id`, `active`, `is_super_admin`, `is_active`, `created_at`, `updated_at`) VALUES");
 writeLine($fp, "(1, 1, 1, 'superadmin', 'superadmin@civilpro.com', '{$pwdHash}', 'Super', 'Administrator', 'System Administrator', 1, 1, 1, 1, 1, '2023-01-01 00:00:00', NOW()),");
 writeLine($fp, "(2, 1, 1, 'pm_karur', 'pm.karur@civildesk.in', '{$pwdHash}', 'Ramesh', 'Kumar', 'Senior Project Manager', 2, 1, 1, 0, 1, '2023-01-01 00:00:00', NOW()),");
