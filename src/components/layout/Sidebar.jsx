@@ -37,6 +37,10 @@ const HIDDEN_MODULE_CODES = new Set([
   'TIMESHEETS',
   'OVERTIME',
   'LEAVE_MANAGEMENT',
+  'DRAWING_QUANTITY_TAKEOFF',
+  'TAKEOFF_REVIEW',
+  'CONVERT_TAKEOFF_BOQ',
+  'TAKEOFF',
 ]);
 
 const HIDDEN_MODULE_NAMES = new Set([
@@ -60,6 +64,11 @@ const HIDDEN_MODULE_NAMES = new Set([
   'leaves',
   'weekly timesheets',
   'labour overtime',
+  'drawing quantity takeoff',
+  'takeoff review',
+  'convert takeoff to boq',
+  'convert takeoff to boq',
+  'takeoff',
 ]);
 
 const HIDDEN_ROUTES = new Set([
@@ -73,6 +82,12 @@ const HIDDEN_ROUTES = new Set([
   '/labour/leave',
   '/labour/leaves',
   '/labour/leave-management',
+  '/takeoff',
+  '/takeoff/review',
+  '/takeoff/convert',
+  '/boq/takeoff',
+  '/boq/takeoff/review',
+  '/boq/takeoff/convert',
 ]);
 
 function isHiddenMenuItem(item) {

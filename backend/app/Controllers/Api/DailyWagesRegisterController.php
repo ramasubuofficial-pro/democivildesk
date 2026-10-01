@@ -24,10 +24,11 @@ class DailyWagesRegisterController extends LabourApiController
 
         $companyId = $this->companyId($u);
         $b = db_connect()->table('daily_wage_registers d')
-            ->select('d.*,p.project_code,p.project_name,s.site_code,s.site_name,sc.contractor_code,sc.contractor_name')
+            ->select('d.*,p.project_code,p.project_name,s.site_code,s.site_name,sc.contractor_code,sc.contractor_name,ct.contractor_type_name')
             ->join('projects p', 'p.id=d.project_id')
             ->join('project_sites s', 's.id=d.site_id')
             ->join('subcontractors sc', 'sc.id=d.subcontractor_id')
+            ->join('subcontractors_contractor_type_masters ct', 'ct.id=sc.contractor_type_id', 'left')
             ->where('d.company_id', $companyId)
             ->where('d.deleted_at', null);
 
@@ -54,10 +55,31 @@ class DailyWagesRegisterController extends LabourApiController
                 ->groupEnd();
         }
 
+        $registers = $b->orderBy('d.wage_date', 'DESC')->orderBy('d.id', 'DESC')->get()->getResultArray();
+        if (!empty($registers)) {
+            $registerIds = array_column($registers, 'id');
+            $lines = db_connect()->table('daily_wage_register_lines l')
+                ->select('l.*')
+                ->whereIn('l.daily_wage_register_id', $registerIds)
+                ->orderBy('l.display_order')
+                ->orderBy('l.id')
+                ->get()->getResultArray();
+
+            $linesByRegister = [];
+            foreach ($lines as $line) {
+                $linesByRegister[$line['daily_wage_register_id']][] = $line;
+            }
+
+            foreach ($registers as &$reg) {
+                $reg['lines'] = $linesByRegister[$reg['id']] ?? [];
+            }
+            unset($reg);
+        }
+
         return $this->ok(
             'Daily wage entries retrieved successfully.',
             'daily_wages',
-            $b->orderBy('d.wage_date', 'DESC')->orderBy('d.id', 'DESC')->get()->getResultArray()
+            $registers
         );
     }
 
@@ -68,10 +90,11 @@ class DailyWagesRegisterController extends LabourApiController
 
         $companyId = $this->companyId($u);
         $row = db_connect()->table('daily_wage_registers d')
-            ->select('d.*,p.project_code,p.project_name,s.site_code,s.site_name,sc.contractor_code,sc.contractor_name')
+            ->select('d.*,p.project_code,p.project_name,s.site_code,s.site_name,sc.contractor_code,sc.contractor_name,ct.contractor_type_name')
             ->join('projects p', 'p.id=d.project_id')
             ->join('project_sites s', 's.id=d.site_id')
             ->join('subcontractors sc', 'sc.id=d.subcontractor_id')
+            ->join('subcontractors_contractor_type_masters ct', 'ct.id=sc.contractor_type_id', 'left')
             ->where('d.id', $id)
             ->where('d.company_id', $companyId)
             ->where('d.deleted_at', null)

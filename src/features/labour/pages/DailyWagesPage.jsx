@@ -50,6 +50,67 @@ export function DailyWagesPage() {
 
   const [dailyWagesList, setDailyWagesList] = useState([]); // Will hold data from backend
   const [sitesList, setSitesList] = useState([]);
+  const [siteWageDetails, setSiteWageDetails] = useState([]);
+  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+
+  useEffect(() => {
+    if (!viewingSite) {
+      setSiteWageDetails([]);
+      return;
+    }
+
+    let isMounted = true;
+    const loadSiteWageDetails = async () => {
+      setIsLoadingDetails(true);
+      try {
+        const today = new Date().toISOString().split('T')[0];
+        const targetDate = wageDate || today;
+
+        const matchingRegisters = dailyWagesList.filter(w => {
+          const wDate = (w.date || w.wage_date || '').split('T')[0];
+          const sId = String(w.site_id || w.project_site_id);
+          return sId === String(viewingSite.id) && wDate === targetDate;
+        });
+
+        if (matchingRegisters.length === 0) {
+          if (isMounted) {
+            setSiteWageDetails([]);
+            setIsLoadingDetails(false);
+          }
+          return;
+        }
+
+        const detailedEntries = await Promise.all(
+          matchingRegisters.map(async (reg) => {
+            if (reg.lines && Array.isArray(reg.lines) && reg.lines.length > 0) {
+              return reg;
+            }
+            try {
+              const res = await request.get(`/daily-wages/${reg.id}`);
+              const wageData = res?.daily_wage ?? res?.data?.daily_wage ?? res?.data ?? res;
+              return { ...reg, ...wageData };
+            } catch (err) {
+              console.error(`Failed to fetch lines for wage ${reg.id}`, err);
+              return reg;
+            }
+          })
+        );
+
+        if (isMounted) {
+          setSiteWageDetails(detailedEntries);
+        }
+      } catch (err) {
+        console.error('Failed to load site wage details:', err);
+      } finally {
+        if (isMounted) {
+          setIsLoadingDetails(false);
+        }
+      }
+    };
+
+    loadSiteWageDetails();
+    return () => { isMounted = false; };
+  }, [viewingSite, wageDate, dailyWagesList]);
 
   useEffect(() => {
     const fetchSites = async () => {
@@ -65,12 +126,30 @@ export function DailyWagesPage() {
 
     const fetchData = async () => {
       try {
-        const subsRes = await request.get('/subcontracts/contractors');
+        const [subsRes, typesRes] = await Promise.all([
+          request.get('/subcontracts/contractors').catch(() => ({})),
+          request.get('/subcontracts/types').catch(() => ({}))
+        ]);
+        
         let finalSubs = subsRes?.data?.subcontractors ?? subsRes?.data?.data ?? subsRes?.subcontractors ?? subsRes?.data ?? subsRes ?? [];
         if (!Array.isArray(finalSubs)) finalSubs = [];
-        setSubcontractors(finalSubs);
-        if (finalSubs.length > 0) {
-          setSelectedSubcontractorId(String(finalSubs[0].id));
+
+        let typesList = typesRes?.data?.contractor_types ?? typesRes?.data?.types ?? typesRes?.data?.data ?? typesRes?.data ?? typesRes ?? [];
+        if (!Array.isArray(typesList)) typesList = [];
+
+        const enrichedSubs = finalSubs.map(s => {
+          const matchedType = typesList.find(t => String(t.id) === String(s.contractor_type_id || s.subcontractor_type_id));
+          const typeName = s.contractor_type_name || matchedType?.contractor_type_name || matchedType?.type_name || matchedType?.name || s.subcontractor_type_label || '';
+          return {
+            ...s,
+            contractor_type_name: typeName,
+            subcontractor_type_label: typeName || s.subcontractor_type_label || 'Trade'
+          };
+        });
+
+        setSubcontractors(enrichedSubs);
+        if (enrichedSubs.length > 0) {
+          setSelectedSubcontractorId(String(enrichedSubs[0].id));
         }
       } catch (err) {
         toast.error('Failed to load subcontractors');
@@ -335,42 +414,62 @@ export function DailyWagesPage() {
     const todaysEntries = dailyWagesList.filter(w => {
       const wDate = (w.date || w.wage_date || '').split('T')[0];
       const sId = String(w.site_id || w.project_site_id);
-      return sId === String(viewingSite.id) && wDate === today;
+      return sId === String(viewingSite.id) && (wageDate ? wDate === wageDate : wDate === today);
     });
 
     return (
       <PageContainer>
-        <div className="flex items-center gap-3 mb-4">
-          <button 
-            onClick={() => setViewingSite(null)}
-            className="p-2 -ml-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-muted transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div>
-            <h1 className="text-xl font-bold text-text-primary">View Submitted Wages</h1>
-            <p className="text-[13px] text-text-secondary">For {viewingSite.site_name} on {today}</p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setViewingSite(null)}
+              className="p-2 -ml-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-muted transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div>
+              <h1 className="text-xl font-bold text-text-primary">View Submitted Wages</h1>
+              <p className="text-[13px] text-text-secondary">For {viewingSite.site_name} on {wageDate || today}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-xs font-semibold text-text-secondary">Date:</label>
+            <input 
+              type="date" 
+              value={wageDate} 
+              onChange={(e) => setWageDate(e.target.value)} 
+              className="px-3 py-1.5 rounded-lg border border-border bg-surface text-xs font-medium text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
           </div>
         </div>
 
-        {todaysEntries.length === 0 ? (
+        {isLoadingDetails ? (
+          <div className="bg-surface rounded-xl border border-border shadow-sm p-12 text-center text-text-muted">
+            <div className="inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mb-2"></div>
+            <p className="text-xs font-medium">Loading submitted wage items...</p>
+          </div>
+        ) : siteWageDetails.length === 0 ? (
           <div className="bg-surface rounded-xl border border-border shadow-sm p-8 text-center text-text-muted">
-            No wages submitted for today yet.
+            No wages submitted for this site on {wageDate || today}.
           </div>
         ) : (
           <div className="space-y-6">
-            {todaysEntries.map((entry, index) => {
-              const sub = subcontractors.find(s => String(s.id) === String(entry.subcontractor_id));
+            {siteWageDetails.map((entry, index) => {
+              const sub = subcontractors.find(s => String(s.id) === String(entry.subcontractor_id)) || {
+                contractor_name: entry.contractor_name,
+                subcontractor_type_label: entry.contractor_type_name || 'Trade'
+              };
               
               let allEntryItems = [];
               if (entry.lines && Array.isArray(entry.lines)) {
                 allEntryItems = entry.lines.map(line => ({
                   id: line.id || line.template_id || `line-${Math.random()}`,
-                  description: line.item_description || line.description,
-                  classification: line.classification || 'Labour',
+                  description: line.description || line.item_description || 'Item',
+                  classification: line.classification || 'Manpower',
                   uom: line.uom || line.unit || 'Shift',
-                  shift: line.qty || line.shift || 0,
-                  rate: line.rate || 0,
+                  shift: Number(line.quantity ?? line.qty ?? line.shift ?? 0),
+                  rate: Number(line.rate ?? 0),
+                  amount: Number(line.amount ?? ((line.quantity ?? line.qty ?? line.shift ?? 0) * (line.rate ?? 0))),
                   remarks: line.remarks || ''
                 }));
               } else if (entry.submittedItems) {
@@ -407,14 +506,18 @@ export function DailyWagesPage() {
                 }
               }
 
-              const entryTotal = allEntryItems.reduce((acc, item) => acc + (Number(item.shift) * Number(item.rate)), 0);
+              const calculatedTotal = allEntryItems.reduce((acc, item) => acc + (Number(item.shift || 0) * Number(item.rate || 0)), 0);
+              const entryTotal = entry.total_amount !== undefined && entry.total_amount !== null && Number(entry.total_amount) > 0
+                ? Number(entry.total_amount)
+                : calculatedTotal;
+              const overallRemarks = entry.global_remarks || entry.globalRemarks;
 
               return (
                 <div key={entry.id || index} className="bg-surface rounded-xl border border-border shadow-sm overflow-hidden">
                   <div className="bg-primary/5 p-4 border-b border-border flex justify-between items-center">
                     <div>
-                      <h3 className="font-bold text-text-primary">{sub?.contractor_name || 'Unknown Subcontractor'}</h3>
-                      <p className="text-[12px] text-text-secondary">{sub?.subcontractor_type_label || 'Trade'}</p>
+                      <h3 className="font-bold text-text-primary">{sub?.contractor_name || entry.contractor_name || 'Unknown Subcontractor'}</h3>
+                      <p className="text-[12px] text-text-secondary">{sub?.subcontractor_type_label || entry.contractor_type_name || 'Trade'}</p>
                     </div>
                     <div className="text-right">
                       <p className="text-[12px] text-text-secondary font-medium">Total Wages</p>
@@ -436,7 +539,9 @@ export function DailyWagesPage() {
                       </thead>
                       <tbody className="divide-y divide-border">
                         {allEntryItems.map(item => {
-                          const amount = Number(item.shift) * Number(item.rate);
+                          const amount = item.amount !== undefined && Number(item.amount) > 0 
+                            ? Number(item.amount) 
+                            : Number(item.shift) * Number(item.rate);
                           const isExpense = item.classification === 'Expense' || item.classification === 'Expenses';
                           const isEquipment = item.classification === 'Equipment';
                           const badgeColors = isExpense ? 'bg-amber-100 text-amber-800 border-amber-200' :
@@ -470,10 +575,10 @@ export function DailyWagesPage() {
                       </tbody>
                     </table>
                   </div>
-                  {entry.globalRemarks && (
+                  {overallRemarks && (
                     <div className="p-4 border-t border-border bg-surface-muted/30">
                       <p className="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-1">Overall Remarks</p>
-                      <p className="text-[13px] text-text-primary">{entry.globalRemarks}</p>
+                      <p className="text-[13px] text-text-primary">{overallRemarks}</p>
                     </div>
                   )}
                 </div>
@@ -528,15 +633,20 @@ export function DailyWagesPage() {
                     leftIcon={<Search className="w-4 h-4 text-text-muted" />}
                     options={[
                       { value: '', label: 'Select a Subcontractor...' },
-                      ...subcontractors.map(s => ({
-                        value: String(s.id),
-                        label: s.contractor_name || s.name
-                      }))
+                      ...subcontractors.map(s => {
+                        const typeName = s.contractor_type_name || s.subcontractor_type_label || s.contractor_type_code || s.trade || '';
+                        const labelText = typeName 
+                          ? `${s.contractor_name || s.name} (${typeName})`
+                          : (s.contractor_name || s.name);
+                        return {
+                          value: String(s.id),
+                          label: labelText
+                        };
+                      })
                     ]}
                     value={selectedSubcontractorId}
                     onChange={(val) => {
                       if (val === 'search') {
-                        // TODO: Open a search modal or implement searchable dropdown logic
                         toast.info('Search functionality will be implemented by backend team');
                       } else {
                         setSelectedSubcontractorId(val);
@@ -561,7 +671,7 @@ export function DailyWagesPage() {
               {selectedSubcontractorId && (
                 <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 sm:p-3.5 flex flex-wrap items-center gap-2 text-xs sm:text-[13px] text-primary shadow-sm">
                   <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span className="font-semibold">Trade: {selectedSub?.subcontractor_type_label || 'General'}</span>
+                  <span className="font-semibold">Trade: {selectedSub?.contractor_type_name || selectedSub?.subcontractor_type_label || 'General'}</span>
                   <span className="text-primary/70">•</span>
                   <span className="font-medium">{availableTemplates.length} trade items auto-loaded</span>
                 </div>

@@ -367,28 +367,6 @@ export function MaterialCatalogueFormPage() {
                     ]}
                   />
                 </FormField>
-
-                <FormField label="Quality Check Intake" error={errors.quality_check_required}>
-                  <Select
-                    value={form.quality_check_required}
-                    onChange={(val) => handleFormChange('quality_check_required', val)}
-                    options={[
-                      { value: '0', label: 'Not Required' },
-                      { value: '1', label: 'Inspection Required' },
-                    ]}
-                  />
-                </FormField>
-
-                <FormField label="Batch Tracking" error={errors.batch_tracking_required}>
-                  <Select
-                    value={form.batch_tracking_required}
-                    onChange={(val) => handleFormChange('batch_tracking_required', val)}
-                    options={[
-                      { value: '0', label: 'Disabled' },
-                      { value: '1', label: 'Enabled' },
-                    ]}
-                  />
-                </FormField>
               </div>
             </div>
 

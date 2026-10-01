@@ -278,34 +278,6 @@ export function ProjectCreatePage() {
                 onChange={(v) => handleChange('billing_method_id', v)}
               />
             </FormField>
-
-            <FormField label="Retention Percentage (%)" error={errors.retention_percentage}>
-              <Input
-                type="number"
-                step="0.01"
-                placeholder="5"
-                value={form.retention_percentage}
-                onChange={(e) => handleChange('retention_percentage', e.target.value)}
-              />
-            </FormField>
-
-            <FormField label="Tax / GST Rate (%)" error={errors.tax_percentage}>
-              <Input
-                type="number"
-                step="0.01"
-                placeholder="18"
-                value={form.tax_percentage}
-                onChange={(e) => handleChange('tax_percentage', e.target.value)}
-              />
-            </FormField>
-
-            <FormField label="Currency Code" error={errors.currency_code}>
-              <Input
-                value={form.currency_code}
-                onChange={(e) => handleChange('currency_code', e.target.value)}
-                placeholder="INR"
-              />
-            </FormField>
           </div>
         </Card>
 

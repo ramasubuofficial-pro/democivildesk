@@ -36,6 +36,26 @@ const toIsoDate = (d) => {
   return isNaN(parsed.getTime()) ? new Date().toISOString().split('T')[0] : parsed.toISOString().split('T')[0];
 };
 
+const DEFAULT_UOMS = [
+  { id: 1, unit_code: 'NOS', unit_name: 'Numbers (Nos)' },
+  { id: 2, unit_code: 'BAG', unit_name: 'Bags (Bag)' },
+  { id: 3, unit_code: 'KG', unit_name: 'Kilograms (Kg)' },
+  { id: 4, unit_code: 'TON', unit_name: 'Metric Tonnes (MT)' },
+  { id: 5, unit_code: 'CUM', unit_name: 'Cubic Metres (Cu.m)' },
+  { id: 6, unit_code: 'SQM', unit_name: 'Square Metres (Sq.m)' },
+  { id: 7, unit_code: 'SQFT', unit_name: 'Square Feet (Sq.ft)' },
+  { id: 8, unit_code: 'RMT', unit_name: 'Running Metres (Rmt)' },
+  { id: 9, unit_code: 'FEET', unit_name: 'Feet (Ft)' },
+  { id: 10, unit_code: 'LTR', unit_name: 'Litres (Ltr)' },
+  { id: 11, unit_code: 'SET', unit_name: 'Set' },
+  { id: 12, unit_code: 'TRIP', unit_name: 'Trips (Trip)' },
+  { id: 13, unit_code: 'LOAD', unit_name: 'Loads (Load)' },
+  { id: 14, unit_code: 'PKT', unit_name: 'Packets (Pkt)' },
+  { id: 15, unit_code: 'BOX', unit_name: 'Boxes (Box)' },
+  { id: 16, unit_code: 'ROLL', unit_name: 'Rolls (Roll)' },
+  { id: 17, unit_code: 'BUNDLE', unit_name: 'Bundles' },
+];
+
 const EMPTY_FORM = {
   project_id: '',
   site_id: '',
@@ -79,6 +99,18 @@ export function PurchaseOrdersPage() {
   const [materials, setMaterials] = useState([]);
   const [sites, setSites] = useState([]);
   const [uoms, setUoms] = useState([]);
+
+  const availableUoms = useMemo(() => {
+    if (uoms && uoms.length > 0) return uoms;
+    return DEFAULT_UOMS;
+  }, [uoms]);
+
+  const uomOptions = useMemo(() => {
+    return availableUoms.map(u => ({
+      value: String(u.id),
+      label: u.unit_code ? `${u.unit_code} (${u.unit_name || u.unit_code})` : (u.uom_code ? `${u.uom_code} (${u.uom_name || u.uom_code})` : (u.unit_name || u.name || `Unit #${u.id}`))
+    }));
+  }, [availableUoms]);
 
   // Filters
   const [selectedProjectId, setSelectedProjectId] = useState('all');
@@ -1558,11 +1590,15 @@ export function PurchaseOrdersPage() {
                       {/* Row 2: UOM (2 cols), Order Qty (3 cols), Unit Rate (3 cols), Tax & Total Summary (4 cols) */}
                       <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end pt-1">
                         <div className="sm:col-span-2">
-                          <FormField label="UOM">
-                            <Input
-                              value={baseUom?.unit_code || baseUom?.unit_name || '—'}
-                              disabled
-                              className="bg-surface-muted/50 font-mono text-center h-9 font-semibold"
+                          <FormField label="UOM" error={itemErr.uom_id}>
+                            <Select
+                              options={[
+                                { value: '', label: 'Select UOM...' },
+                                ...uomOptions
+                              ]}
+                              value={item.uom_id ? String(item.uom_id) : ''}
+                              onChange={(v) => handleUpdateItem(idx, { uom_id: v })}
+                              placeholder="Select UOM..."
                             />
                           </FormField>
                         </div>
